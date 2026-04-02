@@ -7,7 +7,7 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: #1a0f00; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; font-family: monospace; }
-h1 { color: #ffd080; font-size: 22px; letter-spacing: 3px; margin-bottom: 10px; text-shadow: 0 0 10px #ff8800; }
+h1 { color: #ffd080; font-size: 22px; letter-spacing: 3px; margin-bottom: 8px; text-shadow: 0 0 10px #ff8800; }
 #game {
   background: linear-gradient(180deg, #87CEEB 0%, #a8c8e8 15%, #c8a96e 45%, #d4b07a 65%, #c9a060 100%);
   width: 700px; height: 460px; position: relative; overflow: hidden;
@@ -20,45 +20,91 @@ h1 { color: #ffd080; font-size: 22px; letter-spacing: 3px; margin-bottom: 10px; 
 #ground { position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: #b8862a; }
 #ground2 { position: absolute; bottom: 0; left: 0; right: 0; height: 38px; background: #a0721a; }
 #ground-line { position: absolute; bottom: 100px; left: 0; right: 0; height: 3px; background: #8B6200; }
-
 .hut { position: absolute; bottom: 100px; display: flex; flex-direction: column; align-items: center; }
 .hp-bar-wrap { width: 52px; height: 6px; background: #333; border: 1px solid #000; margin-top: 2px; }
 .hp-bar { height: 100%; transition: width 0.3s; }
-.hut-hp { font-size: 10px; font-weight: bold; color: #fff; background: rgba(0,0,0,0.6);
-  padding: 1px 4px; margin-top: 2px; white-space: nowrap; border: 1px solid #555; }
-
+.hut-hp { font-size: 10px; font-weight: bold; color: #fff; background: rgba(0,0,0,0.6); padding: 1px 4px; margin-top: 2px; white-space: nowrap; border: 1px solid #555; }
 .unit { position: absolute; bottom: 106px; display: flex; flex-direction: column; align-items: center; z-index: 10; }
 .unit canvas { image-rendering: pixelated; }
 .unit-hp-bar { width: 28px; height: 4px; background: #333; border: 1px solid #000; margin-top: 1px; }
 .unit-hp-fill { height: 100%; background: #4ade80; }
-
 #ui-bottom {
   position: absolute; bottom: 0; left: 0; right: 0; height: 100px;
   background: rgba(20,10,0,0.95); border-top: 3px solid #a0721a;
-  display: flex; align-items: center; padding: 0 10px; gap: 8px;
+  display: flex; align-items: center; padding: 0 8px; gap: 6px;
 }
 .card-btn {
   display: flex; flex-direction: column; align-items: center;
   background: rgba(140,90,20,0.3); border: 2px solid #7a5010;
-  padding: 5px 7px; cursor: pointer; min-width: 72px; color: #f0d090;
-  transition: background 0.1s; position: relative;
+  padding: 4px 5px; cursor: pointer; min-width: 68px; color: #f0d090;
+  transition: background 0.1s, border-color 0.1s; position: relative;
 }
 .card-btn:hover { background: rgba(180,120,30,0.5); border-color: #ffa020; }
 .card-btn.disabled { opacity: 0.35; cursor: not-allowed; }
-.card-btn .card-name { font-size: 9px; font-weight: bold; text-align: center; margin-top: 3px; letter-spacing: 0.5px; }
-.card-btn .card-cost { font-size: 10px; color: #60c0ff; margin-top: 1px; }
+.card-btn.star1 { border-color: #aa66ff; background: rgba(100,30,160,0.3); }
+.card-btn.star2 { border-color: #cc88ff; background: rgba(130,40,200,0.35); }
+.card-btn.star3-purple { border-color: #ff88ff; background: rgba(160,0,220,0.4); }
+.card-btn.star3-gold { border-color: #ffd700; background: rgba(160,120,0,0.45); }
+.card-name { font-size: 8px; font-weight: bold; text-align: center; margin-top: 2px; letter-spacing: 0.3px; white-space: nowrap; overflow: hidden; max-width: 68px; }
+.card-cost { font-size: 9px; color: #60c0ff; margin-top: 1px; }
+.card-stars { font-size: 9px; color: #ffcc00; height: 10px; }
 .card-btn canvas { image-rendering: pixelated; }
-
-#water-bar { display: flex; flex-direction: column; align-items: center; gap: 2px; color: #60c0ff; font-size: 11px; font-weight: bold; margin-right: 4px; }
-#water-fill-wrap { width: 14px; height: 68px; background: rgba(0,0,0,0.5); border: 1px solid #3060a0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+#water-bar { display: flex; flex-direction: column; align-items: center; gap: 2px; color: #60c0ff; font-size: 11px; font-weight: bold; }
+#water-fill-wrap { width: 14px; height: 60px; background: rgba(0,0,0,0.5); border: 1px solid #3060a0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
 #water-fill { width: 100%; background: #2080cc; transition: height 0.2s; }
-#water-count { font-size: 13px; color: #80d0ff; }
-
+#water-count { font-size: 12px; color: #80d0ff; }
+#coin-bar { display: flex; flex-direction: column; align-items: center; gap: 2px; color: #ffcc00; font-size: 11px; font-weight: bold; }
+#coin-fill-wrap { width: 14px; height: 60px; background: rgba(0,0,0,0.5); border: 1px solid #806000; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+#coin-fill { width: 100%; background: #cc9900; transition: height 0.2s; }
+#coin-count { font-size: 12px; color: #ffdd44; }
+#shop-btn {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: rgba(100,60,0,0.5); border: 2px solid #cc8800; padding: 4px 6px;
+  cursor: pointer; color: #ffd080; font-size: 10px; font-weight: bold;
+  min-width: 36px; height: 80px; letter-spacing: 0.5px; transition: background 0.1s;
+}
+#shop-btn:hover { background: rgba(160,100,0,0.7); }
+#shop-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.92); z-index: 180;
+  display: none; flex-direction: column; align-items: center; padding: 12px 12px 8px;
+  border-radius: 8px;
+}
+#shop-overlay.open { display: flex; }
+#shop-title { color: #ffd080; font-size: 16px; font-weight: bold; letter-spacing: 3px; margin-bottom: 4px; }
+#shop-coins-display { color: #ffdd44; font-size: 12px; margin-bottom: 8px; }
+#shop-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; width: 100%; }
+.shop-card {
+  background: rgba(60,30,0,0.8); border: 1px solid #7a5010; padding: 6px 4px;
+  display: flex; flex-direction: column; align-items: center; gap: 3px; color: #f0d090;
+}
+.sc-name { font-size: 9px; font-weight: bold; text-align: center; min-height: 22px; line-height: 1.2; }
+.sc-current { font-size: 8px; color: #ffcc00; text-align: center; }
+.sc-stars { font-size: 11px; color: #ffcc00; }
+.shop-card canvas { image-rendering: pixelated; }
+.upg-btn {
+  font-size: 9px; font-weight: bold; padding: 3px 4px; cursor: pointer;
+  border: 1px solid #cc8800; background: rgba(140,80,0,0.5); color: #ffd080;
+  font-family: monospace; transition: background 0.1s; width: 100%; text-align: center;
+}
+.upg-btn:hover:not(.maxed):not(.gold-max):not(.cant-afford) { background: rgba(200,120,0,0.7); }
+.upg-btn.maxed { background: rgba(100,60,150,0.5); border-color: #cc66ff; color: #cc88ff; cursor: default; }
+.upg-btn.gold-max { background: rgba(120,100,0,0.6); border-color: #ffd700; color: #ffd700; cursor: default; }
+.upg-btn.cant-afford { opacity: 0.4; cursor: not-allowed; }
+#shop-close {
+  margin-top: 8px; background: #5a2000; border: 2px solid #cc4400; color: #fff;
+  font-size: 12px; font-weight: bold; padding: 6px 28px; cursor: pointer; font-family: monospace;
+}
+#shop-close:hover { background: #882200; }
 #msg { position: absolute; top: 88px; left: 50%; transform: translateX(-50%);
-  background: rgba(0,0,0,0.85); color: #ffd080; font-size: 13px; font-weight: bold;
-  padding: 6px 16px; display: none; white-space: nowrap; z-index: 100;
-  border: 2px solid #ff8800; letter-spacing: 1px; }
-
+  background: rgba(0,0,0,0.9); color: #ffd080; font-size: 13px; font-weight: bold;
+  padding: 6px 16px; display: none; white-space: nowrap; z-index: 160;
+  border: 2px solid #ff8800; letter-spacing: 1px; pointer-events: none; }
+.coin-pop {
+  position: absolute; font-size: 13px; font-weight: bold; color: #ffdd00;
+  pointer-events: none; z-index: 155; animation: coinrise 1.2s ease-out forwards;
+  text-shadow: 1px 1px 0 #000; white-space: nowrap;
+}
+@keyframes coinrise { 0%{opacity:1;transform:translateY(0)} 100%{opacity:0;transform:translateY(-44px)} }
 #sandstorm-overlay {
   position: absolute; inset: 0; background: rgba(180,120,0,0);
   pointer-events: none; z-index: 150; display: flex; align-items: center; justify-content: center;
@@ -71,18 +117,13 @@ h1 { color: #ffd080; font-size: 22px; letter-spacing: 3px; margin-bottom: 10px; 
   border: 2px solid #ff8800; letter-spacing: 1px; text-shadow: 0 0 8px #ff4400;
 }
 #sandstorm-overlay.active #sandstorm-msg { display: block; }
-
 .sand-particle {
   position: absolute; border-radius: 50%; background: rgba(200,160,50,0.7);
   pointer-events: none; animation: sandfly linear infinite;
 }
-@keyframes sandfly {
-  from { transform: translateX(0) translateY(0); opacity: 0.8; }
-  to { transform: translateX(-300px) translateY(20px); opacity: 0; }
-}
-
+@keyframes sandfly { from{transform:translateX(0) translateY(0);opacity:0.8} to{transform:translateX(-300px) translateY(20px);opacity:0} }
 #game-over {
-  position: absolute; inset: 0; background: rgba(0,0,0,0.8); display: none;
+  position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: none;
   flex-direction: column; align-items: center; justify-content: center; z-index: 200;
   color: #fff; gap: 12px;
 }
@@ -90,16 +131,13 @@ h1 { color: #ffd080; font-size: 22px; letter-spacing: 3px; margin-bottom: 10px; 
 #game-over p { font-size: 13px; color: #f0d090; }
 #restart-btn {
   background: #8B5010; border: 2px solid #ffa020; color: #fff; font-size: 13px;
-  font-weight: bold; padding: 9px 24px; cursor: pointer; letter-spacing: 2px;
-  font-family: monospace; margin-top: 4px;
+  font-weight: bold; padding: 9px 24px; cursor: pointer; letter-spacing: 2px; font-family: monospace; margin-top: 4px;
 }
 #restart-btn:hover { background: #c07820; }
-
-#score-area { position: absolute; top: 88px; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; z-index: 50; }
+#score-area { position: absolute; top: 88px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 50; }
 .score-box { background: rgba(0,0,0,0.65); color: #fff; font-size: 11px; padding: 2px 8px; border: 1px solid #555; }
 .score-box span { color: #ffd080; font-weight: bold; }
-#storm-timer { position: absolute; top: 88px; right: 10px; background: rgba(0,0,0,0.65); color: #ffd080; font-size: 10px; padding: 2px 6px; border: 1px solid #555; z-index: 50; }
-#hint { color: #807060; font-size: 10px; text-align: right; line-height: 1.5; }
+#storm-timer { position: absolute; top: 88px; right: 8px; background: rgba(0,0,0,0.65); color: #ffd080; font-size: 10px; padding: 2px 6px; border: 1px solid #555; z-index: 50; }
 </style>
 </head>
 <body>
@@ -110,7 +148,6 @@ h1 { color: #ffd080; font-size: 22px; letter-spacing: 3px; margin-bottom: 10px; 
   <div id="ground"></div>
   <div id="ground2"></div>
   <div id="ground-line"></div>
-
   <div class="hut" id="my-hut" style="left:14px">
     <canvas id="hut-p-canvas" width="26" height="34" style="width:52px;height:68px;image-rendering:pixelated"></canvas>
     <div class="hp-bar-wrap"><div class="hp-bar" id="my-hut-bar" style="background:#4ade80;width:100%"></div></div>
@@ -121,7 +158,6 @@ h1 { color: #ffd080; font-size: 22px; letter-spacing: 3px; margin-bottom: 10px; 
     <div class="hp-bar-wrap"><div class="hp-bar" id="enemy-hut-bar" style="background:#f87171;width:100%"></div></div>
     <div class="hut-hp" id="enemy-hut-hp">35HP</div>
   </div>
-
   <div id="score-area">
     <div class="score-box">Jij: <span id="p-score">0</span></div>
     <div class="score-box">Vijand: <span id="e-score">0</span></div>
@@ -129,71 +165,79 @@ h1 { color: #ffd080; font-size: 22px; letter-spacing: 3px; margin-bottom: 10px; 
   <div id="storm-timer">⏳ Storm: 20s</div>
   <div id="msg"></div>
   <div id="units-layer"></div>
-
   <div id="sandstorm-overlay">
     <div id="sandstorm-msg">🌪 KIJK UIT!<br>DE TSJAAD GODEN ZIJN BOOS! 🌪</div>
   </div>
-
+  <div id="shop-overlay">
+    <div id="shop-title">🪙 UPGRADE WINKEL 🪙</div>
+    <div id="shop-coins-display">Coins: 0 / 300</div>
+    <div id="shop-grid"></div>
+    <button id="shop-close" onclick="closeShop()">✖ SLUITEN</button>
+  </div>
   <div id="game-over">
     <h2 id="go-title">GAME OVER</h2>
     <p id="go-msg">De hutjes zijn kapot!</p>
     <button id="restart-btn" onclick="startGame()">OPNIEUW ARM ZIJN?</button>
   </div>
-
   <div id="ui-bottom">
     <div id="water-bar">
       <div id="water-fill-wrap"><div id="water-fill" style="height:0%"></div></div>
       <div id="water-count">0💧</div>
     </div>
     <div class="card-btn" id="card0" onclick="placeUnit(0)">
-      <canvas width="16" height="16" style="width:32px;height:32px" id="card-sprite-0"></canvas>
-      <div class="card-name">BEDELAAR</div>
-      <div class="card-cost">1💧 1dmg 1hp</div>
+      <canvas width="16" height="16" style="width:28px;height:28px" id="card-sprite-0"></canvas>
+      <div class="card-stars" id="stars-0"></div>
+      <div class="card-name" id="cname-0">BEDELAAR</div>
+      <div class="card-cost" id="ccost-0">1💧</div>
     </div>
     <div class="card-btn" id="card1" onclick="placeUnit(1)">
-      <canvas width="16" height="16" style="width:32px;height:32px" id="card-sprite-1"></canvas>
-      <div class="card-name">TSJAAD VECHTER</div>
-      <div class="card-cost">3💧 3dmg 6hp</div>
+      <canvas width="16" height="16" style="width:28px;height:28px" id="card-sprite-1"></canvas>
+      <div class="card-stars" id="stars-1"></div>
+      <div class="card-name" id="cname-1">TSJAAD VECHTER</div>
+      <div class="card-cost" id="ccost-1">3💧</div>
     </div>
     <div class="card-btn" id="card2" onclick="placeUnit(2)">
-      <canvas width="16" height="16" style="width:32px;height:32px" id="card-sprite-2"></canvas>
-      <div class="card-name">ZAND GOOIER</div>
-      <div class="card-cost">4💧 2dmg 4hp</div>
+      <canvas width="16" height="16" style="width:28px;height:28px" id="card-sprite-2"></canvas>
+      <div class="card-stars" id="stars-2"></div>
+      <div class="card-name" id="cname-2">ZAND GOOIER</div>
+      <div class="card-cost" id="ccost-2">4💧</div>
     </div>
     <div class="card-btn" id="card3" onclick="placeUnit(3)">
-      <canvas width="16" height="16" style="width:32px;height:32px" id="card-sprite-3"></canvas>
-      <div class="card-name">TSJAADINATOR</div>
-      <div class="card-cost">8💧 7dmg 20hp</div>
+      <canvas width="16" height="16" style="width:28px;height:28px" id="card-sprite-3"></canvas>
+      <div class="card-stars" id="stars-3"></div>
+      <div class="card-name" id="cname-3">TSJAADINATOR</div>
+      <div class="card-cost" id="ccost-3">8💧</div>
     </div>
-    <div style="flex:1"></div>
-    <div id="hint">Zand Gooier<br>valt op afstand aan</div>
+    <div id="shop-btn" onclick="openShop()">🪙<br>SHOP</div>
+    <div id="coin-bar">
+      <div id="coin-fill-wrap"><div id="coin-fill" style="height:0%"></div></div>
+      <div id="coin-count">0🪙</div>
+    </div>
   </div>
 </div>
 
 <script>
-// ── PIXEL ART SPRITES ──────────────────────────────────────────────
-// Each sprite is a 16x16 grid of color indices. 0 = transparent.
-const PAL = {
-  // skin tones, clothing, etc.
-  skin:  '#E8B87A', skin2: '#C8905A', skin3: '#A06030',
-  brown: '#8B4513', dbrown:'#5C2E00', lbrown:'#C4955A',
-  red:   '#CC2200', dred:  '#881100', lred:  '#FF5533',
-  blue:  '#2255CC', dblue: '#112288', lblue: '#4488FF',
-  purple:'#6622BB', dpurp: '#441188', lpurp: '#9944EE',
-  gray:  '#888888', dgray: '#555555', lgray: '#BBBBBB',
-  white: '#FFFFFF', black: '#111111', yellow:'#FFDD00',
-  gold:  '#FFB800', tan:   '#D4A855', dtan:  '#A07833',
-  green: '#228822', dgreen:'#115511', lgreen:'#44AA44',
-  rock:  '#909090', drock: '#606060', lrock: '#B8B8B8',
-  sand:  '#D4B870', dsand: '#A08840', lsand: '#EDD890',
-  roofr: '#8B2500', roofl: '#AA3300', hutw:  '#C4956A',
-  hutd:  '#5A3010', sky:   '#87CEEB', sun:   '#FFD700',
-  sunr:  '#FF8800', trans: null,
+// ═══════════════════════════════════════════
+// PIXEL ART SPRITES
+// ═══════════════════════════════════════════
+const PAL={
+  skin:'#E8B87A',skin2:'#C8905A',skin3:'#A06030',
+  brown:'#8B4513',dbrown:'#5C2E00',lbrown:'#C4955A',
+  red:'#CC2200',dred:'#881100',lred:'#FF5533',
+  blue:'#2255CC',dblue:'#112288',lblue:'#4488FF',
+  purple:'#6622BB',dpurp:'#441188',lpurp:'#9944EE',
+  gray:'#888888',dgray:'#555555',lgray:'#BBBBBB',
+  white:'#FFFFFF',black:'#111111',yellow:'#FFDD00',
+  gold:'#FFB800',tan:'#D4A855',dtan:'#A07833',
+  rock:'#909090',drock:'#606060',
+  roofr:'#8B2500',roofl:'#AA3300',hutw:'#C4956A',hutd:'#5A3010',
+  sun:'#FFD700',sunr:'#FF8800',
+  up1:'#9933CC',up2:'#BB44EE',up3:'#7700AA',
+  gd1:'#FFD700',gd2:'#FFA500',gd3:'#CC8800',
 };
-const T = null; // transparent
+const T=null;
 
-// ── BEDELAAR (beggar) ── 16x16
-const SPR_BEGGAR_P = [
+const SPR_BEG=[
   [T,T,T,T,T,'skin','skin','skin','skin','skin',T,T,T,T,T,T],
   [T,T,T,T,'skin','skin2','skin2','skin2','skin2','skin','skin',T,T,T,T,T],
   [T,T,T,'brown','skin2','skin','skin2','skin2','skin','skin2','brown',T,T,T,T,T],
@@ -211,9 +255,7 @@ const SPR_BEGGAR_P = [
   [T,'dbrown','dbrown',T,T,T,T,T,T,T,T,'dbrown','dbrown',T,T,T],
   [T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T],
 ];
-
-// ── TSJAAD VECHTER (warrior) ── 16x16
-const SPR_WARRIOR_P = [
+const SPR_WAR=[
   [T,T,T,T,'brown','brown','brown','brown','brown','brown',T,T,T,T,T,T],
   [T,T,T,'brown','brown','gold','gold','gold','gold','brown','brown',T,T,T,T,T],
   [T,T,T,'brown','skin','skin','skin','skin','skin','skin','brown',T,T,T,T,T],
@@ -231,9 +273,7 @@ const SPR_WARRIOR_P = [
   [T,T,T,'dbrown','dbrown',T,T,T,T,'dbrown','dbrown',T,T,T,T,T],
   [T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T],
 ];
-
-// ── ZAND GOOIER (ranged) ── 16x16
-const SPR_RANGER_P = [
+const SPR_RNG=[
   [T,T,T,T,'gray','gray','gray','gray','gray','gray',T,T,T,T,T,T],
   [T,T,T,'gray','lgray','lgray','lgray','lgray','lgray','lgray','gray',T,T,T,T,T],
   [T,T,T,'gray','skin','skin','skin','skin','skin','skin','gray',T,T,T,T,T],
@@ -251,9 +291,7 @@ const SPR_RANGER_P = [
   [T,'black','black',T,T,T,T,T,T,T,T,'black','black',T,T,T],
   [T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T],
 ];
-
-// ── TSJAADINATOR (lion warrior) ── 16x16
-const SPR_LION_P = [
+const SPR_LIO=[
   [T,T,T,'purple','purple','purple','purple','purple','purple','purple','purple',T,T,T,T,T],
   [T,T,'purple','lpurp','lpurp','lpurp','lpurp','lpurp','lpurp','lpurp','lpurp','purple',T,T,T,T],
   [T,T,'purple','skin','skin','skin','skin','skin','skin','skin','skin','purple',T,T,T,T],
@@ -272,398 +310,335 @@ const SPR_LION_P = [
   [T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T],
 ];
 
-// Enemy versions (mirrored + recolored slightly)
-const SPR_BEGGAR_E   = mirrorSprite(SPR_BEGGAR_P);
-const SPR_WARRIOR_E  = mirrorAndRecolor(SPR_WARRIOR_P, {'red':'blue','dred':'dblue','lred':'lblue'});
-const SPR_RANGER_E   = mirrorSprite(SPR_RANGER_P);
-const SPR_LION_E     = mirrorAndRecolor(SPR_LION_P, {'purple':'red','lpurp':'lred','dpurp':'dred'});
+function recolor(spr,map){return spr.map(r=>r.map(c=>c&&map[c]?map[c]:c));}
+function mirror(spr){return spr.map(r=>[...r].reverse());}
+function mirrorRecolor(spr,map){return spr.map(r=>r.slice().reverse().map(c=>c&&map[c]?map[c]:c));}
 
-function mirrorSprite(spr) {
-  return spr.map(row => [...row].reverse());
+// Player star3 sprites (purple/gold)
+const SPR_BEG_UP = recolor(SPR_BEG,{tan:'up1',dtan:'up2',brown:'up1',dbrown:'up3'});
+const SPR_WAR_UP = recolor(SPR_WAR,{red:'up1',dred:'up3',brown:'up1',dbrown:'up3'});
+const SPR_RNG_UP = recolor(SPR_RNG,{gray:'up1',lgray:'up2',dgray:'up3',rock:'up2',drock:'up3'});
+const SPR_LIO_GD = recolor(SPR_LIO,{purple:'gd1',lpurp:'gd2',dpurp:'gd3',gold:'gd2'});
+
+// Enemy variants
+const SPR_BEG_E = mirror(SPR_BEG);
+const SPR_WAR_E = mirrorRecolor(SPR_WAR,{red:'blue',dred:'dblue'});
+const SPR_RNG_E = mirror(SPR_RNG);
+const SPR_LIO_E = mirrorRecolor(SPR_LIO,{purple:'red',lpurp:'lred',dpurp:'dred'});
+
+// Procedural hut
+const HUT_P=(()=>{const w=26,h=34,d=[];for(let y=0;y<h;y++){const row=[];for(let x=0;x<w;x++){if(y<14){const e=Math.abs(x-13),lim=Math.round(14-y*(14/14));if(e<=lim)row.push(e===lim||y<2?'brown':'lbrown');else row.push(null);}else{const bx=3,bw=20;if(x>=bx&&x<bx+bw){if(x===bx||x===bx+bw-1||y===14||y===h-1)row.push('dbrown');else if(x>=10&&x<=15&&y>=22)row.push('hutd');else row.push('hutw');}else row.push(null);}}d.push(row);}return d;})();
+const HUT_E=HUT_P.map(r=>r.map(c=>c==='lbrown'?'roofl':c==='brown'?'roofr':c==='hutw'?'#c46a6a':c==='dbrown'?'#8B2500':c));
+const SUN_SPR=(()=>{const d=[];for(let y=0;y<18;y++){const r=[];for(let x=0;x<18;x++){const dx=x-8.5,dy=y-8.5,d2=Math.sqrt(dx*dx+dy*dy);r.push(d2<=6?'sun':d2<=7&&(Math.abs(dx)<1||Math.abs(dy)<1||Math.abs(Math.abs(dx)-Math.abs(dy))<1)?'sunr':null);}d.push(r);}return d;})();
+
+function drawSprite(cvs,spr){
+  cvs.width=spr[0].length;cvs.height=spr.length;
+  const ctx=cvs.getContext('2d');ctx.clearRect(0,0,cvs.width,cvs.height);
+  for(let y=0;y<spr.length;y++)for(let x=0;x<spr[y].length;x++){const c=spr[y][x];if(!c)continue;ctx.fillStyle=PAL[c]||c;ctx.fillRect(x,y,1,1);}
 }
-function mirrorAndRecolor(spr, remap) {
-  return spr.map(row => row.slice().reverse().map(c => (c && remap[c]) ? remap[c] : c));
-}
-
-// HUT sprite 26x34
-const HUT_P_DATA = (() => {
-  const w=26, h=34, d=[];
-  for(let y=0;y<h;y++) {
-    const row=[];
-    for(let x=0;x<w;x++) {
-      // roof (triangle)
-      if(y < 14) {
-        const cx = 13, slope = 14;
-        const edge = Math.abs(x - cx);
-        const limit = Math.round(slope - y * (slope/14));
-        if(edge <= limit) {
-          if(edge === limit || y===0) row.push('brown');
-          else if(y < 2) row.push('brown');
-          else row.push('lbrown');
-        } else row.push(null);
-      } else {
-        // body
-        const bx = 3, bw = 20;
-        if(x >= bx && x < bx+bw) {
-          if(x===bx || x===bx+bw-1 || y===14 || y===h-1) row.push('dbrown');
-          else if(x>=10&&x<=15&&y>=22) row.push('hutd'); // door
-          else row.push('hutw');
-        } else row.push(null);
-      }
-    }
-    d.push(row);
-  }
-  return d;
-})();
-
-const HUT_E_DATA = (() => {
-  return HUT_P_DATA.map(row => row.map(c => {
-    if(c==='lbrown') return 'roofl';
-    if(c==='brown') return 'roofr';
-    if(c==='hutw') return '#c46a6a';
-    if(c==='dbrown') return '#8B2500';
-    return c;
-  }));
-})();
-
-// SUN sprite 18x18
-const SUN_DATA = (() => {
-  const d=[];
-  for(let y=0;y<18;y++){
-    const row=[];
-    for(let x=0;x<18;x++){
-      const cx=8.5,cy=8.5,r=6,r2=7;
-      const dx=x-cx,dy=y-cy,dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<=r) row.push('sun');
-      else if(dist<=r2 && (Math.abs(dx)<1||Math.abs(dy)<1||Math.abs(Math.abs(dx)-Math.abs(dy))<1)) row.push('sunr');
-      else row.push(null);
-    }
-    d.push(row);
-  }
-  return d;
-})();
-
-function drawSprite(canvas, spriteData, scale=1) {
-  const rows = spriteData.length;
-  const cols = spriteData[0].length;
-  canvas.width = cols; canvas.height = rows;
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0,0,cols,rows);
-  for(let y=0;y<rows;y++) {
-    for(let x=0;x<cols;x++) {
-      const c = spriteData[y][x];
-      if(!c) continue;
-      const color = PAL[c] || c;
-      ctx.fillStyle = color;
-      ctx.fillRect(x,y,1,1);
-    }
-  }
+function initSprites(){
+  drawSprite(document.getElementById('hut-p-canvas'),HUT_P);
+  drawSprite(document.getElementById('hut-e-canvas'),HUT_E);
+  drawSprite(document.getElementById('sun-sprite'),SUN_SPR);
+  [SPR_BEG,SPR_WAR,SPR_RNG,SPR_LIO].forEach((s,i)=>drawSprite(document.getElementById('card-sprite-'+i),s));
 }
 
-function drawHutSprite(canvasId, data) {
-  const canvas = document.getElementById(canvasId);
-  drawSprite(canvas, data);
-}
-
-function initSprites() {
-  drawHutSprite('hut-p-canvas', HUT_P_DATA);
-  drawHutSprite('hut-e-canvas', HUT_E_DATA);
-  // Sun
-  drawSprite(document.getElementById('sun-sprite'), SUN_DATA);
-  // Card sprites
-  const cardSprites = [SPR_BEGGAR_P, SPR_WARRIOR_P, SPR_RANGER_P, SPR_LION_P];
-  cardSprites.forEach((spr, i) => {
-    drawSprite(document.getElementById('card-sprite-'+i), spr);
-  });
-}
-
-// ── GAME LOGIC ──────────────────────────────────────────────────────
-// Base stats (never mutated — upgrades tracked separately)
-const BASE_CARDS = [
-  { name:'Bedelaar',       cost:1, dmg:1, hp:1,  range:10, atkRate:1200, sprP:SPR_BEGGAR_P,  sprE:SPR_BEGGAR_E  },
-  { name:'Tsjaad Vechter', cost:3, dmg:3, hp:6,  range:10, atkRate:1200, sprP:SPR_WARRIOR_P, sprE:SPR_WARRIOR_E },
-  { name:'Zand Gooier',   cost:4, dmg:2, hp:4,  range:80, atkRate:1200, sprP:SPR_RANGER_P,  sprE:SPR_RANGER_E  },
-  { name:'Tsjaadinator',  cost:8, dmg:7, hp:20, range:10, atkRate:2200, sprP:SPR_LION_P,    sprE:SPR_LION_E    },
+// ═══════════════════════════════════════════
+// GAME DATA
+// ═══════════════════════════════════════════
+const BASE=[
+  {name:'Bedelaar',      cost:1,dmg:1, hp:1, range:10,atkRate:1200,sprP:SPR_BEG,sprE:SPR_BEG_E},
+  {name:'Tsjaad Vechter',cost:3,dmg:3, hp:6, range:10,atkRate:1200,sprP:SPR_WAR,sprE:SPR_WAR_E},
+  {name:'Zand Gooier',   cost:4,dmg:2, hp:4, range:80,atkRate:1200,sprP:SPR_RNG,sprE:SPR_RNG_E},
+  {name:'Tsjaadinator',  cost:8,dmg:7, hp:20,range:10,atkRate:2200,sprP:SPR_LIO,sprE:SPR_LIO_E},
 ];
-// Live card stats (upgraded during play)
-let CARDS = [];
+// upgrade costs per star [s1,s2,s3]
+const UPG_COSTS=[[5,7,10],[7,9,13],[10,13,20],[15,50,100]];
+const MAX_NAMES=['RIJKE BEDELAAR','ULTIMATE VECHTER','SCHIJT GOOIER','GODDELIJKE TSJAADINATOR'];
+const STAR3_SPR=[SPR_BEG_UP,SPR_WAR_UP,SPR_RNG_UP,SPR_LIO_GD];
+const COIN_KILL=[1,2,2,4];
+const MAX_COINS=300,MAX_HUT_HP=35,MAX_WATER=10,WATER_RATE=1.2,UNIT_SPEED=1.1;
+const STORM_INTERVAL=20000,STORM_DURATION=3000,STORM_DAMAGE=2;
+const GAME_W=700,ENEMY_UPG_INTERVAL=30000;
 
-const MAX_HUT_HP=35, MAX_WATER=10, WATER_RATE=1.2, UNIT_SPEED=1.1;
-const STORM_INTERVAL=20000, STORM_DURATION=3000, STORM_DAMAGE=2;
-const GAME_W=700;
-const ENEMY_UPGRADE_INTERVAL=30000;
+function getStats(idx){
+  const b=BASE[idx],s=starLevels[idx],m=Math.pow(1.5,s);
+  const spr=s===3?STAR3_SPR[idx]:b.sprP;
+  return{name:s===3?MAX_NAMES[idx]:b.name,cost:b.cost,range:b.range,atkRate:b.atkRate,
+    dmg:Math.round(b.dmg*m),hp:Math.round(b.hp*m),sprP:spr,sprE:b.sprE};
+}
 
-let water, units, nextId, gameRunning, gameLoop, waterInterval;
-let myHutHp, enemyHutHp, lastAiSpawn, stormActive, stormCountdown;
-let sandParticles=[];
-// Upgrade tracking: placed count per card type, and upgrade level per card type
-let placedCount, upgradeLevels;
-// Enemy upgrade tracking
-let lastEnemyUpgrade, enemyUpgradeLevels;
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let water,coins,units,nextId,gameRunning,gameLoop,waterInterval,stormCountdown;
+let myHutHp,enemyHutHp,lastAiSpawn,stormActive,sandParticles;
+let starLevels,enemyULvl,lastEnemyUpg;
 
-function startGame() {
-  water=5; units=[]; nextId=0;
-  myHutHp=MAX_HUT_HP; enemyHutHp=MAX_HUT_HP;
-  lastAiSpawn=0; stormActive=false;
-  placedCount=[0,0,0,0];
-  upgradeLevels=[0,0,0,0];
-  enemyUpgradeLevels=[0,0,0,0];
-  lastEnemyUpgrade=Date.now();
-  // Deep-copy base cards into live CARDS
-  CARDS=BASE_CARDS.map(c=>Object.assign({},c));
+function startGame(){
+  water=5;coins=0;units=[];nextId=0;
+  myHutHp=MAX_HUT_HP;enemyHutHp=MAX_HUT_HP;
+  lastAiSpawn=0;stormActive=false;sandParticles=[];
+  starLevels=[0,0,0,0];enemyULvl=[0,0,0,0];lastEnemyUpg=Date.now();
   document.getElementById('units-layer').innerHTML='';
   document.getElementById('game-over').style.display='none';
   document.getElementById('sandstorm-overlay').classList.remove('active');
   document.getElementById('p-score').textContent='0';
   document.getElementById('e-score').textContent='0';
-  removeSandParticles();
-  updateHutUI(); updateWaterUI(); updateCardUI();
+  closeShop();
+  updateHutUI();updateWaterUI();updateCoinUI();refreshAllCards();
   gameRunning=true;
-  clearInterval(waterInterval); clearInterval(gameLoop); clearInterval(stormCountdown);
-
+  clearInterval(waterInterval);clearInterval(gameLoop);clearInterval(stormCountdown);
   waterInterval=setInterval(()=>{
-    if(!gameRunning) return;
-    water=Math.min(MAX_WATER, water+WATER_RATE*0.25);
-    updateWaterUI(); updateCardUI();
+    if(!gameRunning)return;
+    water=Math.min(MAX_WATER,water+WATER_RATE*0.25);
+    updateWaterUI();refreshAllCards();
   },250);
-
-  let stormClock=STORM_INTERVAL;
+  let sc=STORM_INTERVAL;
   stormCountdown=setInterval(()=>{
-    if(!gameRunning) return;
-    stormClock-=250;
-    const secs=Math.max(0,Math.ceil(stormClock/1000));
-    document.getElementById('storm-timer').textContent=stormActive?'🌪 STORM!':'⏳ Storm: '+secs+'s';
-    if(stormClock<=0 && !stormActive){
-      stormClock=STORM_INTERVAL;
-      triggerSandstorm();
-    }
+    if(!gameRunning)return;
+    sc-=250;
+    const s=Math.max(0,Math.ceil(sc/1000));
+    document.getElementById('storm-timer').textContent=stormActive?'🌪 STORM!':'⏳ Storm: '+s+'s';
+    if(sc<=0&&!stormActive){sc=STORM_INTERVAL;triggerSandstorm();}
   },250);
-
-  gameLoop=setInterval(tick, 60);
+  gameLoop=setInterval(tick,60);
 }
 
-function triggerSandstorm() {
-  if(!gameRunning) return;
-  stormActive=true;
-  document.getElementById('sandstorm-overlay').classList.add('active');
-  spawnSandParticles();
-  showMsg('🌪 KIJK UIT! DE TSJAAD GODEN ZIJN BOOS! 🌪');
-  setTimeout(()=>{
-    if(!gameRunning) return;
-    const dead=[];
-    units.forEach(u=>{
-      u.hp-=STORM_DAMAGE;
-      const hf=document.getElementById('hf-'+u.id);
-      if(hf) hf.style.width=Math.max(0,u.hp/u.maxHp*100)+'%';
-      if(u.hp<=0) dead.push(u.id);
-    });
-    dead.forEach(id=>removeUnit(id));
-    document.getElementById('sandstorm-overlay').classList.remove('active');
-    removeSandParticles();
-    stormActive=false;
-  }, STORM_DURATION);
-}
-
-function spawnSandParticles() {
-  const layer=document.getElementById('units-layer');
-  for(let i=0;i<30;i++){
-    const p=document.createElement('div');
-    p.className='sand-particle';
-    const size=Math.random()*4+2;
-    p.style.cssText=`width:${size}px;height:${size}px;top:${Math.random()*360}px;left:${Math.random()*700+700}px;animation-duration:${(Math.random()*1.5+0.8).toFixed(2)}s;animation-delay:${(Math.random()*2).toFixed(2)}s;`;
-    document.getElementById('game').appendChild(p);
-    sandParticles.push(p);
-  }
-}
-function removeSandParticles(){sandParticles.forEach(p=>p.remove());sandParticles=[];}
-
-function showMsg(txt){
-  const m=document.getElementById('msg');
-  m.textContent=txt; m.style.display='block';
-  clearTimeout(m._t);
-  m._t=setTimeout(()=>m.style.display='none', 3500);
-}
-
+// ═══════════════════════════════════════════
+// UI
+// ═══════════════════════════════════════════
 function updateWaterUI(){
   document.getElementById('water-fill').style.height=(water/MAX_WATER*100)+'%';
   document.getElementById('water-count').textContent=Math.floor(water)+'💧';
 }
-function updateCardUI(){
-  const labels=['BEDELAAR','TSJAAD VECHTER','ZAND GOOIER','TSJAADINATOR'];
-  CARDS.forEach((c,i)=>{
-    const el=document.getElementById('card'+i);
-    if(!el) return;
-    el.classList.toggle('disabled', Math.floor(water)<c.cost);
-    const costEl=el.querySelector('.card-cost');
-    if(costEl){
-      const lvl=upgradeLevels[i];
-      const lvlStr=lvl>0?' ★'+lvl:'';
-      costEl.textContent=c.cost+'💧 '+c.dmg+'dmg '+c.hp+'hp'+lvlStr;
-    }
-  });
+function updateCoinUI(){
+  document.getElementById('coin-fill').style.height=(coins/MAX_COINS*100)+'%';
+  document.getElementById('coin-count').textContent=coins+'🪙';
+  const d=document.getElementById('shop-coins-display');
+  if(d)d.textContent='Coins: '+coins+' / '+MAX_COINS;
 }
 function updateHutUI(){
-  const mh=Math.max(0,myHutHp), eh=Math.max(0,enemyHutHp);
+  const mh=Math.max(0,myHutHp),eh=Math.max(0,enemyHutHp);
   document.getElementById('my-hut-hp').textContent=mh+' HP';
   document.getElementById('enemy-hut-hp').textContent=eh+' HP';
   document.getElementById('my-hut-bar').style.width=(mh/MAX_HUT_HP*100)+'%';
   document.getElementById('enemy-hut-bar').style.width=(eh/MAX_HUT_HP*100)+'%';
-  const mb=document.getElementById('my-hut-bar');
-  mb.style.background=mh>20?'#4ade80':mh>10?'#facc15':'#f87171';
+  document.getElementById('my-hut-bar').style.background=mh>20?'#4ade80':mh>10?'#facc15':'#f87171';
+}
+function refreshAllCards(){for(let i=0;i<4;i++)refreshCard(i);}
+function refreshCard(i){
+  const c=getStats(i),s=starLevels[i];
+  const el=document.getElementById('card'+i);if(!el)return;
+  const cls='card-btn'+(s===1?' star1':s===2?' star2':s===3?(i===3?' star3-gold':' star3-purple'):'');
+  el.className=cls+(Math.floor(water)<c.cost?' disabled':'');
+  document.getElementById('cname-'+i).textContent=c.name.substring(0,14).toUpperCase();
+  document.getElementById('ccost-'+i).textContent=c.cost+'💧 '+c.dmg+'dmg';
+  document.getElementById('stars-'+i).textContent=s>0?'★'.repeat(s):'';
+  drawSprite(document.getElementById('card-sprite-'+i),c.sprP);
 }
 
-function placeUnit(cardIdx){
-  const c=CARDS[cardIdx];
-  if(!gameRunning||Math.floor(water)<c.cost){showMsg('Niet genoeg waterdruppels!');return;}
-  water-=c.cost; updateWaterUI(); updateCardUI();
-  placedCount[cardIdx]++;
-  checkPlayerUpgrade(cardIdx);
-  spawnUnit(cardIdx, true);
+// ═══════════════════════════════════════════
+// SHOP
+// ═══════════════════════════════════════════
+function openShop(){
+  if(!gameRunning)return;
+  buildShop();
+  document.getElementById('shop-overlay').classList.add('open');
 }
-
-function checkPlayerUpgrade(cardIdx){
-  const threshold=10;
-  const newLevel=Math.floor(placedCount[cardIdx]/threshold);
-  if(newLevel>upgradeLevels[cardIdx]){
-    upgradeLevels[cardIdx]=newLevel;
-    CARDS[cardIdx].hp+=1;
-    CARDS[cardIdx].dmg+=1;
-    // Also buff all existing live units of this type
-    units.forEach(u=>{
-      if(u.isPlayer&&u.cardIdx===cardIdx){
-        u.hp+=1; u.maxHp+=1;
-        const hf=document.getElementById('hf-'+u.id);
-        if(hf) hf.style.width=Math.max(0,u.hp/u.maxHp*100)+'%';
-      }
-    });
-    showUpgradeMsg(cardIdx);
-    updateCardUI();
+function closeShop(){document.getElementById('shop-overlay').classList.remove('open');}
+function buildShop(){
+  updateCoinUI();
+  const grid=document.getElementById('shop-grid');grid.innerHTML='';
+  for(let i=0;i<4;i++){
+    const s=starLevels[i],c=getStats(i);
+    const card=document.createElement('div');card.className='shop-card';
+    const cvs=document.createElement('canvas');
+    cvs.width=16;cvs.height=16;cvs.style.cssText='width:32px;height:32px;image-rendering:pixelated';
+    drawSprite(cvs,c.sprP);card.appendChild(cvs);
+    const st=document.createElement('div');st.className='sc-stars';
+    st.textContent=s>0?'★'.repeat(s)+'☆'.repeat(3-s):'☆☆☆';card.appendChild(st);
+    const nm=document.createElement('div');nm.className='sc-name';nm.textContent=c.name;card.appendChild(nm);
+    const stat=document.createElement('div');stat.className='sc-current';
+    stat.textContent=c.dmg+'dmg / '+c.hp+'hp';card.appendChild(stat);
+    const btn=document.createElement('button');btn.className='upg-btn';
+    if(s>=3){
+      btn.classList.add(i===3?'gold-max':'maxed');
+      btn.textContent='MAX ★★★';
+    } else {
+      const cost=UPG_COSTS[i][s];
+      const nm2=Math.round(BASE[i].dmg*Math.pow(1.5,s+1)),nh=Math.round(BASE[i].hp*Math.pow(1.5,s+1));
+      btn.textContent='★'+(s+1)+': '+nm2+'dmg/'+nh+'hp ('+cost+'🪙)';
+      if(coins<cost)btn.classList.add('cant-afford');
+      btn.onclick=()=>buyUpg(i);
+    }
+    card.appendChild(btn);grid.appendChild(card);
   }
 }
-
-function showUpgradeMsg(cardIdx){
-  const name=CARDS[cardIdx].name.toUpperCase();
-  const lvl=upgradeLevels[cardIdx];
-  // Special message for Tsjaadinator
-  const isTsjaad=cardIdx===3;
-  const mainMsg=isTsjaad?'✨ HIJ IS TSJAADASTISCH! ✨':'⬆ '+name+' GEUPGRADED! ★'+lvl;
-  showSpecialMsg(mainMsg, isTsjaad?'#ff44ff':'#44ffaa');
+function buyUpg(i){
+  const s=starLevels[i];if(s>=3)return;
+  const cost=UPG_COSTS[i][s];
+  if(coins<cost){showSpecial('Niet genoeg coins!','#ff4444');return;}
+  coins-=cost;starLevels[i]++;
+  updateCoinUI();refreshAllCards();
+  const ns=starLevels[i],c=getStats(i);
+  const col=ns===3?(i===3?'#ffd700':'#ff88ff'):'#44ffaa';
+  showSpecial(ns===3?'✨ '+c.name.toUpperCase()+' ONTGRENDELD! ✨':'⬆ ★'+ns+' '+BASE[i].name.toUpperCase()+'!',col);
+  buildShop();
 }
 
-function showSpecialMsg(txt, color){
-  const m=document.getElementById('msg');
-  m.textContent=txt;
-  m.style.borderColor=color||'#ff8800';
-  m.style.color=color||'#ffd080';
-  m.style.display='block';
-  clearTimeout(m._t);
-  m._t=setTimeout(()=>{ m.style.display='none'; m.style.borderColor='#ff8800'; m.style.color='#ffd080'; }, 3000);
+// ═══════════════════════════════════════════
+// COINS
+// ═══════════════════════════════════════════
+function addCoins(n,x,y){
+  coins=Math.min(MAX_COINS,coins+n);updateCoinUI();
+  const p=document.createElement('div');p.className='coin-pop';
+  p.textContent='+'+n+'🪙';p.style.left=(x||200)+'px';p.style.top=((y||200)-20)+'px';
+  document.getElementById('game').appendChild(p);
+  setTimeout(()=>p.remove(),1300);
 }
 
-function spawnUnit(cardIdx, isPlayer, overrideDmg, overrideHp){
-  const c=CARDS[cardIdx];
+// ═══════════════════════════════════════════
+// UNITS
+// ═══════════════════════════════════════════
+function placeUnit(ci){
+  const c=getStats(ci);
+  if(!gameRunning||Math.floor(water)<c.cost){showMsg('Niet genoeg waterdruppels!');return;}
+  water-=c.cost;updateWaterUI();refreshAllCards();
+  spawnUnit(ci,true);
+}
+function spawnUnit(ci,isPlayer,oDmg,oHp){
+  const c=isPlayer?getStats(ci):BASE[ci];
+  const dmg=oDmg!==undefined?oDmg:c.dmg;
+  const hp=oHp!==undefined?oHp:c.hp;
   const id='u'+nextId++;
   const startX=isPlayer?90:GAME_W-120;
-  const spr=isPlayer?c.sprP:c.sprE;
-  // Enemy gets their own upgraded stats
-  const dmg=overrideDmg!==undefined?overrideDmg:c.dmg;
-  const hp=overrideHp!==undefined?overrideHp:c.hp;
-  const unit={id,cardIdx,isPlayer,x:startX,hp,maxHp:hp,dmg,range:c.range,lastAtk:0,atkRate:c.atkRate};
+  const unit={id,ci,isPlayer,x:startX,hp,maxHp:hp,dmg,range:c.range,lastAtk:0,atkRate:c.atkRate||1200};
   units.push(unit);
-
-  const div=document.createElement('div');
-  div.className='unit'; div.id=id;
+  const div=document.createElement('div');div.className='unit';div.id=id;
   const cvs=document.createElement('canvas');
-  cvs.width=16; cvs.height=16;
-  cvs.style.width='32px'; cvs.style.height='32px';
-  cvs.style.imageRendering='pixelated';
-  drawSprite(cvs, spr);
-  const hpBar=document.createElement('div');
-  hpBar.className='unit-hp-bar';
-  hpBar.innerHTML='<div class="unit-hp-fill" id="hf-'+id+'" style="width:100%"></div>';
-  div.appendChild(cvs); div.appendChild(hpBar);
+  cvs.width=16;cvs.height=16;cvs.style.cssText='width:30px;height:30px;image-rendering:pixelated';
+  drawSprite(cvs,isPlayer?c.sprP:c.sprE);
+  const hb=document.createElement('div');hb.className='unit-hp-bar';
+  hb.innerHTML='<div class="unit-hp-fill" id="hf-'+id+'" style="width:100%"></div>';
+  div.appendChild(cvs);div.appendChild(hb);
   div.style.left=startX+'px';
   document.getElementById('units-layer').appendChild(div);
 }
-
-function removeUnit(id){
+function killUnit(id,giveCoins){
+  const u=units.find(x=>x.id===id);
+  if(u&&giveCoins&&!u.isPlayer) addCoins(COIN_KILL[u.ci],u.x,250);
   const el=document.getElementById(id);
   if(el){el.style.opacity='0';el.style.transition='opacity 0.25s';setTimeout(()=>el.remove(),280);}
-  units=units.filter(u=>u.id!==id);
+  units=units.filter(x=>x.id!==id);
 }
 
+// ═══════════════════════════════════════════
+// STORM
+// ═══════════════════════════════════════════
+function triggerSandstorm(){
+  if(!gameRunning)return;
+  stormActive=true;
+  document.getElementById('sandstorm-overlay').classList.add('active');
+  spawnSand();showMsg('🌪 KIJK UIT! DE TSJAAD GODEN ZIJN BOOS! 🌪');
+  setTimeout(()=>{
+    if(!gameRunning)return;
+    const dead=[];
+    units.forEach(u=>{
+      u.hp-=STORM_DAMAGE;
+      const hf=document.getElementById('hf-'+u.id);
+      if(hf)hf.style.width=Math.max(0,u.hp/u.maxHp*100)+'%';
+      if(u.hp<=0)dead.push(u.id);
+    });
+    dead.forEach(id=>killUnit(id,true));
+    document.getElementById('sandstorm-overlay').classList.remove('active');
+    clearSand();stormActive=false;
+  },STORM_DURATION);
+}
+function spawnSand(){
+  for(let i=0;i<30;i++){
+    const p=document.createElement('div');p.className='sand-particle';
+    const sz=Math.random()*4+2;
+    p.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*360}px;left:${Math.random()*700+700}px;animation-duration:${(Math.random()*1.5+0.8).toFixed(2)}s;animation-delay:${(Math.random()*2).toFixed(2)}s;`;
+    document.getElementById('game').appendChild(p);sandParticles.push(p);
+  }
+}
+function clearSand(){sandParticles.forEach(p=>p.remove());sandParticles=[];}
+
+// ═══════════════════════════════════════════
+// MESSAGEkankerS
+// ═══════════════════════════════════════════
+function showMsg(txt){
+  const m=document.getElementById('msg');
+  m.textContent=txt;m.style.borderColor='#ff8800';m.style.color='#ffd080';m.style.display='block';
+  clearTimeout(m._t);m._t=setTimeout(()=>m.style.display='none',3500);
+}
+function showSpecial(txt,col){
+  const m=document.getElementById('msg');
+  m.textContent=txt;m.style.borderColor=col||'#ff8800';m.style.color=col||'#ffd080';m.style.display='block';
+  clearTimeout(m._t);m._t=setTimeout(()=>m.style.display='none',3000);
+}
+
+// ═══════════════════════════════════════════
+// TICK
+// ═══════════════════════════════════════════
 function tick(){
-  if(!gameRunning) return;
+  if(!gameRunning)return;
   const now=Date.now();
-  const enemyHutX=GAME_W-80, myHutX=70;
+  const eHX=GAME_W-80,mHX=70;
 
   if(now-lastAiSpawn>3800){
     lastAiSpawn=now;
     const r=Math.random();
-    const cardIdx=r<0.3?0:r<0.6?1:r<0.85?2:3;
-    const lvl=enemyUpgradeLevels[cardIdx];
-    const base=BASE_CARDS[cardIdx];
-    spawnUnit(cardIdx, false, base.dmg+lvl, base.hp+lvl);
+    const ci=r<0.3?0:r<0.6?1:r<0.85?2:3;
+    const lv=enemyULvl[ci],b=BASE[ci];
+    spawnUnit(ci,false,b.dmg+lv,b.hp+lv);
   }
-
-  // Enemy random unit upgrade every 30s
-  if(now-lastEnemyUpgrade>ENEMY_UPGRADE_INTERVAL){
-    lastEnemyUpgrade=now;
-    const cardIdx=Math.floor(Math.random()*4);
-    enemyUpgradeLevels[cardIdx]++;
-    const name=BASE_CARDS[cardIdx].name.toUpperCase();
-    showSpecialMsg('👹 VIJAND '+name+' WORDT STERKER! ★'+enemyUpgradeLevels[cardIdx],'#ff6644');
+  if(now-lastEnemyUpg>ENEMY_UPG_INTERVAL){
+    lastEnemyUpg=now;
+    const ci=Math.floor(Math.random()*4);
+    enemyULvl[ci]++;
+    showSpecial('👹 VIJAND '+BASE[ci].name.toUpperCase()+' STERKER! ★'+enemyULvl[ci],'#ff6644');
   }
 
   const toRemove=[];
   for(const u of units){
     const el=document.getElementById(u.id);
-    if(!el){toRemove.push(u.id);continue;}
-    const dir=u.isPlayer?1:-1;
-    let blocked=false;
-
-    let nearestEnemy=null, nearestDist=Infinity;
+    if(!el){toRemove.push({id:u.id,gc:false});continue;}
+    const dir=u.isPlayer?1:-1;let blocked=false;
+    let nE=null,nD=Infinity;
     for(const o of units){
-      if(o.isPlayer===u.isPlayer||o.hp<=0) continue;
-      const dist=Math.abs(o.x-u.x);
-      if(dist<nearestDist){nearestDist=dist;nearestEnemy=o;}
+      if(o.isPlayer===u.isPlayer||o.hp<=0)continue;
+      const d=Math.abs(o.x-u.x);if(d<nD){nD=d;nE=o;}
     }
-
-    const hutDist=u.isPlayer?Math.abs(u.x-enemyHutX):Math.abs(u.x-myHutX);
-    const rate=u.atkRate||1200;
-
-    if(nearestEnemy&&nearestDist<=u.range){
+    const hd=u.isPlayer?Math.abs(u.x-eHX):Math.abs(u.x-mHX);
+    if(nE&&nD<=u.range){
       blocked=true;
-      if(now-u.lastAtk>rate){
-        nearestEnemy.hp-=u.dmg; u.lastAtk=now;
-        const hf=document.getElementById('hf-'+nearestEnemy.id);
-        if(hf) hf.style.width=Math.max(0,nearestEnemy.hp/nearestEnemy.maxHp*100)+'%';
-        if(nearestEnemy.hp<=0) toRemove.push(nearestEnemy.id);
+      if(now-u.lastAtk>u.atkRate){
+        nE.hp-=u.dmg;u.lastAtk=now;
+        const hf=document.getElementById('hf-'+nE.id);
+        if(hf)hf.style.width=Math.max(0,nE.hp/nE.maxHp*100)+'%';
+        if(nE.hp<=0)toRemove.push({id:nE.id,gc:true});
       }
-    } else if(hutDist<=u.range+5){
+    } else if(hd<=u.range+5){
       blocked=true;
-      if(now-u.lastAtk>rate){
-        if(u.isPlayer) enemyHutHp-=u.dmg; else myHutHp-=u.dmg;
-        u.lastAtk=now; updateHutUI();
+      if(now-u.lastAtk>u.atkRate){
+        if(u.isPlayer)enemyHutHp-=u.dmg;else myHutHp-=u.dmg;
+        u.lastAtk=now;updateHutUI();
         if(enemyHutHp<=0||myHutHp<=0){endGame();return;}
       }
     }
-
-    if(!blocked) u.x+=dir*UNIT_SPEED;
+    if(!blocked)u.x+=dir*UNIT_SPEED;
     el.style.left=u.x+'px';
   }
-
   const seen=new Set();
-  for(const id of toRemove){
-    if(seen.has(id)) continue; seen.add(id);
-    removeUnit(id);
-  }
+  for(const{id,gc}of toRemove){if(seen.has(id))continue;seen.add(id);killUnit(id,gc);}
   units=units.filter(u=>u.hp>0);
 }
 
 function endGame(){
   gameRunning=false;
-  clearInterval(gameLoop); clearInterval(waterInterval); clearInterval(stormCountdown);
+  clearInterval(gameLoop);clearInterval(waterInterval);clearInterval(stormCountdown);
   const won=enemyHutHp<=0;
   document.getElementById('go-title').textContent=won?'🏆 GEWONNEN!':'💀 VERLOREN!';
   document.getElementById('go-msg').textContent=won?'Je hebt de arme kindjes verwoest!':'Jouw hut is vernietigd...';
