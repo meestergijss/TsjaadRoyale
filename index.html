@@ -182,7 +182,11 @@ body { font-family: var(--font-sans); }
     <div style="color:#a0a0a0; font-size:11px; text-align:right; line-height:1.6;">Zand Gooier<br>valt op afstand aan</div>
   </div>
 </div>
-
+ <div class="card-btn" id="card1" onclick="placeUnit(3)">
+      <div class="card-icon">arm</div>
+      <div class="card-name">bedelaar</div>
+      <div class="card-cost">1💧 | 1dmg 1hp</div>
+    </div>
 <script>
 const CARDS = [
   { name: 'Tsjaad Vechter', cost: 3, dmg: 3, hp: 6, range: 10, color: '#d97706', icon: '⚔' },
@@ -196,7 +200,7 @@ const ATTACK_RATE = 1200;
 const GAME_W = () => document.getElementById('game').offsetWidth;
 
 let water = 5, units = [], nextId = 0, gameRunning = false, gameLoop, waterInterval;
-let myHutHp = 25, enemyHutHp = 25;
+let myHutHp = 35, enemyHutHp = 35;
 let lastAiSpawn = 0;
 
 function getGW() { return document.getElementById('game').offsetWidth; }
@@ -359,7 +363,7 @@ function endGame() {
   clearInterval(gameLoop); clearInterval(waterInterval);
   const won = enemyHutHp <= 0;
   document.getElementById('go-title').textContent = won ? '🏆 Gewonnen!' : '💀 Verloren!';
-  document.getElementById('go-msg').textContent = won ? 'Je hebt de vijandige hut verwoest!' : 'Jouw hut is vernietigd...';
+  document.getElementById('go-msg').textContent = won ? 'Je hebt de arme kindjes verwoest!' : 'Jouw hut is vernietigd...';
   document.getElementById('game-over').style.display = 'flex';
 }
 
