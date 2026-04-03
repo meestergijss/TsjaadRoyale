@@ -129,7 +129,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
     <button id="shop-close" onclick="closeShop()">✖ SLUITEN</button>
   </div>
   <div id="game-over">
-    <h2 id="go-title">GEWONNEN!</h2>
+    <h2 id="go-title">jij hebt echt tsjaadastisch!!</h2>
     <p id="go-msg"></p>
     <p id="go-series" style="font-size:15px;color:#ffd080;"></p>
     <button id="restart-btn" onclick="nextRound()">VOLGENDE RONDE ▶</button>
@@ -172,8 +172,8 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
     <div class="card-btn" id="card4" onclick="placeUnit(4)">
       <canvas width="16" height="16" style="width:26px;height:26px" id="card-sprite-4"></canvas>
       <div class="card-stars" id="stars-4"></div>
-      <div class="card-name" id="cname-4">TSJAAD LOSER</div>
-      <div class="card-cost" id="ccost-4">3💧</div>
+      <div class="card-name" id="cname-4">tsjaad docter</div>
+      <div class="card-cost" id="ccost-4">5💧</div>
     </div>
     <div id="shop-btn" onclick="openShop()">🪙<br>slavernij</div>
     <div id="coin-bar">
@@ -358,7 +358,7 @@ const BASE=[
   {name:'Tsjaad Vechter',cost:3,dmg:3, hp:6, range:10,atkRate:1200,sprP:SPR_WAR,sprE:SPR_WAR_E},
   {name:'Zand Gooier',   cost:4,dmg:2, hp:4, range:80,atkRate:1200,sprP:SPR_RNG,sprE:SPR_RNG_E},
   {name:'Tsjaadinator',  cost:8,dmg:7, hp:20,range:5, atkRate:3000,sprP:SPR_LIO,sprE:SPR_LIO_E},
-  {name:'Tsjaad Loser',  cost:3,dmg:2, hp:15,range:10,atkRate:1400,sprP:SPR_LOS,sprE:SPR_LOS_E},
+  {name:'tsjaad docter',  cost:3,dmg:0,05, hp:15,range:20,atkRate:575,sprP:SPR_LOS,sprE:SPR_LOS_E},
 ];
 const UPG_COSTS=[
   [10,14,20],
@@ -368,16 +368,16 @@ const UPG_COSTS=[
   [12,30,60],
 ];
 const UPGRADE_MULT=1.2;
-const MAX_NAMES=['Rijke Bedelaar','Ultimate Vechter','Schijt Gooier','Goddelijke Tsjaadinator','Absolute Loser'];
+const MAX_NAMES=['Rijke Bedelaar','Ultimate Vechter','Schijt Gooier','Goddelijke Tsjaadinator','nucleare docter'];
 const STAR3_SPR=[SPR_BEG_UP,SPR_WAR_UP,SPR_RNG_UP,SPR_LIO_GD,SPR_LOS_UP];
 const COIN_KILL=[1,2,2,4,2];
-const MAX_COINS=300,MAX_HUT_HP=75,MAX_WATER=10;
+const MAX_COINS=300,MAX_HUT_HP=75,MAX_WATER=20;
 const BASE_WATER_RATE=1.2;
 const UNIT_SPEED=1.1;
 const STORM_INTERVAL=20000,STORM_DURATION=3000,STORM_DAMAGE=2;
 const GAME_W=700;
 const ENEMY_UPG_INTERVAL=45000;
-const WATER_BOOST_TIME=60000;
+const WATER_BOOST_TIME=120000;
 const WINS_TO_WIN=3;
 
 function getStats(idx){
