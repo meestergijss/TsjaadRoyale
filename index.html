@@ -102,18 +102,18 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
   <div class="hut" id="my-hut" style="left:14px">
     <canvas id="hut-p-canvas" width="26" height="34" style="width:52px;height:68px;image-rendering:pixelated"></canvas>
     <div class="hp-bar-wrap"><div class="hp-bar" id="my-hut-bar" style="background:#4ade80;width:100%"></div></div>
-    <div class="hut-hp" id="my-hut-hp">75HP</div>
+    <div class="hut-hp" id="my-hut-hp">175HP</div>
   </div>
   <div class="hut" id="enemy-hut" style="right:14px">
     <canvas id="hut-e-canvas" width="26" height="34" style="width:52px;height:68px;image-rendering:pixelated"></canvas>
     <div class="hp-bar-wrap"><div class="hp-bar" id="enemy-hut-bar" style="background:#f87171;width:100%"></div></div>
-    <div class="hut-hp" id="enemy-hut-hp">75HP</div>
+    <div class="hut-hp" id="enemy-hut-hp">175HP</div>
   </div>
   <div id="series-score">JIJ: <span id="p-wins">0</span> ⭐ vs ⭐ <span id="e-wins">0</span> :arm stam lid</div>
   <div id="score-area">
     <div class="score-box">Ronde <span id="round-num">1</span> — win 3 potjes</div>
   </div>
-  <div id="storm-timer">⏳ Storm: 20s</div>
+  <div id="storm-timer">⏳ Storm: 30s</div>
   <div id="match-timer">⏱ 0:00</div>
   <div id="water-boost">💧 x2 WATER!</div>
   <div id="msg"></div>
@@ -124,7 +124,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
   </div>
   <div id="shop-overlay">
     <div id="shop-title">🪙 UPGRADE WINKEL 🪙</div>
-    <div id="shop-coins-display">Coins: 0 / 300</div>
+    <div id="shop-coins-display">Coins: 0 / 500</div>
     <div id="shop-grid"></div>
     <button id="shop-close" onclick="closeShop()">✖ SLUITEN</button>
   </div>
@@ -371,7 +371,7 @@ const UPGRADE_MULT=1.2;
 const MAX_NAMES=['Rijke Bedelaar','Ultimate Vechter','Schijt Gooier','Goddelijke Tsjaadinator','nucleare docter'];
 const STAR3_SPR=[SPR_BEG_UP,SPR_WAR_UP,SPR_RNG_UP,SPR_LIO_GD,SPR_LOS_UP];
 const COIN_KILL=[1,2,2,4,2];
-const MAX_COINS=300,MAX_HUT_HP=75,MAX_WATER=20;
+const MAX_COINS=500,MAX_HUT_HP=175,MAX_WATER=20;
 const BASE_WATER_RATE=1.2;
 const UNIT_SPEED=1.1;
 const STORM_INTERVAL=20000,STORM_DURATION=3000,STORM_DAMAGE=2;
@@ -397,7 +397,7 @@ function startSeries(onclick){
   playerWins=0;enemyWins=0;currentRound=1;
   starLevels=[0,0,0,0,0];
   document.getElementById('main-menu').style.display='none';
-  startRound();
+  startRound(onlcick);
 }
 
 function startRound(onclick){
