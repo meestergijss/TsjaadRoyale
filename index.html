@@ -511,7 +511,7 @@ function buildShop(){
     if(s>=3){
       btn.classList.add(i===3?'gold-max':'maxed');btn.textContent='MAX ★★★';
     }else{
-      const cost=UPG_COSTS[i][s];
+      const cost=UPG_COSTS[i];
       const nm2=Math.round(BASE[i].dmg*Math.pow(UPGRADE_MULT,s+1));
       const nh=Math.round(BASE[i].hp*Math.pow(UPGRADE_MULT,s+1));
       btn.textContent='★'+(s+1)+': '+nm2+'dmg/'+nh+'hp ('+cost+'🪙)';
