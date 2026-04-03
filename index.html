@@ -175,7 +175,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
       <div class="card-name" id="cname-4">tsjaad docter</div>
       <div class="card-cost" id="ccost-4">5💧</div>
     </div>
-    <div id="shop-btn" onclick="openShop()">🪙<br>slavernij</div>
+    <div id="shop-btn" onclick="openShop()">🪙<br>winkel</div>
     <div id="coin-bar">
       <div id="coin-fill-wrap"><div id="coin-fill" style="height:0%"></div></div>
       <div id="coin-count">0🪙</div>
@@ -358,11 +358,11 @@ const BASE=[
   {name:'Tsjaad Vechter',cost:3,dmg:3, hp:6, range:10,atkRate:1200,sprP:SPR_WAR,sprE:SPR_WAR_E},
   {name:'Zand Gooier',   cost:4,dmg:2, hp:4, range:80,atkRate:1200,sprP:SPR_RNG,sprE:SPR_RNG_E},
   {name:'Tsjaadinator',  cost:8,dmg:7, hp:20,range:5, atkRate:3000,sprP:SPR_LIO,sprE:SPR_LIO_E},
-  {name:'tsjaad docter',  cost:3,dmg:0.05, hp:15,range:20,atkRate:575,sprP:SPR_LOS,sprE:SPR_LOS_E},
+  {name:'tsjaad docter',  cost:3,dmg:0.1, hp:15,range:20,atkRate:575,sprP:SPR_LOS,sprE:SPR_LOS_E},
  UPG_COSTS=[]
-  [10,14,20],
-  [14,18,26],
-  [20,26,40],
+  [20,24,40],
+  [19,25,45],
+  [30,46,50],
   [30,100,200],
   [12,30,60],
 ];
@@ -373,7 +373,7 @@ const COIN_KILL=[1,2,2,4,2];
 const MAX_COINS=500,MAX_HUT_HP=175,MAX_WATER=20;
 const BASE_WATER_RATE=1.2;
 const UNIT_SPEED=1.1;
-const STORM_INTERVAL=20000,STORM_DURATION=3000,STORM_DAMAGE=2;
+const STORM_INTERVAL=30000,STORM_DURATION=3000,STORM_DAMAGE=2;
 const GAME_W=700;
 const ENEMY_UPG_INTERVAL=45000;
 const WATER_BOOST_TIME=120000;
