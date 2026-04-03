@@ -393,14 +393,14 @@ let myHutHp,enemyHutHp,lastAiSpawn,stormActive,sandParticles;
 let starLevels,enemyULvl,lastEnemyUnitUpg;
 let matchStartTime,waterBoosted,stormSecondsLeft;
 
-function startSeries(){
+function startSeries(click){
   playerWins=0;enemyWins=0;currentRound=1;
   starLevels=[0,0,0,0,0];
   document.getElementById('main-menu').style.display='none';
   startRound();
 }
 
-function startRound(){
+function startRound(click){
   water=5;coins=0;units=[];nextId=0;
   myHutHp=MAX_HUT_HP;enemyHutHp=MAX_HUT_HP;
   lastAiSpawn=0;stormActive=false;sandParticles=[];
