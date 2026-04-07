@@ -122,7 +122,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
   </div>
   <div id="storm-timer">⏳ Storm: 30s</div>
   <div id="match-timer">⏱ 0:00</div>
-  <div id="water-boost">💧 x2 WATER!</div>
+  <div id="water-boost">je bent minder uitgedroogt!!</div>
   <div id="msg"></div>
   <div id="round-banner"></div>
   <div id="units-layer"></div>
@@ -180,8 +180,8 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
     <div class="card-btn" id="card4" onclick="placeUnit(4)">
       <canvas width="16" height="16" style="width:26px;height:26px" id="card-sprite-4"></canvas>
       <div class="card-stars" id="stars-4"></div>
-      <div class="card-name" id="cname-4">TSJAAD DOCTER</div>
-      <div class="card-cost" id="ccost-4">5💧</div>
+      <div class="card-name" id="cname-4">TSJAAD DOKTER</div>
+      <div class="card-cost" id="ccost-4">7💧</div>
     </div>
     <div class="card-btn" id="card5" onclick="placeUnit(5)">
       <canvas width="16" height="16" style="width:26px;height:26px" id="card-sprite-5"></canvas>
@@ -409,11 +409,11 @@ function initSprites(){
 
 const BASE=[
   {name:'Bedelaar',        cost:1,dmg:1, hp:1, range:10,atkRate:1200,sprP:SPR_BEG,sprE:SPR_BEG_E,isBuilder:false},
-  {name:'Tsjaad Vechter',  cost:3,dmg:3, hp:6, range:10,atkRate:1200,sprP:SPR_WAR,sprE:SPR_WAR_E,isBuilder:false},
-  {name:'Zand Gooier',     cost:4,dmg:2, hp:4, range:80,atkRate:1200,sprP:SPR_RNG,sprE:SPR_RNG_E,isBuilder:false},
+  {name:'Tsjaad Vechter',  cost:3,dmg:3, hp:8, range:10,atkRate:1000,sprP:SPR_WAR,sprE:SPR_WAR_E,isBuilder:false},
+  {name:'Zand Gooier',     cost:4,dmg:2, hp:4, range:60,atkRate:1500,sprP:SPR_RNG,sprE:SPR_RNG_E,isBuilder:false},
   {name:'Tsjaadinator',    cost:8,dmg:7, hp:20,range:5, atkRate:3000,sprP:SPR_LIO,sprE:SPR_LIO_E,isBuilder:false},
-  {name:'Tsjaad Docter',   cost:5,dmg:1, hp:15,range:20,atkRate:500, sprP:SPR_LOS,sprE:SPR_LOS_E,isBuilder:false},
-  {name:'Barricade Maker', cost:4,dmg:0, hp:10,range:10,atkRate:99999,sprP:SPR_BAR,sprE:SPR_BAR_E,isBuilder:true,wallInterval:10000,wallHp:50},
+  {name:'Tsjaad Docter',   cost:7,dmg:1, hp:15,range:20,atkRate:500, sprP:SPR_LOS,sprE:SPR_LOS_E,isBuilder:false},
+  {name:'Barricade Maker', cost:4,dmg:0, hp:5,range:10,atkRate:99999,sprP:SPR_BAR,sprE:SPR_BAR_E,isBuilder:true,wallInterval:10000,wallHp:50},
 ];
 
 const UPG_COSTS=[
