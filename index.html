@@ -22,15 +22,20 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 .unit canvas{image-rendering:pixelated;}
 .unit-hp-bar{width:28px;height:4px;background:#333;border:1px solid #000;margin-top:1px;}
 .unit-hp-fill{height:100%;background:#4ade80;}
-#ui-bottom{position:absolute;bottom:0;left:0;right:0;height:100px;background:rgba(20,10,0,0.95);border-top:3px solid #a0721a;display:flex;align-items:center;padding:0 8px;gap:5px;}
-.card-btn{display:flex;flex-direction:column;align-items:center;background:rgba(140,90,20,0.3);border:2px solid #7a5010;padding:4px 4px;cursor:pointer;min-width:62px;color:#f0d090;transition:background 0.1s,border-color 0.1s;position:relative;}
+.wall-block{position:absolute;bottom:100px;z-index:8;display:flex;flex-direction:column;align-items:center;}
+.wall-hp-bar{width:22px;height:4px;background:#333;border:1px solid #000;margin-top:1px;}
+.wall-hp-fill{height:100%;background:#f59e0b;}
+#ui-bottom{position:absolute;bottom:0;left:0;right:0;height:100px;background:rgba(20,10,0,0.95);border-top:3px solid #a0721a;display:flex;align-items:center;padding:0 8px;gap:4px;}
+.card-btn{display:flex;flex-direction:column;align-items:center;background:rgba(140,90,20,0.3);border:2px solid #7a5010;padding:4px 4px;cursor:pointer;min-width:58px;color:#f0d090;transition:background 0.1s,border-color 0.1s;position:relative;}
 .card-btn:hover{background:rgba(180,120,30,0.5);border-color:#ffa020;}
 .card-btn.disabled{opacity:0.35;cursor:not-allowed;}
 .card-btn.star1{border-color:#aa66ff;background:rgba(100,30,160,0.3);}
 .card-btn.star2{border-color:#cc88ff;background:rgba(130,40,200,0.35);}
 .card-btn.star3-purple{border-color:#ff88ff;background:rgba(160,0,220,0.4);}
 .card-btn.star3-gold{border-color:#ffd700;background:rgba(160,120,0,0.45);}
-.card-name{font-size:7px;font-weight:bold;text-align:center;margin-top:1px;letter-spacing:0.3px;white-space:nowrap;overflow:hidden;max-width:62px;}
+.card-btn.star3-teal{border-color:#22ffdd;background:rgba(0,160,140,0.4);}
+.card-btn.star3-wall{border-color:#888800;background:rgba(100,100,0,0.4);}
+.card-name{font-size:7px;font-weight:bold;text-align:center;margin-top:1px;letter-spacing:0.3px;white-space:nowrap;overflow:hidden;max-width:58px;}
 .card-cost{font-size:8px;color:#60c0ff;margin-top:1px;}
 .card-stars{font-size:8px;color:#ffcc00;height:10px;}
 .card-btn canvas{image-rendering:pixelated;}
@@ -48,16 +53,18 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 #shop-overlay.open{display:flex;}
 #shop-title{color:#ffd080;font-size:16px;font-weight:bold;letter-spacing:3px;margin-bottom:4px;}
 #shop-coins-display{color:#ffdd44;font-size:12px;margin-bottom:8px;}
-#shop-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;width:100%;}
+#shop-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;width:100%;}
 .shop-card{background:rgba(60,30,0,0.8);border:1px solid #7a5010;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;color:#f0d090;}
 .sc-name{font-size:8px;font-weight:bold;text-align:center;min-height:22px;line-height:1.2;}
 .sc-current{font-size:8px;color:#ffcc00;text-align:center;}
 .sc-stars{font-size:11px;color:#ffcc00;}
-.shop-card canvas{image-rendering:detailed;}
+.shop-card canvas{image-rendering:pixelated;}
 .upg-btn{font-size:8px;font-weight:bold;padding:3px 3px;cursor:pointer;border:1px solid #cc8800;background:rgba(140,80,0,0.5);color:#ffd080;font-family:monospace;transition:background 0.1s;width:100%;text-align:center;}
 .upg-btn:hover:not(.maxed):not(.gold-max):not(.cant-afford){background:rgba(200,120,0,0.7);}
 .upg-btn.maxed{background:rgba(100,60,150,0.5);border-color:#cc66ff;color:#cc88ff;cursor:default;}
 .upg-btn.gold-max{background:rgba(120,100,0,0.6);border-color:#ffd700;color:#ffd700;cursor:default;}
+.upg-btn.teal-max{background:rgba(0,100,90,0.6);border-color:#22ffdd;color:#22ffdd;cursor:default;}
+.upg-btn.wall-max{background:rgba(80,80,0,0.6);border-color:#aaaa00;color:#dddd00;cursor:default;}
 .upg-btn.cant-afford{opacity:0.4;cursor:not-allowed;}
 #shop-close{margin-top:8px;background:#5a2000;border:2px solid #cc4400;color:#fff;font-size:12px;font-weight:bold;padding:6px 28px;cursor:pointer;font-family:monospace;}
 #shop-close:hover{background:#882200;}
@@ -119,6 +126,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
   <div id="msg"></div>
   <div id="round-banner"></div>
   <div id="units-layer"></div>
+  <div id="walls-layer"></div>
   <div id="sandstorm-overlay">
     <div id="sandstorm-msg">🌪 KIJK UIT!<br>DE TSJAAD GODEN ZIJN BOOS! 🌪</div>
   </div>
@@ -172,8 +180,14 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
     <div class="card-btn" id="card4" onclick="placeUnit(4)">
       <canvas width="16" height="16" style="width:26px;height:26px" id="card-sprite-4"></canvas>
       <div class="card-stars" id="stars-4"></div>
-      <div class="card-name" id="cname-4">tsjaad docter</div>
+      <div class="card-name" id="cname-4">TSJAAD DOCTER</div>
       <div class="card-cost" id="ccost-4">5💧</div>
+    </div>
+    <div class="card-btn" id="card5" onclick="placeUnit(5)">
+      <canvas width="16" height="16" style="width:26px;height:26px" id="card-sprite-5"></canvas>
+      <div class="card-stars" id="stars-5"></div>
+      <div class="card-name" id="cname-5">BARRICADE MAKER</div>
+      <div class="card-cost" id="ccost-5">4💧</div>
     </div>
     <div id="shop-btn" onclick="openShop()">🪙<br>winkel</div>
     <div id="coin-bar">
@@ -199,6 +213,8 @@ const PAL={
   up1:'#9933CC',up2:'#BB44EE',up3:'#7700AA',
   gd1:'#FFD700',gd2:'#FFA500',gd3:'#CC8800',
   teal:'#22BBAA',dteal:'#117766',lteal:'#55DDCC',
+  wblue:'#4488BB',dwblue:'#224466',lwblue:'#88CCEE',
+  wbrown:'#7a6040',dwbrown:'#4a3820',lwbrown:'#b09060',
 };
 const T=null;
 
@@ -292,6 +308,43 @@ const SPR_LOS=[
   [T,'black','black',T,T,T,T,T,T,T,T,'black','black',T,T,T],
   [T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T],
 ];
+// Barricade Maker sprite - uses a builder look with blue helmet and tools
+const SPR_BAR=[
+  [T,T,T,T,T,'wblue','wblue','wblue','wblue','wblue',T,T,T,T,T,T],
+  [T,T,T,T,'wblue','lwblue','lwblue','lwblue','lwblue','wblue','wblue',T,T,T,T,T],
+  [T,T,T,'wblue','lwblue','skin','skin','skin','skin','skin','wblue',T,T,T,T,T],
+  [T,T,T,'wblue','skin','black','skin','skin','black','skin','wblue',T,T,T,T,T],
+  [T,T,T,T,'skin2','skin','skin','skin','skin','skin2',T,T,T,T,T,T],
+  [T,T,'wbrown','wbrown','wbrown','wbrown','wbrown','wbrown','wbrown','wbrown','wbrown',T,T,T,T,T],
+  [T,'skin','wbrown','dwbrown','wbrown','wbrown','wbrown','wbrown','wbrown','dwbrown','wbrown','skin',T,T,T,T],
+  [T,'skin2','wbrown','wbrown','wbrown','wbrown','wbrown','wbrown','wbrown','wbrown','wbrown','skin2',T,T,T,T],
+  [T,T,'wbrown','wbrown','wbrown','wbrown','wbrown','wbrown','wbrown','wbrown','wbrown',T,T,T,T,T],
+  [T,T,T,'wbrown','wbrown',T,T,T,T,'wbrown','wbrown',T,T,T,T,T],
+  [T,T,'gold','wbrown','wbrown',T,T,T,T,'wbrown','wbrown','gold',T,T,T,T],
+  [T,T,'gold','dwbrown','dwbrown',T,T,T,T,'dwbrown','dwbrown','gold',T,T,T,T],
+  [T,T,T,'dwbrown','dwbrown',T,T,T,T,'dwbrown','dwbrown',T,T,T,T,T],
+  [T,T,'dwbrown','dwbrown',T,T,T,T,T,T,'dwbrown','dwbrown',T,T,T,T],
+  [T,'black','black',T,T,T,T,T,T,T,T,'black','black',T,T,T],
+  [T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T],
+];
+const SPR_BAR_E=[
+  [T,T,T,T,T,'red','red','red','red','red',T,T,T,T,T,T],
+  [T,T,T,T,'red','lred','lred','lred','lred','red','red',T,T,T,T,T],
+  [T,T,T,'red','lred','skin','skin','skin','skin','skin','red',T,T,T,T,T],
+  [T,T,T,'red','skin','black','skin','skin','black','skin','red',T,T,T,T,T],
+  [T,T,T,T,'skin2','skin','skin','skin','skin','skin2',T,T,T,T,T,T],
+  [T,T,'dred','dred','dred','dred','dred','dred','dred','dred','dred',T,T,T,T,T],
+  [T,'skin','dred','red','dred','dred','dred','dred','dred','red','dred','skin',T,T,T,T],
+  [T,'skin2','dred','dred','dred','dred','dred','dred','dred','dred','dred','skin2',T,T,T,T],
+  [T,T,'dred','dred','dred','dred','dred','dred','dred','dred','dred',T,T,T,T,T],
+  [T,T,T,'dred','dred',T,T,T,T,'dred','dred',T,T,T,T,T],
+  [T,T,T,'dred','dred',T,T,T,T,'dred','dred',T,T,T,T,T],
+  [T,T,T,'dred','dred',T,T,T,T,'dred','dred',T,T,T,T,T],
+  [T,T,T,'dred','dred',T,T,T,T,'dred','dred',T,T,T,T,T],
+  [T,T,'dred','dred',T,T,T,T,T,T,'dred','dred',T,T,T,T],
+  [T,'black','black',T,T,T,T,T,T,T,T,'black','black',T,T,T],
+  [T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T],
+];
 
 function recolor(spr,map){return spr.map(r=>r.map(c=>c&&map[c]?map[c]:c));}
 function mirror(spr){return spr.map(r=>[...r].reverse());}
@@ -302,6 +355,7 @@ const SPR_WAR_UP=recolor(SPR_WAR,{red:'up1',dred:'up3',brown:'up1',dbrown:'up3'}
 const SPR_RNG_UP=recolor(SPR_RNG,{gray:'up1',lgray:'up2',dgray:'up3',rock:'up2',drock:'up3'});
 const SPR_LIO_GD=recolor(SPR_LIO,{purple:'gd1',lpurp:'gd2',dpurp:'gd3',gold:'gd2'});
 const SPR_LOS_UP=recolor(SPR_LOS,{teal:'up1',dteal:'up3',lteal:'up2'});
+const SPR_BAR_UP=recolor(SPR_BAR,{wblue:'gd1',lwblue:'gd2',dwblue:'gd3',wbrown:'up1',dwbrown:'up3'});
 
 const SPR_BEG_E=mirror(SPR_BEG);
 const SPR_WAR_E=mirrorRecolor(SPR_WAR,{red:'blue',dred:'dblue'});
@@ -344,9 +398,9 @@ function initSprites(){
   drawSprite(document.getElementById('hut-p-canvas'),HUT_P);
   drawSprite(document.getElementById('hut-e-canvas'),HUT_E);
   drawSprite(document.getElementById('sun-sprite'),SUN_SPR);
-  [SPR_BEG,SPR_WAR,SPR_RNG,SPR_LIO,SPR_LOS].forEach((s,i)=>drawSprite(document.getElementById('card-sprite-'+i),s));
+  [SPR_BEG,SPR_WAR,SPR_RNG,SPR_LIO,SPR_LOS,SPR_BAR].forEach((s,i)=>drawSprite(document.getElementById('card-sprite-'+i),s));
   const row=document.getElementById('menu-sprites');row.innerHTML='';
-  [SPR_BEG,SPR_WAR,SPR_RNG,SPR_LIO,SPR_LOS].forEach(s=>{
+  [SPR_BEG,SPR_WAR,SPR_RNG,SPR_LIO,SPR_LOS,SPR_BAR].forEach(s=>{
     const c=document.createElement('canvas');
     c.width=16;c.height=16;c.style.cssText='width:32px;height:32px;image-rendering:pixelated;';
     drawSprite(c,s);row.appendChild(c);
@@ -354,22 +408,26 @@ function initSprites(){
 }
 
 const BASE=[
-  {name:'Bedelaar',      cost:1,dmg:1, hp:1, range:10,atkRate:1200,sprP:SPR_BEG,sprE:SPR_BEG_E},
-  {name:'Tsjaad Vechter',cost:3,dmg:3, hp:6, range:10,atkRate:1200,sprP:SPR_WAR,sprE:SPR_WAR_E},
-  {name:'Zand Gooier',   cost:4,dmg:2, hp:4, range:80,atkRate:1200,sprP:SPR_RNG,sprE:SPR_RNG_E},
-  {name:'Tsjaadinator',  cost:8,dmg:7, hp:20,range:5, atkRate:3000,sprP:SPR_LIO,sprE:SPR_LIO_E},
-  {name:'tsjaad docter',  cost:3,dmg:1, hp:15,range:20,atkRate:500,sprP:SPR_LOS,sprE:SPR_LOS_E},
- UPG_COSTS=[]
+  {name:'Bedelaar',        cost:1,dmg:1, hp:1, range:10,atkRate:1200,sprP:SPR_BEG,sprE:SPR_BEG_E,isBuilder:false},
+  {name:'Tsjaad Vechter',  cost:3,dmg:3, hp:6, range:10,atkRate:1200,sprP:SPR_WAR,sprE:SPR_WAR_E,isBuilder:false},
+  {name:'Zand Gooier',     cost:4,dmg:2, hp:4, range:80,atkRate:1200,sprP:SPR_RNG,sprE:SPR_RNG_E,isBuilder:false},
+  {name:'Tsjaadinator',    cost:8,dmg:7, hp:20,range:5, atkRate:3000,sprP:SPR_LIO,sprE:SPR_LIO_E,isBuilder:false},
+  {name:'Tsjaad Docter',   cost:5,dmg:1, hp:15,range:20,atkRate:500, sprP:SPR_LOS,sprE:SPR_LOS_E,isBuilder:false},
+  {name:'Barricade Maker', cost:4,dmg:0, hp:10,range:10,atkRate:99999,sprP:SPR_BAR,sprE:SPR_BAR_E,isBuilder:true,wallInterval:10000,wallHp:50},
+];
+
+const UPG_COSTS=[
   [20,24,40],
   [19,25,45],
   [30,46,50],
   [30,100,200],
   [12,30,60],
+  [15,35,55],
 ];
 const UPGRADE_MULT=1.2;
-const MAX_NAMES=['Rijke Bedelaar','Ultimate Vechter','Schijt Gooier','Goddelijke Tsjaadinator','nucleare docter'];
-const STAR3_SPR=[SPR_BEG_UP,SPR_WAR_UP,SPR_RNG_UP,SPR_LIO_GD,SPR_LOS_UP];
-const COIN_KILL=[1,2,2,4,2];
+const MAX_NAMES=['Rijke Bedelaar','Ultimate Vechter','Schijt Gooier','Goddelijke Tsjaadinator','nucleare docter','Mega Barricade Maker'];
+const STAR3_SPR=[SPR_BEG_UP,SPR_WAR_UP,SPR_RNG_UP,SPR_LIO_GD,SPR_LOS_UP,SPR_BAR_UP];
+const COIN_KILL=[1,2,2,4,2,1];
 const MAX_COINS=500,MAX_HUT_HP=175,MAX_WATER=20;
 const BASE_WATER_RATE=1.2;
 const UNIT_SPEED=1.1;
@@ -383,29 +441,39 @@ function getStats(idx){
   const b=BASE[idx],s=starLevels[idx];
   const m=Math.pow(UPGRADE_MULT,s);
   const spr=s===3?STAR3_SPR[idx]:b.sprP;
-  return{name:s===3?MAX_NAMES[idx]:b.name,cost:b.cost,range:b.range,atkRate:b.atkRate,dmg:Math.round(b.dmg*m),hp:Math.round(b.hp*m),sprP:spr,sprE:b.sprE};
+  return{
+    name:s===3?MAX_NAMES[idx]:b.name,
+    cost:b.cost,range:b.range,atkRate:b.atkRate,
+    dmg:Math.round(b.dmg*m),
+    hp:Math.round(b.hp*m),
+    sprP:spr,sprE:b.sprE,
+    isBuilder:b.isBuilder,
+    wallInterval:b.wallInterval||null,
+    wallHp:b.wallHp?Math.round(b.wallHp*m):null
+  };
 }
 
 let playerWins=0,enemyWins=0,currentRound=1;
-let water,coins,units,nextId,gameRunning,gameLoop,waterInterval,stormCountdown,matchTimerInterval;
+let water,coins,units,walls,nextId,gameRunning,gameLoop,waterInterval,stormCountdown,matchTimerInterval;
 let myHutHp,enemyHutHp,lastAiSpawn,stormActive,sandParticles;
 let starLevels,enemyULvl,lastEnemyUnitUpg;
 let matchStartTime,waterBoosted,stormSecondsLeft;
 
-function startSeries(onclick){
+function startSeries(){
   playerWins=0;enemyWins=0;currentRound=1;
-  starLevels=[0,0,0,0,0];
+  starLevels=[0,0,0,0,0,0];
   document.getElementById('main-menu').style.display='none';
-  startRound(onclick);
+  startRound();
 }
 
-function startRound(onclick){
-  water=5;coins=0;units=[];nextId=0;
+function startRound(){
+  water=5;coins=0;units=[];walls=[];nextId=0;
   myHutHp=MAX_HUT_HP;enemyHutHp=MAX_HUT_HP;
   lastAiSpawn=0;stormActive=false;sandParticles=[];
-  enemyULvl=[0,0,0,0,0];lastEnemyUnitUpg=Date.now();
+  enemyULvl=[0,0,0,0,0,0];lastEnemyUnitUpg=Date.now();
   waterBoosted=false;matchStartTime=Date.now();
   document.getElementById('units-layer').innerHTML='';
+  document.getElementById('walls-layer').innerHTML='';
   document.getElementById('game-over').style.display='none';
   document.getElementById('round-banner').style.display='none';
   document.getElementById('sandstorm-overlay').classList.remove('active');
@@ -466,6 +534,7 @@ function updateWaterUI(){
   document.getElementById('water-count').textContent=Math.floor(water)+'💧';
 }
 function updateCoinUI(){
+  coins=Math.min(MAX_COINS,coins);
   document.getElementById('coin-fill').style.height=(coins/MAX_COINS*100)+'%';
   document.getElementById('coin-count').textContent=coins+'🪙';
   const d=document.getElementById('shop-coins-display');
@@ -479,24 +548,37 @@ function updateHutUI(){
   document.getElementById('enemy-hut-bar').style.width=(eh/MAX_HUT_HP*100)+'%';
   document.getElementById('my-hut-bar').style.background=mh>20?'#4ade80':mh>10?'#facc15':'#f87171';
 }
-function refreshAllCards(){for(let i=0;i<5;i++)refreshCard(i);}
+function refreshAllCards(){for(let i=0;i<6;i++)refreshCard(i);}
 function refreshCard(i){
   const c=getStats(i),s=starLevels[i];
   const el=document.getElementById('card'+i);if(!el)return;
-  const cls='card-btn'+(s===1?' star1':s===2?' star2':s===3?(i===3?' star3-gold':' star3-purple'):'');
-  el.className=cls+(Math.floor(water)<c.cost?' disabled':'');
+  let starClass='';
+  if(s===1)starClass=' star1';
+  else if(s===2)starClass=' star2';
+  else if(s===3){
+    if(i===3)starClass=' star3-gold';
+    else if(i===5)starClass=' star3-wall';
+    else starClass=' star3-purple';
+  }
+  el.className='card-btn'+starClass+(Math.floor(water)<c.cost?' disabled':'');
   document.getElementById('cname-'+i).textContent=c.name.substring(0,12).toUpperCase();
-  document.getElementById('ccost-'+i).textContent=c.cost+'💧 '+c.dmg+'dmg';
+  if(i===5){
+    document.getElementById('ccost-'+i).textContent=c.cost+'💧 🧱';
+  }else{
+    document.getElementById('ccost-'+i).textContent=c.cost+'💧 '+c.dmg+'dmg';
+  }
   document.getElementById('stars-'+i).textContent=s>0?'★'.repeat(s):'';
   drawSprite(document.getElementById('card-sprite-'+i),c.sprP);
 }
 
 function openShop(){if(!gameRunning)return;buildShop();document.getElementById('shop-overlay').classList.add('open');}
 function closeShop(){document.getElementById('shop-overlay').classList.remove('open');}
+
 function buildShop(){
   updateCoinUI();
-  const grid=document.getElementById('shop-grid');grid.innerHTML='';
-  for(let i=0;i<5;i++){
+  const grid=document.getElementById('shop-grid');
+  grid.innerHTML='';
+  for(let i=0;i<6;i++){
     const s=starLevels[i],c=getStats(i);
     const card=document.createElement('div');card.className='shop-card';
     const cvs=document.createElement('canvas');
@@ -506,21 +588,38 @@ function buildShop(){
     st.textContent=s>0?'★'.repeat(s)+'☆'.repeat(3-s):'☆☆☆';card.appendChild(st);
     const nm=document.createElement('div');nm.className='sc-name';nm.textContent=c.name;card.appendChild(nm);
     const stat=document.createElement('div');stat.className='sc-current';
-    stat.textContent=c.dmg+'dmg/'+c.hp+'hp';card.appendChild(stat);
+    if(i===5){
+      stat.textContent=c.hp+'hp wall:'+c.wallHp+'hp';
+    }else{
+      stat.textContent=c.dmg+'dmg/'+c.hp+'hp';
+    }
+    card.appendChild(stat);
     const btn=document.createElement('button');btn.className='upg-btn';
     if(s>=3){
-      btn.classList.add(i===3?'gold-max':'maxed');btn.textContent='MAX ★★★';
+      let maxClass=i===3?'gold-max':i===5?'wall-max':'maxed';
+      btn.classList.add(maxClass);
+      btn.textContent='MAX ★★★';
     }else{
-      const cost=UPG_COSTS[i];
-      const nm2=Math.round(BASE[i].dmg*Math.pow(UPGRADE_MULT,s+1));
-      const nh=Math.round(BASE[i].hp*Math.pow(UPGRADE_MULT,s+1));
-      btn.textContent='★'+(s+1)+': '+nm2+'dmg/'+nh+'hp ('+cost+'🪙)';
+      const cost=UPG_COSTS[i][s];
+      let previewTxt='';
+      if(i===5){
+        const nwh=Math.round(BASE[i].wallHp*Math.pow(UPGRADE_MULT,s+1));
+        const nh=Math.round(BASE[i].hp*Math.pow(UPGRADE_MULT,s+1));
+        previewTxt='★'+(s+1)+': '+nh+'hp/wall:'+nwh+'hp ('+cost+'🪙)';
+      }else{
+        const nm2=Math.round(BASE[i].dmg*Math.pow(UPGRADE_MULT,s+1));
+        const nh=Math.round(BASE[i].hp*Math.pow(UPGRADE_MULT,s+1));
+        previewTxt='★'+(s+1)+': '+nm2+'dmg/'+nh+'hp ('+cost+'🪙)';
+      }
+      btn.textContent=previewTxt;
       if(coins<cost)btn.classList.add('cant-afford');
       btn.onclick=()=>buyUpg(i);
     }
-    card.appendChild(btn);grid.appendChild(card);
+    card.appendChild(btn);
+    grid.appendChild(card);
   }
 }
+
 function buyUpg(i){
   const s=starLevels[i];if(s>=3)return;
   const cost=UPG_COSTS[i][s];
@@ -528,10 +627,13 @@ function buyUpg(i){
   coins-=cost;starLevels[i]++;
   updateCoinUI();refreshAllCards();
   const ns=starLevels[i],c=getStats(i);
-  const col=ns===3?(i===3?'#ffd700':'#ff88ff'):'#44ffaa';
-  showSpecial(ns===3?'✨ '+c.name.toUpperCase()+' ONTGRENDELD! ✨':'⬆ ★'+ns+' '+BASE[i].name.toUpperCase()+'!',col);
+  let col='#44ffaa';
+  if(ns===3){col=i===3?'#ffd700':i===5?'#ffff00':'#ff88ff';}
+  const msg=ns===3?'✨ '+c.name.toUpperCase()+' ONTGRENDELD! ✨':'⬆ ★'+ns+' '+BASE[i].name.toUpperCase()+'!';
+  showSpecial(msg,col);
   buildShop();
 }
+
 function addCoins(n,x,y){
   coins=Math.min(MAX_COINS,coins+n);updateCoinUI();
   const p=document.createElement('div');p.className='coin-pop';
@@ -539,19 +641,67 @@ function addCoins(n,x,y){
   document.getElementById('game').appendChild(p);
   setTimeout(()=>p.remove(),1300);
 }
+
 function placeUnit(ci){
   const c=getStats(ci);
   if(!gameRunning||Math.floor(water)<c.cost){showMsg('Niet genoeg water!');return;}
   water-=c.cost;updateWaterUI();refreshAllCards();
   spawnUnit(ci,true);
 }
+
+// Wall spawning
+function spawnWall(x,isPlayer){
+  const wallId='w'+nextId++;
+  const wallHp=isPlayer?getStats(5).wallHp:BASE[5].wallHp;
+  const wall={id:wallId,x:x,hp:wallHp,maxHp:wallHp,isPlayer:isPlayer};
+  walls.push(wall);
+  const div=document.createElement('div');div.className='wall-block';div.id=wallId;
+  // Draw a pixelated wall as canvas
+  const cvs=document.createElement('canvas');cvs.width=10;cvs.height=16;
+  cvs.style.cssText='width:20px;height:32px;image-rendering:pixelated;';
+  const ctx=cvs.getContext('2d');
+  // Draw brick wall
+  const brickColor=isPlayer?'#8B7355':'#8B4040';
+  const mortarColor=isPlayer?'#C4A882':'#AA6666';
+  const lineColor=isPlayer?'#5C4A2A':'#5C2020';
+  ctx.fillStyle=mortarColor;ctx.fillRect(0,0,10,16);
+  // Bricks pattern
+  const brows=[[0,4],[5,9],[0,4],[5,9]];
+  brows.forEach((row,ri)=>{
+    const y=ri*4;
+    ctx.fillStyle=brickColor;
+    ctx.fillRect(row[0],y+1,row[1]-row[0],2);
+    ctx.fillStyle=lineColor;
+    ctx.fillRect(row[0],y,row[5]-row[0],1);
+  });
+  div.appendChild(cvs);
+  const hb=document.createElement('div');hb.className='wall-hp-bar';
+  hb.innerHTML='<div class="wall-hp-fill" id="whf-'+wallId+'" style="width:100%"></div>';
+  div.appendChild(hb);
+  div.style.left=(x-10)+'px';
+  document.getElementById('walls-layer').appendChild(div);
+}
+
+function removeWall(wid){
+  walls=walls.filter(w=>w.id!==wid);
+  const el=document.getElementById(wid);
+  if(el){el.style.opacity='0';el.style.transition='opacity 0.2s';setTimeout(()=>el.remove(),250);}
+}
+
 function spawnUnit(ci,isPlayer,oDmg,oHp){
   const c=isPlayer?getStats(ci):BASE[ci];
   const dmg=oDmg!==undefined?oDmg:c.dmg;
   const hp=oHp!==undefined?oHp:c.hp;
   const id='u'+nextId++;
   const startX=isPlayer?90:GAME_W-120;
-  const unit={id,ci,isPlayer,x:startX,hp,maxHp:hp,dmg,range:c.range,lastAtk:0,atkRate:c.atkRate||1200};
+  const unit={
+    id,ci,isPlayer,x:startX,hp,maxHp:hp,dmg,
+    range:c.range,lastAtk:0,atkRate:c.atkRate||1200,
+    isBuilder:c.isBuilder||false,
+    wallInterval:c.wallInterval||null,
+    wallHp:c.wallHp||50,
+    lastWall:0
+  };
   units.push(unit);
   const div=document.createElement('div');div.className='unit';div.id=id;
   const cvs=document.createElement('canvas');
@@ -563,13 +713,15 @@ function spawnUnit(ci,isPlayer,oDmg,oHp){
   div.style.left=startX+'px';
   document.getElementById('units-layer').appendChild(div);
 }
+
 function killUnit(id,giveCoins){
   const u=units.find(x=>x.id===id);
-  if(u&&giveCoins&&!u.isPlayer)addCoins(COIN_KILL[u.ci],u.x,250);
+  if(u&&giveCoins&&!u.isPlayer)addCoins(COIN_KILL[u.ci]||1,u.x,250);
   const el=document.getElementById(id);
   if(el){el.style.opacity='0';el.style.transition='opacity 0.25s';setTimeout(()=>el.remove(),280);}
   units=units.filter(x=>x.id!==id);
 }
+
 function triggerSandstorm(){
   if(!gameRunning)return;
   stormActive=true;
@@ -584,11 +736,21 @@ function triggerSandstorm(){
       if(hf)hf.style.width=Math.max(0,u.hp/u.maxHp*100)+'%';
       if(u.hp<=0)dead.push(u.id);
     });
+    // Storm also damages walls
+    const deadWalls=[];
+    walls.forEach(w=>{
+      w.hp-=STORM_DAMAGE;
+      const wf=document.getElementById('whf-'+w.id);
+      if(wf)wf.style.width=Math.max(0,w.hp/w.maxHp*100)+'%';
+      if(w.hp<=0)deadWalls.push(w.id);
+    });
     dead.forEach(id=>killUnit(id,true));
+    deadWalls.forEach(id=>removeWall(id));
     document.getElementById('sandstorm-overlay').classList.remove('active');
     clearSand();stormActive=false;
   },STORM_DURATION);
 }
+
 function spawnSand(){
   for(let i=0;i<30;i++){
     const p=document.createElement('div');p.className='sand-particle';
@@ -598,6 +760,7 @@ function spawnSand(){
   }
 }
 function clearSand(){sandParticles.forEach(p=>p.remove());sandParticles=[];}
+
 function showMsg(txt){
   const m=document.getElementById('msg');
   m.textContent=txt;m.style.borderColor='#ff8800';m.style.color='#ffd080';m.style.display='block';
@@ -608,35 +771,109 @@ function showSpecial(txt,col){
   m.textContent=txt;m.style.borderColor=col||'#ff8800';m.style.color=col||'#ffd080';m.style.display='block';
   clearTimeout(m._t);m._t=setTimeout(()=>m.style.display='none',3000);
 }
+
 function tick(){
   if(!gameRunning)return;
   const now=Date.now();
   const eHX=GAME_W-80,mHX=70;
+
   if(now-lastAiSpawn>3800){
     lastAiSpawn=now;
     const r=Math.random();
-    const ci=r<0.22?0:r<0.42?1:r<0.58?2:r<0.72?3:4;
+    const ci=r<0.18?0:r<0.36?1:r<0.50?2:r<0.62?3:r<0.80?4:5;
     const lv=enemyULvl[ci],b=BASE[ci];
     spawnUnit(ci,false,b.dmg+lv,b.hp+lv*2);
   }
   if(now-lastEnemyUnitUpg>ENEMY_UPG_INTERVAL){
     lastEnemyUnitUpg=now;
-    const ci=Math.floor(Math.random()*5);
+    const ci=Math.floor(Math.random()*6);
     enemyULvl[ci]++;
     showSpecial('👹 VIJAND '+BASE[ci].name.toUpperCase()+' STERKER! ★'+enemyULvl[ci],'#ff6644');
   }
+
   const toRemove=[];
+
   for(const u of units){
     const el=document.getElementById(u.id);
     if(!el){toRemove.push({id:u.id,gc:false});continue;}
-    const dir=u.isPlayer?1:-1;let blocked=false;
+    const dir=u.isPlayer?1:-1;
+    let blocked=false;
+
+    // Builder: place walls periodically instead of attacking
+    if(u.isPlayer&&u.isBuilder){
+      if(now-u.lastWall>u.wallInterval){
+        u.lastWall=now;
+        // Place wall just ahead of builder
+        const wallX=u.x+30;
+        // Only place if no wall already very close
+        const tooClose=walls.some(w=>w.isPlayer&&Math.abs(w.x-wallX)<25);
+        if(!tooClose&&wallX<eHX-20){
+          spawnWall(wallX,true);
+        }
+      }
+      // Builder itself moves slowly and doesn't fight - just keep moving
+      u.x+=dir*UNIT_SPEED*0.5;
+      el.style.left=u.x+'px';
+      continue;
+    }
+
+    // Enemy builder logic
+    if(!u.isPlayer&&u.isBuilder){
+      if(now-u.lastWall>u.wallInterval){
+        u.lastWall=now;
+        const wallX=u.x-30;
+        const tooClose=walls.some(w=>!w.isPlayer&&Math.abs(w.x-wallX)<25);
+        if(!tooClose&&wallX>mHX+20){
+          spawnWall(wallX,false);
+        }
+      }
+      u.x+=dir*UNIT_SPEED*0.5;
+      el.style.left=u.x+'px';
+      continue;
+    }
+
+    // Regular unit logic
     let nE=null,nD=Infinity;
     for(const o of units){
       if(o.isPlayer===u.isPlayer||o.hp<=0)continue;
       const d=Math.abs(o.x-u.x);if(d<nD){nD=d;nE=o;}
     }
+
+    // Check for enemy walls blocking path
+    let blockedByWall=null;
+    let wallDist=Infinity;
+    for(const w of walls){
+      // Enemy units are blocked by player walls, player units pass through friendly walls
+      if(u.isPlayer&&!w.isPlayer){
+        const d=u.x-w.x; // wall is ahead (to the left for enemy wall?) 
+        // Enemy wall is to the right of player, player advances right
+        const dist=w.x-u.x;
+        if(dist>0&&dist<wallDist&&dist<=u.range+5){
+          wallDist=dist;blockedByWall=w;
+        }
+      }else if(!u.isPlayer&&w.isPlayer){
+        const dist=u.x-w.x;
+        if(dist>0&&dist<wallDist&&dist<=u.range+5){
+          wallDist=dist;blockedByWall=w;
+        }
+      }
+    }
+
     const hd=u.isPlayer?Math.abs(u.x-eHX):Math.abs(u.x-mHX);
-    if(nE&&nD<=u.range){
+
+    if(blockedByWall&&(nE===null||wallDist<nD)){
+      // Attack the wall
+      blocked=true;
+      if(now-u.lastAtk>u.atkRate){
+        blockedByWall.hp-=u.dmg;
+        u.lastAtk=now;
+        const wf=document.getElementById('whf-'+blockedByWall.id);
+        if(wf)wf.style.width=Math.max(0,blockedByWall.hp/blockedByWall.maxHp*100)+'%';
+        if(blockedByWall.hp<=0){
+          removeWall(blockedByWall.id);
+        }
+      }
+    } else if(nE&&nD<=u.range){
       blocked=true;
       if(now-u.lastAtk>u.atkRate){
         nE.hp-=u.dmg;u.lastAtk=now;
@@ -655,10 +892,12 @@ function tick(){
     if(!blocked)u.x+=dir*UNIT_SPEED;
     el.style.left=u.x+'px';
   }
+
   const seen=new Set();
   for(const{id,gc}of toRemove){if(seen.has(id))continue;seen.add(id);killUnit(id,gc);}
   units=units.filter(u=>u.hp>0);
 }
+
 function endRound(){
   gameRunning=false;
   clearInterval(gameLoop);clearInterval(waterInterval);
@@ -677,7 +916,7 @@ function endRound(){
     document.getElementById('restart-btn').textContent='▶ NIEUWE SERIE';
     document.getElementById('restart-btn').onclick=()=>{
       playerWins=0;enemyWins=0;currentRound=1;
-      starLevels=[0,0,0,0,0];nextRound();
+      starLevels=[0,0,0,0,0,0];nextRound();
     };
   }else{
     currentRound++;
