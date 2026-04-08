@@ -141,12 +141,12 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
   <div class="hut" id="my-hut" style="left:14px">
     <canvas id="hut-p-canvas" width="26" height="34" style="width:52px;height:68px;image-rendering:pixelated"></canvas>
     <div class="hp-bar-wrap"><div class="hp-bar" id="my-hut-bar" style="background:#4ade80;width:100%"></div></div>
-    <div class="hut-hp" id="my-hut-hp">175HP</div>
+    <div class="hut-hp" id="my-hut-hp">200HP</div>
   </div>
   <div class="hut" id="enemy-hut" style="right:14px">
     <canvas id="hut-e-canvas" width="26" height="34" style="width:52px;height:68px;image-rendering:pixelated"></canvas>
     <div class="hp-bar-wrap"><div class="hp-bar" id="enemy-hut-bar" style="background:#f87171;width:100%"></div></div>
-    <div class="hut-hp" id="enemy-hut-hp">175HP</div>
+    <div class="hut-hp" id="enemy-hut-hp">200HP</div>
   </div>
   <div id="series-score">JIJ: <span id="p-wins">0</span> ⭐ vs ⭐ <span id="e-wins">0</span> :bijand</div>
   <div id="score-area">
@@ -174,12 +174,12 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 
   <!-- Powerup shop -->
   <div id="powerup-overlay">
-    <div id="powerup-title">⚡ POWERUPS ⚡</div>
+    <div id="powerup-title">goddelijke krachten</div>
     <div id="powerup-coins-display">Coins: 0 / 500</div>
     <div id="powerup-grid">
       <div class="pu-card">
         <div class="pu-icon">🔥</div>
-        <div class="pu-name">TSJAAD RAZERNIJ</div>
+        <div class="pu-name">goddelijke boosheid</div>
         <div class="pu-desc">Alle eenheden doen ×1.5 schade voor 1 minuut!</div>
         <div class="pu-cost">50🪙</div>
         <button class="pu-btn" id="pu-btn-0" onclick="buyPowerup(0)">KOPEN</button>
@@ -467,16 +467,16 @@ function initSprites(){
 }
 
 const BASE=[
-  {name:'Bedelaar',        cost:1,dmg:1, hp:1, range:10,atkRate:1200,sprP:SPR_BEG,sprE:SPR_BEG_E,isBuilder:false},
+  {name:'Bedelaar',        cost:1,dmg:1, hp:1, range:10,atkRate:1000,sprP:SPR_BEG,sprE:SPR_BEG_E,isBuilder:false},
   {name:'Tsjaad Vechter',  cost:3,dmg:3, hp:8, range:10,atkRate:1000,sprP:SPR_WAR,sprE:SPR_WAR_E,isBuilder:false},
-  {name:'Zand Gooier',     cost:4,dmg:2, hp:4, range:60,atkRate:1500,sprP:SPR_RNG,sprE:SPR_RNG_E,isBuilder:false},
+  {name:'Zand Gooier',     cost:4,dmg:2, hp:4, range:60,atkRate:2000,sprP:SPR_RNG,sprE:SPR_RNG_E,isBuilder:false},
   {name:'Tsjaadinator',    cost:8,dmg:8, hp:20,range:5, atkRate:3000,sprP:SPR_LIO,sprE:SPR_LIO_E,isBuilder:false},
   {name:'Tsjaad Docter',   cost:7,dmg:1, hp:15,range:20,atkRate:500, sprP:SPR_LOS,sprE:SPR_LOS_E,isBuilder:false},
   {name:'Barricade Maker', cost:4,dmg:0, hp:5, range:10,atkRate:99999,sprP:SPR_BAR,sprE:SPR_BAR_E,isBuilder:true,wallInterval:10000,wallHp:100},
 ];
 
 const UPG_COSTS=[
-  [20,24,40],
+  [20,30,40],
   [19,25,45],
   [30,46,50],
   [30,100,200],
@@ -492,9 +492,9 @@ function getUpgMult(idx, starLevel) {
 const MAX_NAMES=['Rijke Bedelaar','Ultimate Vechter','Schijt Gooier','Goddelijke Tsjaadinator','nucleare docter','Mega Barricade Maker'];
 const STAR3_SPR=[SPR_BEG_UP,SPR_WAR_UP,SPR_RNG_UP,SPR_LIO_GD,SPR_LOS_UP,SPR_BAR_UP];
 const COIN_KILL=[1,2,2,4,2,1];
-const MAX_COINS=500,MAX_HUT_HP=175,MAX_WATER=20;
+const MAX_COINS=999,MAX_HUT_HP=200,MAX_WATER=20;
 const BASE_WATER_RATE=1.2;
-const UNIT_SPEED=1.1;
+const UNIT_SPEED=1.2;
 const UNIT_WIDTH=28; // pixel width of a unit for collision
 const STORM_INTERVAL=30000,STORM_DURATION=3000,STORM_DAMAGE=2;
 const GAME_W=700;
@@ -505,7 +505,7 @@ const BUILDER_SPEED=0.4;
 
 // Powerup state — persists across rounds (not across full series reset)
 let powerups = {
-  razernij: { active: false, endTime: 0 },    // 0: ×1.5 dmg for 1 min
+  goddelijkeboosheid: { active: false, endTime: 0 },    // 0: ×1.5 dmg for 1 min
   zandbom: { used: false },                    // 1: instant 5 dmg to all enemies
   superTsjaad: { bought: false }               // 2: permanent ×1.3 dmg+hp
 };
@@ -749,10 +749,10 @@ function buyPowerup(idx){
     coins-=50;updateCoinUI();
     powerups.razernij.active=true;
     powerups.razernij.endTime=Date.now()+60000;
-    showSpecial('🔥 TSJAAD RAZERNIJ ACTIEF! ×1.5 SCHADE 60s!','#ff8844');
+    showSpecial('🔥 goddelijke boosheid ACTIEF! ×1.5 SCHADE 60s!','#ff8844');
     buildPowerupShop();updatePowerupIndicators();
   }else if(idx===1){
-    if(coins<75){showSpecial('Niet genoeg munten!','#ff4444');return;}
+    if(coins<75){showSpecial('je bent te arm','#ff4444');return;}
     coins-=75;updateCoinUI();
     // Damage all enemies for 5
     let hit=0;
@@ -767,8 +767,8 @@ function buyPowerup(idx){
     showSpecial('💥 ZAND BOM! '+hit+' VIJANDEN GERAAKT VOOR 5 SCHADE!','#ffdd00');
     buildPowerupShop();
   }else if(idx===2){
-    if(powerups.superTsjaad.bought){showSpecial('Al gekocht!','#aaaaaa');return;}
-    if(coins<100){showSpecial('Niet genoeg munten!','#ff4444');return;}
+    if(powerups.superTsjaad.bought){showSpecial('deze heb je al loser!','#aaaaaa');return;}
+    if(coins<100){showSpecial('je bent te arm','#ff4444');return;}
     coins-=100;updateCoinUI();
     powerups.superTsjaad.bought=true;
     showSpecial('👑 SUPER TSJAAD! ALLE EENHEDEN ×1.3 VOOR ALTIJD!','#ffd700');
@@ -782,7 +782,7 @@ function updatePowerupIndicators(){
   const now=Date.now();
   if(powerups.razernij.active&&now<powerups.razernij.endTime){
     const rem=Math.ceil((powerups.razernij.endTime-now)/1000);
-    const d=document.createElement('div');d.className='pu-indicator';d.textContent='🔥 RAZERNIJ '+rem+'s';div.appendChild(d);
+    const d=document.createElement('div');d.className='pu-indicator';d.textContent='🔥 goddelijke boosheid '+rem+'s';div.appendChild(d);
   }
   if(powerups.superTsjaad.bought){
     const d=document.createElement('div');d.className='pu-indicator';d.textContent='👑 SUPER TSJAAD';div.appendChild(d);
@@ -847,7 +847,7 @@ function spawnUnit(ci,isPlayer,oDmg,oHp){
     range:c.range,lastAtk:0,atkRate:c.atkRate||1200,
     isBuilder:c.isBuilder||false,
     wallInterval:c.wallInterval||null,
-    wallHp:c.wallHp||50,
+    wallHp:c.wallHp||75,
     lastWall:0
   };
   units.push(unit);
@@ -1067,8 +1067,8 @@ function endRound(){
   if(playerWon)playerWins++;else enemyWins++;
   updateSeriesUI();
   const seriesDone=playerWins>=WINS_TO_WIN||enemyWins>=WINS_TO_WIN;
-  document.getElementById('go-title').textContent=playerWon?'🏆 RONDE GEWONNEN!':'💀 RONDE VERLOREN!';
-  document.getElementById('go-msg').textContent=playerWon?'Jouw eenheden hebben gewonnen!':'Jouw hut is vernietigd...';
+  document.getElementById('go-title').textContent=playerWon?'🏆 jij bent echt tsjaadastisch':'💀 je bent een tsjaad loser';
+  document.getElementById('go-msg').textContent=playerWon?'de kinderen zijn trots':'je kan ook niks...';
   if(seriesDone){
     const sw=playerWins>=WINS_TO_WIN;
     document.getElementById('go-series').textContent=
