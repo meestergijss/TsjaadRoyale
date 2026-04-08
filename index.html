@@ -49,6 +49,11 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 #coin-count{font-size:11px;color:#ffdd44;}
 #shop-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(100,60,0,0.5);border:2px solid #cc8800;padding:4px 5px;cursor:pointer;color:#ffd080;font-size:9px;font-weight:bold;min-width:34px;height:80px;letter-spacing:0.5px;transition:background 0.1s;}
 #shop-btn:hover{background:rgba(160,100,0,0.7);}
+
+/* Powerup button */
+#powerup-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(60,0,100,0.5);border:2px solid #aa44ff;padding:4px 5px;cursor:pointer;color:#dd88ff;font-size:9px;font-weight:bold;min-width:34px;height:80px;letter-spacing:0.5px;transition:background 0.1s;}
+#powerup-btn:hover{background:rgba(100,0,160,0.7);}
+
 #shop-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.92);z-index:180;display:none;flex-direction:column;align-items:center;padding:12px 12px 8px;border-radius:8px;}
 #shop-overlay.open{display:flex;}
 #shop-title{color:#ffd080;font-size:16px;font-weight:bold;letter-spacing:3px;margin-bottom:4px;}
@@ -68,6 +73,30 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 .upg-btn.cant-afford{opacity:0.4;cursor:not-allowed;}
 #shop-close{margin-top:8px;background:#5a2000;border:2px solid #cc4400;color:#fff;font-size:12px;font-weight:bold;padding:6px 28px;cursor:pointer;font-family:monospace;}
 #shop-close:hover{background:#882200;}
+
+/* Powerup overlay */
+#powerup-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.92);z-index:180;display:none;flex-direction:column;align-items:center;padding:12px 12px 8px;border-radius:8px;}
+#powerup-overlay.open{display:flex;}
+#powerup-title{color:#dd88ff;font-size:16px;font-weight:bold;letter-spacing:3px;margin-bottom:4px;}
+#powerup-coins-display{color:#ffdd44;font-size:12px;margin-bottom:10px;}
+#powerup-grid{display:flex;gap:12px;width:100%;justify-content:center;}
+.pu-card{background:rgba(40,0,80,0.85);border:2px solid #aa44ff;padding:10px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;color:#f0d0ff;width:180px;border-radius:4px;}
+.pu-icon{font-size:28px;margin-bottom:2px;}
+.pu-name{font-size:11px;font-weight:bold;text-align:center;color:#ffddff;letter-spacing:1px;}
+.pu-desc{font-size:9px;text-align:center;color:#cc99ee;line-height:1.4;min-height:36px;}
+.pu-cost{font-size:11px;color:#ffdd44;font-weight:bold;}
+.pu-btn{font-size:9px;font-weight:bold;padding:5px 6px;cursor:pointer;border:1px solid #aa44ff;background:rgba(80,0,140,0.6);color:#ffddff;font-family:monospace;transition:background 0.1s;width:100%;text-align:center;border-radius:2px;}
+.pu-btn:hover:not(.pu-cant):not(.pu-bought){background:rgba(140,0,220,0.7);}
+.pu-btn.pu-cant{opacity:0.4;cursor:not-allowed;}
+.pu-btn.pu-bought{background:rgba(30,80,30,0.7);border-color:#44ff88;color:#88ffaa;cursor:default;}
+.pu-timer{font-size:9px;color:#88ffcc;margin-top:2px;min-height:14px;}
+#powerup-close{margin-top:10px;background:#3a006a;border:2px solid #aa44ff;color:#fff;font-size:12px;font-weight:bold;padding:6px 28px;cursor:pointer;font-family:monospace;}
+#powerup-close:hover{background:#6a00aa;}
+
+/* Active powerup indicators */
+#powerup-indicators{position:absolute;top:4px;left:8px;display:flex;flex-direction:column;gap:2px;z-index:60;}
+.pu-indicator{background:rgba(60,0,100,0.85);border:1px solid #aa44ff;color:#ffddff;font-size:9px;padding:2px 6px;border-radius:2px;}
+
 #msg{position:absolute;top:88px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.9);color:#ffd080;font-size:13px;font-weight:bold;padding:6px 16px;display:none;white-space:nowrap;z-index:160;border:2px solid #ff8800;letter-spacing:1px;pointer-events:none;}
 .coin-pop{position:absolute;font-size:13px;font-weight:bold;color:#ffdd00;pointer-events:none;z-index:155;animation:coinrise 1.2s ease-out forwards;text-shadow:1px 1px 0 #000;white-space:nowrap;}
 @keyframes coinrise{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-44px)}}
@@ -96,6 +125,9 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 .menu-canvas-row{display:flex;gap:16px;align-items:flex-end;margin:6px 0;}
 .menu-btn{background:#7a3800;border:2px solid #ffa020;color:#ffd080;font-size:14px;font-weight:bold;padding:10px 36px;cursor:pointer;letter-spacing:2px;font-family:monospace;transition:background 0.15s;}
 .menu-btn:hover{background:#cc6600;}
+
+/* Super Tsjaad glow effect on units */
+.super-tsjaad-unit{filter:drop-shadow(0 0 4px #ffaa00) drop-shadow(0 0 8px #ff4400);}
 </style>
 </head>
 <body>
@@ -116,13 +148,14 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
     <div class="hp-bar-wrap"><div class="hp-bar" id="enemy-hut-bar" style="background:#f87171;width:100%"></div></div>
     <div class="hut-hp" id="enemy-hut-hp">175HP</div>
   </div>
-  <div id="series-score">JIJ: <span id="p-wins">0</span> ⭐ vs ⭐ <span id="e-wins">0</span> :vijand</div>
+  <div id="series-score">JIJ: <span id="p-wins">0</span> ⭐ vs ⭐ <span id="e-wins">0</span> :bijand</div>
   <div id="score-area">
     <div class="score-box">Ronde <span id="round-num">1</span> — win 3 potjes</div>
   </div>
   <div id="storm-timer">⏳ Storm: 30s</div>
   <div id="match-timer">⏱ 0:00</div>
   <div id="water-boost">je bent minder uitgedroogt!!</div>
+  <div id="powerup-indicators"></div>
   <div id="msg"></div>
   <div id="round-banner"></div>
   <div id="units-layer"></div>
@@ -130,12 +163,48 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
   <div id="sandstorm-overlay">
     <div id="sandstorm-msg">🌪 KIJK UIT!<br>DE TSJAAD GODEN ZIJN BOOS! 🌪</div>
   </div>
+
+  <!-- Upgrade shop -->
   <div id="shop-overlay">
     <div id="shop-title">🪙 UPGRADE WINKEL 🪙</div>
     <div id="shop-coins-display">Coins: 0 / 500</div>
     <div id="shop-grid"></div>
     <button id="shop-close" onclick="closeShop()">✖ SLUITEN</button>
   </div>
+
+  <!-- Powerup shop -->
+  <div id="powerup-overlay">
+    <div id="powerup-title">⚡ POWERUPS ⚡</div>
+    <div id="powerup-coins-display">Coins: 0 / 500</div>
+    <div id="powerup-grid">
+      <div class="pu-card">
+        <div class="pu-icon">🔥</div>
+        <div class="pu-name">TSJAAD RAZERNIJ</div>
+        <div class="pu-desc">Alle eenheden doen ×1.5 schade voor 1 minuut!</div>
+        <div class="pu-cost">50🪙</div>
+        <button class="pu-btn" id="pu-btn-0" onclick="buyPowerup(0)">KOPEN</button>
+        <div class="pu-timer" id="pu-timer-0"></div>
+      </div>
+      <div class="pu-card">
+        <div class="pu-icon">💥</div>
+        <div class="pu-name">ZAND BOM</div>
+        <div class="pu-desc">Alle vijanden nemen direct 5 schade!</div>
+        <div class="pu-cost">75🪙</div>
+        <button class="pu-btn" id="pu-btn-1" onclick="buyPowerup(1)">KOPEN</button>
+        <div class="pu-timer" id="pu-timer-1"></div>
+      </div>
+      <div class="pu-card">
+        <div class="pu-icon">👑</div>
+        <div class="pu-name">SUPER TSJAAD</div>
+        <div class="pu-desc">Alle vriendelijke eenheden krijgen ×1.3 schade én HP voor ALTIJD! Slechts 1× te kopen.</div>
+        <div class="pu-cost">100🪙</div>
+        <button class="pu-btn" id="pu-btn-2" onclick="buyPowerup(2)">KOPEN</button>
+        <div class="pu-timer" id="pu-timer-2"></div>
+      </div>
+    </div>
+    <button id="powerup-close" onclick="closePowerup()">✖ SLUITEN</button>
+  </div>
+
   <div id="game-over">
     <h2 id="go-title">jij hebt echt tsjaadastisch!!</h2>
     <p id="go-msg"></p>
@@ -190,6 +259,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
       <div class="card-cost" id="ccost-5">4💧</div>
     </div>
     <div id="shop-btn" onclick="openShop()">🪙<br>winkel</div>
+    <div id="powerup-btn" onclick="openPowerup()">⚡<br>power</div>
     <div id="coin-bar">
       <div id="coin-fill-wrap"><div id="coin-fill" style="height:0%"></div></div>
       <div id="coin-count">0🪙</div>
@@ -308,7 +378,6 @@ const SPR_LOS=[
   [T,'black','black',T,T,T,T,T,T,T,T,'black','black',T,T,T],
   [T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T],
 ];
-// Barricade Maker sprite - uses a builder look with blue helmet and tools
 const SPR_BAR=[
   [T,T,T,T,T,'wblue','wblue','wblue','wblue','wblue',T,T,T,T,T,T],
   [T,T,T,T,'wblue','lwblue','lwblue','lwblue','lwblue','wblue','wblue',T,T,T,T,T],
@@ -363,31 +432,6 @@ const SPR_RNG_E=mirror(SPR_RNG);
 const SPR_LIO_E=mirrorRecolor(SPR_LIO,{purple:'red',lpurp:'lred',dpurp:'dred'});
 const SPR_LOS_E=mirrorRecolor(SPR_LOS,{teal:'red',dteal:'dred'});
 
-const HUT_P=(()=>{
-  const w=26,h=34,d=[];
-  for(let y=0;y<h;y++){
-    const row=[];
-    for(let x=0;x<w;x++){
-      if(y<12){
-        const mid=13,roofH=12,half=Math.round((y/roofH)*mid);
-        if(x>=mid-half&&x<=mid+half)row.push(x===mid-half||x===mid+half||y===0?'brown':'lbrown');
-        else row.push(null);
-      }else{
-        const bx=2,bw=22;
-        if(x>=bx&&x<bx+bw){
-          if(x===bx||x===bx+bw-1||y===12||y===h-1)row.push('dbrown');
-          else if(x>=10&&x<=15&&y>=22)row.push('hutd');
-          else row.push('hutw');
-        }else row.push(null);
-      }
-    }
-    d.push(row);
-  }
-  return d;
-})();
-const HUT_E=HUT_P.map(r=>r.map(c=>c==='lbrown'?'roofl':c==='brown'?'roofr':c==='hutw'?'#c46a6a':c==='dbrown'?'#8B2500':c));
-const SUN_SPR=(()=>{const d=[];for(let y=0;y<18;y++){const r=[];for(let x=0;x<18;x++){const dx=x-8.5,dy=y-8.5,d2=Math.sqrt(dx*dx+dy*dy);r.push(d2<=6?'sun':d2<=7&&(Math.abs(dx)<1||Math.abs(dy)<1||Math.abs(Math.abs(dx)-Math.abs(dy))<1)?'sunr':null);}d.push(r);}return d;})();
-
 function drawSprite(cvs,spr){
   cvs.width=spr[0].length;cvs.height=spr.length;
   const ctx=cvs.getContext('2d');ctx.clearRect(0,0,cvs.width,cvs.height);
@@ -395,6 +439,21 @@ function drawSprite(cvs,spr){
 }
 
 function initSprites(){
+  // Huts
+  const HUT_P=(()=>{
+    const w=26,h=34,d=[];
+    for(let y=0;y<h;y++){
+      const row=[];
+      for(let x=0;x<w;x++){
+        if(y<12){const mid=13,roofH=12,half=Math.round((y/roofH)*mid);if(x>=mid-half&&x<=mid+half)row.push(x===mid-half||x===mid+half||y===0?'brown':'lbrown');else row.push(null);}
+        else{const bx=2,bw=22;if(x>=bx&&x<bx+bw){if(x===bx||x===bx+bw-1||y===12||y===h-1)row.push('dbrown');else if(x>=10&&x<=15&&y>=22)row.push('hutd');else row.push('hutw');}else row.push(null);}
+      }
+      d.push(row);
+    }
+    return d;
+  })();
+  const HUT_E=HUT_P.map(r=>r.map(c=>c==='lbrown'?'roofl':c==='brown'?'roofr':c==='hutw'?'#c46a6a':c==='dbrown'?'#8B2500':c));
+  const SUN_SPR=(()=>{const d=[];for(let y=0;y<18;y++){const r=[];for(let x=0;x<18;x++){const dx=x-8.5,dy=y-8.5,d2=Math.sqrt(dx*dx+dy*dy);r.push(d2<=6?'sun':d2<=7&&(Math.abs(dx)<1||Math.abs(dy)<1||Math.abs(Math.abs(dx)-Math.abs(dy))<1)?'sunr':null);}d.push(r);}return d;})();
   drawSprite(document.getElementById('hut-p-canvas'),HUT_P);
   drawSprite(document.getElementById('hut-e-canvas'),HUT_E);
   drawSprite(document.getElementById('sun-sprite'),SUN_SPR);
@@ -413,7 +472,7 @@ const BASE=[
   {name:'Zand Gooier',     cost:4,dmg:2, hp:4, range:60,atkRate:1500,sprP:SPR_RNG,sprE:SPR_RNG_E,isBuilder:false},
   {name:'Tsjaadinator',    cost:8,dmg:8, hp:20,range:5, atkRate:3000,sprP:SPR_LIO,sprE:SPR_LIO_E,isBuilder:false},
   {name:'Tsjaad Docter',   cost:7,dmg:1, hp:15,range:20,atkRate:500, sprP:SPR_LOS,sprE:SPR_LOS_E,isBuilder:false},
-  {name:'Barricade Maker', cost:4,dmg:0, hp:5,range:10,atkRate:99999,sprP:SPR_BAR,sprE:SPR_BAR_E,isBuilder:true,wallInterval:10000,wallHp: 100},
+  {name:'Barricade Maker', cost:4,dmg:0, hp:5, range:10,atkRate:99999,sprP:SPR_BAR,sprE:SPR_BAR_E,isBuilder:true,wallInterval:10000,wallHp:100},
 ];
 
 const UPG_COSTS=[
@@ -424,33 +483,63 @@ const UPG_COSTS=[
   [12,30,60],
   [15,35,55],
 ];
-const UPGRADE_MULT=1.2;
+// For Tsjaadinator (index 3), star 3 uses 2× multiplier instead of 1.2×
+function getUpgMult(idx, starLevel) {
+  if (idx === 3 && starLevel === 3) return 2.0; // ×2 for max Tsjaadinator
+  return Math.pow(1.2, starLevel);
+}
+
 const MAX_NAMES=['Rijke Bedelaar','Ultimate Vechter','Schijt Gooier','Goddelijke Tsjaadinator','nucleare docter','Mega Barricade Maker'];
 const STAR3_SPR=[SPR_BEG_UP,SPR_WAR_UP,SPR_RNG_UP,SPR_LIO_GD,SPR_LOS_UP,SPR_BAR_UP];
 const COIN_KILL=[1,2,2,4,2,1];
 const MAX_COINS=500,MAX_HUT_HP=175,MAX_WATER=20;
 const BASE_WATER_RATE=1.2;
 const UNIT_SPEED=1.1;
+const UNIT_WIDTH=28; // pixel width of a unit for collision
 const STORM_INTERVAL=30000,STORM_DURATION=3000,STORM_DAMAGE=2;
 const GAME_W=700;
 const ENEMY_UPG_INTERVAL=45000;
 const WATER_BOOST_TIME=120000;
 const WINS_TO_WIN=3;
+const BUILDER_SPEED=0.4;
+
+// Powerup state — persists across rounds (not across full series reset)
+let powerups = {
+  razernij: { active: false, endTime: 0 },    // 0: ×1.5 dmg for 1 min
+  zandbom: { used: false },                    // 1: instant 5 dmg to all enemies
+  superTsjaad: { bought: false }               // 2: permanent ×1.3 dmg+hp
+};
 
 function getStats(idx){
   const b=BASE[idx],s=starLevels[idx];
-  const m=Math.pow(UPGRADE_MULT,s);
+  const m=getUpgMult(idx,s);
   const spr=s===3?STAR3_SPR[idx]:b.sprP;
+  let dmg=Math.round(b.dmg*m);
+  let hp=Math.round(b.hp*m);
+  // Apply Super Tsjaad permanent buff
+  if(powerups.superTsjaad.bought){
+    dmg=Math.round(dmg*1.3);
+    hp=Math.round(hp*1.3);
+  }
   return{
     name:s===3?MAX_NAMES[idx]:b.name,
     cost:b.cost,range:b.range,atkRate:b.atkRate,
-    dmg:Math.round(b.dmg*m),
-    hp:Math.round(b.hp*m),
+    dmg,hp,
     sprP:spr,sprE:b.sprE,
     isBuilder:b.isBuilder,
     wallInterval:b.wallInterval||null,
     wallHp:b.wallHp?Math.round(b.wallHp*m):null
   };
+}
+
+// Get effective dmg for an attack (applies razernij buff)
+function getEffectiveDmg(baseDmg, isPlayer) {
+  if (!isPlayer) return baseDmg;
+  let d = baseDmg;
+  if (powerups.razernij.active && Date.now() < powerups.razernij.endTime) {
+    d = Math.round(d * 1.5);
+  }
+  return d;
 }
 
 let playerWins=0,enemyWins=0,currentRound=1;
@@ -462,12 +551,14 @@ let matchStartTime,waterBoosted,stormSecondsLeft;
 function startSeries(){
   playerWins=0;enemyWins=0;currentRound=1;
   starLevels=[0,0,0,0,0,0];
+  coins=0; // reset coins only on new full series
+  powerups={razernij:{active:false,endTime:0},zandbom:{used:false},superTsjaad:{bought:false}};
   document.getElementById('main-menu').style.display='none';
   startRound();
 }
 
 function startRound(){
-  water=5;coins=0;units=[];walls=[];nextId=0;
+  water=5;units=[];walls=[];nextId=0;
   myHutHp=MAX_HUT_HP;enemyHutHp=MAX_HUT_HP;
   lastAiSpawn=0;stormActive=false;sandParticles=[];
   enemyULvl=[0,0,0,0,0,0];lastEnemyUnitUpg=Date.now();
@@ -480,8 +571,9 @@ function startRound(){
   document.getElementById('water-boost').style.display='none';
   updateSeriesUI();
   document.getElementById('round-num').textContent=currentRound;
-  closeShop();
+  closeShop();closePowerup();
   updateHutUI();updateWaterUI();updateCoinUI();refreshAllCards();
+  updatePowerupIndicators();
   gameRunning=true;
   stormSecondsLeft=STORM_INTERVAL/1000;
   clearInterval(waterInterval);clearInterval(gameLoop);
@@ -514,6 +606,12 @@ function startRound(){
       document.getElementById('water-boost').style.display='block';
       showSpecial('💧 WATER STROOMT NU 2× ZO SNEL!','#22ffcc');
     }
+    // Update razernij timer
+    if(powerups.razernij.active){
+      const rem=Math.max(0,Math.ceil((powerups.razernij.endTime-Date.now())/1000));
+      if(rem<=0){powerups.razernij.active=false;}
+      updatePowerupIndicators();
+    }
   },250);
 
   gameLoop=setInterval(tick,60);
@@ -537,8 +635,8 @@ function updateCoinUI(){
   coins=Math.min(MAX_COINS,coins);
   document.getElementById('coin-fill').style.height=(coins/MAX_COINS*100)+'%';
   document.getElementById('coin-count').textContent=coins+'🪙';
-  const d=document.getElementById('shop-coins-display');
-  if(d)d.textContent='Coins: '+coins+' / '+MAX_COINS;
+  const d=document.getElementById('shop-coins-display');if(d)d.textContent='Coins: '+coins+' / '+MAX_COINS;
+  const d2=document.getElementById('powerup-coins-display');if(d2)d2.textContent='Coins: '+coins+' / '+MAX_COINS;
 }
 function updateHutUI(){
   const mh=Math.max(0,myHutHp),eh=Math.max(0,enemyHutHp);
@@ -553,70 +651,50 @@ function refreshCard(i){
   const c=getStats(i),s=starLevels[i];
   const el=document.getElementById('card'+i);if(!el)return;
   let starClass='';
-  if(s===1)starClass=' star1';
-  else if(s===2)starClass=' star2';
-  else if(s===3){
-    if(i===3)starClass=' star3-gold';
-    else if(i===5)starClass=' star3-wall';
-    else starClass=' star3-purple';
-  }
+  if(s===1)starClass=' star1';else if(s===2)starClass=' star2';
+  else if(s===3){if(i===3)starClass=' star3-gold';else if(i===5)starClass=' star3-wall';else starClass=' star3-purple';}
   el.className='card-btn'+starClass+(Math.floor(water)<c.cost?' disabled':'');
   document.getElementById('cname-'+i).textContent=c.name.substring(0,12).toUpperCase();
-  if(i===5){
-    document.getElementById('ccost-'+i).textContent=c.cost+'💧 🧱';
-  }else{
-    document.getElementById('ccost-'+i).textContent=c.cost+'💧 '+c.dmg+'dmg';
-  }
+  if(i===5){document.getElementById('ccost-'+i).textContent=c.cost+'💧 🧱';}
+  else{document.getElementById('ccost-'+i).textContent=c.cost+'💧 '+c.dmg+'dmg';}
   document.getElementById('stars-'+i).textContent=s>0?'★'.repeat(s):'';
   drawSprite(document.getElementById('card-sprite-'+i),c.sprP);
 }
 
 function openShop(){if(!gameRunning)return;buildShop();document.getElementById('shop-overlay').classList.add('open');}
 function closeShop(){document.getElementById('shop-overlay').classList.remove('open');}
+function openPowerup(){if(!gameRunning)return;buildPowerupShop();document.getElementById('powerup-overlay').classList.add('open');}
+function closePowerup(){document.getElementById('powerup-overlay').classList.remove('open');}
 
 function buildShop(){
   updateCoinUI();
-  const grid=document.getElementById('shop-grid');
-  grid.innerHTML='';
+  const grid=document.getElementById('shop-grid');grid.innerHTML='';
   for(let i=0;i<6;i++){
     const s=starLevels[i],c=getStats(i);
     const card=document.createElement('div');card.className='shop-card';
-    const cvs=document.createElement('canvas');
-    cvs.width=16;cvs.height=16;cvs.style.cssText='width:28px;height:28px;image-rendering:pixelated';
+    const cvs=document.createElement('canvas');cvs.width=16;cvs.height=16;cvs.style.cssText='width:28px;height:28px;image-rendering:pixelated';
     drawSprite(cvs,c.sprP);card.appendChild(cvs);
-    const st=document.createElement('div');st.className='sc-stars';
-    st.textContent=s>0?'★'.repeat(s)+'☆'.repeat(3-s):'☆☆☆';card.appendChild(st);
+    const st=document.createElement('div');st.className='sc-stars';st.textContent=s>0?'★'.repeat(s)+'☆'.repeat(3-s):'☆☆☆';card.appendChild(st);
     const nm=document.createElement('div');nm.className='sc-name';nm.textContent=c.name;card.appendChild(nm);
     const stat=document.createElement('div');stat.className='sc-current';
-    if(i===5){
-      stat.textContent=c.hp+'hp wall:'+c.wallHp+'hp';
-    }else{
-      stat.textContent=c.dmg+'dmg/'+c.hp+'hp';
-    }
+    if(i===5){stat.textContent=c.hp+'hp wall:'+c.wallHp+'hp';}else{stat.textContent=c.dmg+'dmg/'+c.hp+'hp';}
     card.appendChild(stat);
     const btn=document.createElement('button');btn.className='upg-btn';
     if(s>=3){
-      let maxClass=i===3?'gold-max':i===5?'wall-max':'maxed';
-      btn.classList.add(maxClass);
-      btn.textContent='MAX ★★★';
+      let maxClass=i===3?'gold-max':i===5?'wall-max':'maxed';btn.classList.add(maxClass);btn.textContent='MAX ★★★';
     }else{
       const cost=UPG_COSTS[i][s];
       let previewTxt='';
-      if(i===5){
-        const nwh=Math.round(BASE[i].wallHp*Math.pow(UPGRADE_MULT,s+1));
-        const nh=Math.round(BASE[i].hp*Math.pow(UPGRADE_MULT,s+1));
-        previewTxt='★'+(s+1)+': '+nh+'hp/wall:'+nwh+'hp ('+cost+'🪙)';
-      }else{
-        const nm2=Math.round(BASE[i].dmg*Math.pow(UPGRADE_MULT,s+1));
-        const nh=Math.round(BASE[i].hp*Math.pow(UPGRADE_MULT,s+1));
+      const nextMult=getUpgMult(i,s+1);
+      if(i===5){const nwh=Math.round(BASE[i].wallHp*nextMult);const nh=Math.round(BASE[i].hp*nextMult);previewTxt='★'+(s+1)+': '+nh+'hp/wall:'+nwh+'hp ('+cost+'🪙)';}
+      else{const nm2=Math.round(BASE[i].dmg*nextMult);const nh=Math.round(BASE[i].hp*nextMult);
         previewTxt='★'+(s+1)+': '+nm2+'dmg/'+nh+'hp ('+cost+'🪙)';
-      }
+        if(i===3&&s+1===3)previewTxt='⚡★3: '+nm2+'dmg/'+nh+'hp ×2! ('+cost+'🪙)';}
       btn.textContent=previewTxt;
       if(coins<cost)btn.classList.add('cant-afford');
       btn.onclick=()=>buyUpg(i);
     }
-    card.appendChild(btn);
-    grid.appendChild(card);
+    card.appendChild(btn);grid.appendChild(card);
   }
 }
 
@@ -630,8 +708,85 @@ function buyUpg(i){
   let col='#44ffaa';
   if(ns===3){col=i===3?'#ffd700':i===5?'#ffff00':'#ff88ff';}
   const msg=ns===3?'✨ '+c.name.toUpperCase()+' ONTGRENDELD! ✨':'⬆ ★'+ns+' '+BASE[i].name.toUpperCase()+'!';
-  showSpecial(msg,col);
-  buildShop();
+  showSpecial(msg,col);buildShop();
+}
+
+function buildPowerupShop(){
+  updateCoinUI();
+  const now=Date.now();
+  // Powerup 0: Razernij
+  const btn0=document.getElementById('pu-btn-0');
+  const tim0=document.getElementById('pu-timer-0');
+  if(powerups.razernij.active&&now<powerups.razernij.endTime){
+    const rem=Math.ceil((powerups.razernij.endTime-now)/1000);
+    btn0.textContent='ACTIEF!';btn0.className='pu-btn pu-bought';
+    tim0.textContent='⏱ '+rem+'s resterend';
+  }else{
+    btn0.textContent='KOPEN (50🪙)';
+    btn0.className='pu-btn'+(coins<50?' pu-cant':'');
+    tim0.textContent='';
+  }
+  // Powerup 1: Zand Bom — can rebuy
+  const btn1=document.getElementById('pu-btn-1');
+  btn1.textContent='KOPEN (75🪙)';
+  btn1.className='pu-btn'+(coins<75?' pu-cant':'');
+  document.getElementById('pu-timer-1').textContent='';
+  // Powerup 2: Super Tsjaad — one time
+  const btn2=document.getElementById('pu-btn-2');
+  if(powerups.superTsjaad.bought){
+    btn2.textContent='✓ GEKOCHT';btn2.className='pu-btn pu-bought';
+    document.getElementById('pu-timer-2').textContent='Permanent actief!';
+  }else{
+    btn2.textContent='KOPEN (100🪙)';
+    btn2.className='pu-btn'+(coins<100?' pu-cant':'');
+    document.getElementById('pu-timer-2').textContent='';
+  }
+}
+
+function buyPowerup(idx){
+  if(idx===0){
+    if(coins<50){showSpecial('Niet genoeg munten!','#ff4444');return;}
+    coins-=50;updateCoinUI();
+    powerups.razernij.active=true;
+    powerups.razernij.endTime=Date.now()+60000;
+    showSpecial('🔥 TSJAAD RAZERNIJ ACTIEF! ×1.5 SCHADE 60s!','#ff8844');
+    buildPowerupShop();updatePowerupIndicators();
+  }else if(idx===1){
+    if(coins<75){showSpecial('Niet genoeg munten!','#ff4444');return;}
+    coins-=75;updateCoinUI();
+    // Damage all enemies for 5
+    let hit=0;
+    units.forEach(u=>{
+      if(!u.isPlayer){
+        u.hp-=5;hit++;
+        const hf=document.getElementById('hf-'+u.id);
+        if(hf)hf.style.width=Math.max(0,u.hp/u.maxHp*100)+'%';
+      }
+    });
+    walls.forEach(w=>{if(!w.isPlayer){w.hp-=5;const wf=document.getElementById('whf-'+w.id);if(wf)wf.style.width=Math.max(0,w.hp/w.maxHp*100)+'%';}});
+    showSpecial('💥 ZAND BOM! '+hit+' VIJANDEN GERAAKT VOOR 5 SCHADE!','#ffdd00');
+    buildPowerupShop();
+  }else if(idx===2){
+    if(powerups.superTsjaad.bought){showSpecial('Al gekocht!','#aaaaaa');return;}
+    if(coins<100){showSpecial('Niet genoeg munten!','#ff4444');return;}
+    coins-=100;updateCoinUI();
+    powerups.superTsjaad.bought=true;
+    showSpecial('👑 SUPER TSJAAD! ALLE EENHEDEN ×1.3 VOOR ALTIJD!','#ffd700');
+    refreshAllCards();buildPowerupShop();updatePowerupIndicators();
+  }
+}
+
+function updatePowerupIndicators(){
+  const div=document.getElementById('powerup-indicators');
+  div.innerHTML='';
+  const now=Date.now();
+  if(powerups.razernij.active&&now<powerups.razernij.endTime){
+    const rem=Math.ceil((powerups.razernij.endTime-now)/1000);
+    const d=document.createElement('div');d.className='pu-indicator';d.textContent='🔥 RAZERNIJ '+rem+'s';div.appendChild(d);
+  }
+  if(powerups.superTsjaad.bought){
+    const d=document.createElement('div');d.className='pu-indicator';d.textContent='👑 SUPER TSJAAD';div.appendChild(d);
+  }
 }
 
 function addCoins(n,x,y){
@@ -649,30 +804,23 @@ function placeUnit(ci){
   spawnUnit(ci,true);
 }
 
-// Wall spawning
 function spawnWall(x,isPlayer){
   const wallId='w'+nextId++;
   const wallHp=isPlayer?getStats(5).wallHp:BASE[5].wallHp;
   const wall={id:wallId,x:x,hp:wallHp,maxHp:wallHp,isPlayer:isPlayer};
   walls.push(wall);
   const div=document.createElement('div');div.className='wall-block';div.id=wallId;
-  // Draw a pixelated wall as canvas
   const cvs=document.createElement('canvas');cvs.width=10;cvs.height=16;
   cvs.style.cssText='width:20px;height:32px;image-rendering:pixelated;';
   const ctx=cvs.getContext('2d');
-  // Draw brick wall
   const brickColor=isPlayer?'#8B7355':'#8B4040';
   const mortarColor=isPlayer?'#C4A882':'#AA6666';
   const lineColor=isPlayer?'#5C4A2A':'#5C2020';
   ctx.fillStyle=mortarColor;ctx.fillRect(0,0,10,16);
-  // Bricks pattern
-  const brows=[[0,4],[5,9],[0,4],[5,9]];
-  brows.forEach((row,ri)=>{
+  [[0,4],[5,9],[0,4],[5,9]].forEach((row,ri)=>{
     const y=ri*4;
-    ctx.fillStyle=brickColor;
-    ctx.fillRect(row[0],y+1,row[1]-row[0],2);
-    ctx.fillStyle=lineColor;
-    ctx.fillRect(row[0],y,row[5]-row[0],1);
+    ctx.fillStyle=brickColor;ctx.fillRect(row[0],y+1,row[1]-row[0],2);
+    ctx.fillStyle=lineColor;ctx.fillRect(row[0],y,row[1]-row[0],1);
   });
   div.appendChild(cvs);
   const hb=document.createElement('div');hb.className='wall-hp-bar';
@@ -711,6 +859,7 @@ function spawnUnit(ci,isPlayer,oDmg,oHp){
   hb.innerHTML='<div class="unit-hp-fill" id="hf-'+id+'" style="width:100%"></div>';
   div.appendChild(cvs);div.appendChild(hb);
   div.style.left=startX+'px';
+  if(isPlayer&&powerups.superTsjaad.bought) div.querySelector('canvas').classList.add('super-tsjaad-unit');
   document.getElementById('units-layer').appendChild(div);
 }
 
@@ -732,16 +881,13 @@ function triggerSandstorm(){
     const dead=[];
     units.forEach(u=>{
       u.hp-=STORM_DAMAGE;
-      const hf=document.getElementById('hf-'+u.id);
-      if(hf)hf.style.width=Math.max(0,u.hp/u.maxHp*100)+'%';
+      const hf=document.getElementById('hf-'+u.id);if(hf)hf.style.width=Math.max(0,u.hp/u.maxHp*100)+'%';
       if(u.hp<=0)dead.push(u.id);
     });
-    // Storm also damages walls
     const deadWalls=[];
     walls.forEach(w=>{
       w.hp-=STORM_DAMAGE;
-      const wf=document.getElementById('whf-'+w.id);
-      if(wf)wf.style.width=Math.max(0,w.hp/w.maxHp*100)+'%';
+      const wf=document.getElementById('whf-'+w.id);if(wf)wf.style.width=Math.max(0,w.hp/w.maxHp*100)+'%';
       if(w.hp<=0)deadWalls.push(w.id);
     });
     dead.forEach(id=>killUnit(id,true));
@@ -772,11 +918,33 @@ function showSpecial(txt,col){
   clearTimeout(m._t);m._t=setTimeout(()=>m.style.display='none',3000);
 }
 
+// Check if moving in direction dir by 1px from x would collide with a friendly unit or wall
+function isBlockedByFriendly(unit, newX) {
+  const dir = unit.isPlayer ? 1 : -1;
+  const unitW = 28;
+  // Check friendly units (not self, not builders)
+  for(const o of units) {
+    if(o.id === unit.id) continue;
+    if(o.isPlayer !== unit.isPlayer) continue;
+    // Simple overlap check
+    const dist = o.x - newX;
+    if(unit.isPlayer) {
+      // Moving right: blocked if o is just ahead
+      if(dist > 0 && dist < unitW) return true;
+    } else {
+      // Moving left: blocked if o is just behind (to the left)
+      if(dist < 0 && dist > -unitW) return true;
+    }
+  }
+  return false;
+}
+
 function tick(){
   if(!gameRunning)return;
   const now=Date.now();
   const eHX=GAME_W-80,mHX=70;
 
+  // AI spawning
   if(now-lastAiSpawn>3800){
     lastAiSpawn=now;
     const r=Math.random();
@@ -797,42 +965,42 @@ function tick(){
     const el=document.getElementById(u.id);
     if(!el){toRemove.push({id:u.id,gc:false});continue;}
     const dir=u.isPlayer?1:-1;
-    let blocked=false;
 
-    // Builder: place walls periodically instead of attacking
-    if(u.isPlayer&&u.isBuilder){
+    // ── BUILDER LOGIC (fixed) ──
+    if(u.isBuilder){
+      const hutX=u.isPlayer?eHX:mHX;
+      const stopDist=u.isPlayer?(eHX-u.x):(u.x-mHX);
+
+      // Stop at the hut
+      if(stopDist<=18){
+        // At hut, just idle — place last wall if needed
+        if(now-u.lastWall>u.wallInterval){
+          u.lastWall=now;
+          const wallX=u.isPlayer?u.x+20:u.x-20;
+          const tooClose=walls.some(w=>w.isPlayer===u.isPlayer&&Math.abs(w.x-wallX)<25);
+          if(!tooClose){spawnWall(wallX,u.isPlayer);}
+        }
+        continue; // don't move
+      }
+
+      // Place wall periodically
       if(now-u.lastWall>u.wallInterval){
         u.lastWall=now;
-        // Place wall just ahead of builder
-        const wallX=u.x+30;
-        // Only place if no wall already very close
-        const tooClose=walls.some(w=>w.isPlayer&&Math.abs(w.x-wallX)<25);
-        if(!tooClose&&wallX<eHX-20){
-          spawnWall(wallX,true);
-        }
+        const wallX=u.isPlayer?u.x+25:u.x-25;
+        const tooClose=walls.some(w=>w.isPlayer===u.isPlayer&&Math.abs(w.x-wallX)<25);
+        if(!tooClose){spawnWall(wallX,u.isPlayer);}
       }
-      // Builder itself moves slowly and doesn't fight - just keep moving
-      u.x+=dir*UNIT_SPEED*0.5;
+
+      // Move, but stop if blocked by friendly unit ahead
+      const newX=u.x+dir*BUILDER_SPEED;
+      if(!isBlockedByFriendly(u,newX)){
+        u.x=newX;
+      }
       el.style.left=u.x+'px';
       continue;
     }
 
-    // Enemy builder logic
-    if(!u.isPlayer&&u.isBuilder){
-      if(now-u.lastWall>u.wallInterval){
-        u.lastWall=now;
-        const wallX=u.x-30;
-        const tooClose=walls.some(w=>!w.isPlayer&&Math.abs(w.x-wallX)<25);
-        if(!tooClose&&wallX>mHX+20){
-          spawnWall(wallX,false);
-        }
-      }
-      u.x+=dir*UNIT_SPEED*0.5;
-      el.style.left=u.x+'px';
-      continue;
-    }
-
-    // Regular unit logic
+    // ── REGULAR UNIT LOGIC ──
     let nE=null,nD=Infinity;
     for(const o of units){
       if(o.isPlayer===u.isPlayer||o.hp<=0)continue;
@@ -840,57 +1008,50 @@ function tick(){
     }
 
     // Check for enemy walls blocking path
-    let blockedByWall=null;
-    let wallDist=Infinity;
+    let blockedByWall=null,wallDist=Infinity;
     for(const w of walls){
-      // Enemy units are blocked by player walls, player units pass through friendly walls
       if(u.isPlayer&&!w.isPlayer){
-        const d=u.x-w.x; // wall is ahead (to the left for enemy wall?) 
-        // Enemy wall is to the right of player, player advances right
         const dist=w.x-u.x;
-        if(dist>0&&dist<wallDist&&dist<=u.range+5){
-          wallDist=dist;blockedByWall=w;
-        }
+        if(dist>0&&dist<wallDist&&dist<=u.range+5){wallDist=dist;blockedByWall=w;}
       }else if(!u.isPlayer&&w.isPlayer){
         const dist=u.x-w.x;
-        if(dist>0&&dist<wallDist&&dist<=u.range+5){
-          wallDist=dist;blockedByWall=w;
-        }
+        if(dist>0&&dist<wallDist&&dist<=u.range+5){wallDist=dist;blockedByWall=w;}
       }
     }
 
     const hd=u.isPlayer?Math.abs(u.x-eHX):Math.abs(u.x-mHX);
 
     if(blockedByWall&&(nE===null||wallDist<nD)){
-      // Attack the wall
-      blocked=true;
       if(now-u.lastAtk>u.atkRate){
-        blockedByWall.hp-=u.dmg;
-        u.lastAtk=now;
+        const dmg=getEffectiveDmg(u.dmg,u.isPlayer);
+        blockedByWall.hp-=dmg;u.lastAtk=now;
         const wf=document.getElementById('whf-'+blockedByWall.id);
         if(wf)wf.style.width=Math.max(0,blockedByWall.hp/blockedByWall.maxHp*100)+'%';
-        if(blockedByWall.hp<=0){
-          removeWall(blockedByWall.id);
-        }
+        if(blockedByWall.hp<=0)removeWall(blockedByWall.id);
       }
-    } else if(nE&&nD<=u.range){
-      blocked=true;
+    }else if(nE&&nD<=u.range){
       if(now-u.lastAtk>u.atkRate){
-        nE.hp-=u.dmg;u.lastAtk=now;
+        const dmg=getEffectiveDmg(u.dmg,u.isPlayer);
+        nE.hp-=dmg;u.lastAtk=now;
         const hf=document.getElementById('hf-'+nE.id);
         if(hf)hf.style.width=Math.max(0,nE.hp/nE.maxHp*100)+'%';
         if(nE.hp<=0)toRemove.push({id:nE.id,gc:true});
       }
     }else if(hd<=u.range+5){
-      blocked=true;
       if(now-u.lastAtk>u.atkRate){
-        if(u.isPlayer)enemyHutHp-=u.dmg;else myHutHp-=u.dmg;
+        const dmg=getEffectiveDmg(u.dmg,u.isPlayer);
+        if(u.isPlayer)enemyHutHp-=dmg;else myHutHp-=dmg;
         u.lastAtk=now;updateHutUI();
         if(enemyHutHp<=0||myHutHp<=0){endRound();return;}
       }
+    }else{
+      // Move forward, but don't push through friendly units
+      const newX=u.x+dir*UNIT_SPEED;
+      if(!isBlockedByFriendly(u,newX)){
+        u.x=newX;
+      }
+      el.style.left=u.x+'px';
     }
-    if(!blocked)u.x+=dir*UNIT_SPEED;
-    el.style.left=u.x+'px';
   }
 
   const seen=new Set();
@@ -916,11 +1077,14 @@ function endRound(){
     document.getElementById('restart-btn').textContent='▶ NIEUWE SERIE';
     document.getElementById('restart-btn').onclick=()=>{
       playerWins=0;enemyWins=0;currentRound=1;
-      starLevels=[0,0,0,0,0,0];nextRound();
+      starLevels=[0,0,0,0,0,0];
+      coins=0;
+      powerups={razernij:{active:false,endTime:0},zandbom:{used:false},superTsjaad:{bought:false}};
+      nextRound();
     };
   }else{
     currentRound++;
-    document.getElementById('go-series').textContent='Serie: JIJ '+playerWins+' — '+enemyWins+' VIJAND';
+    document.getElementById('go-series').textContent='Serie: JIJ '+playerWins+' — '+enemyWins+' VIJAND ('+coins+'🪙 bewaard)';
     document.getElementById('restart-btn').textContent='VOLGENDE RONDE ▶';
     document.getElementById('restart-btn').onclick=nextRound;
   }
