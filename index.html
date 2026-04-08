@@ -1072,8 +1072,8 @@ function endRound(){
   if(seriesDone){
     const sw=playerWins>=WINS_TO_WIN;
     document.getElementById('go-series').textContent=
-      sw?'🎉 JIJ WINT DE SERIE! '+playerWins+'-'+enemyWins+' 🎉':
-         '💀 VIJAND WINT DE SERIE! '+enemyWins+'-'+playerWins+'...';
+      sw?'🎉 je hebt eindelijk iets berijkt '+playerWins+'-'+enemyWins+' 🎉':
+         '💀 LOSER!! '+enemyWins+'-'+playerWins+'...';
     document.getElementById('restart-btn').textContent='▶ NIEUWE SERIE';
     document.getElementById('restart-btn').onclick=()=>{
       playerWins=0;enemyWins=0;currentRound=1;
