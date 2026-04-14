@@ -49,11 +49,8 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 #coin-count{font-size:11px;color:#ffdd44;}
 #shop-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(100,60,0,0.5);border:2px solid #cc8800;padding:4px 5px;cursor:pointer;color:#ffd080;font-size:9px;font-weight:bold;min-width:34px;height:80px;letter-spacing:0.5px;transition:background 0.1s;}
 #shop-btn:hover{background:rgba(160,100,0,0.7);}
-
-/* Powerup button */
 #powerup-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(60,0,100,0.5);border:2px solid #aa44ff;padding:4px 5px;cursor:pointer;color:#dd88ff;font-size:9px;font-weight:bold;min-width:34px;height:80px;letter-spacing:0.5px;transition:background 0.1s;}
 #powerup-btn:hover{background:rgba(100,0,160,0.7);}
-
 #shop-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.92);z-index:180;display:none;flex-direction:column;align-items:center;padding:12px 12px 8px;border-radius:8px;}
 #shop-overlay.open{display:flex;}
 #shop-title{color:#ffd080;font-size:16px;font-weight:bold;letter-spacing:3px;margin-bottom:4px;}
@@ -68,13 +65,10 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 .upg-btn:hover:not(.maxed):not(.gold-max):not(.cant-afford){background:rgba(200,120,0,0.7);}
 .upg-btn.maxed{background:rgba(100,60,150,0.5);border-color:#cc66ff;color:#cc88ff;cursor:default;}
 .upg-btn.gold-max{background:rgba(120,100,0,0.6);border-color:#ffd700;color:#ffd700;cursor:default;}
-.upg-btn.teal-max{background:rgba(0,100,90,0.6);border-color:#22ffdd;color:#22ffdd;cursor:default;}
 .upg-btn.wall-max{background:rgba(80,80,0,0.6);border-color:#aaaa00;color:#dddd00;cursor:default;}
 .upg-btn.cant-afford{opacity:0.4;cursor:not-allowed;}
 #shop-close{margin-top:8px;background:#5a2000;border:2px solid #cc4400;color:#fff;font-size:12px;font-weight:bold;padding:6px 28px;cursor:pointer;font-family:monospace;}
 #shop-close:hover{background:#882200;}
-
-/* Powerup overlay */
 #powerup-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.92);z-index:180;display:none;flex-direction:column;align-items:center;padding:12px 12px 8px;border-radius:8px;}
 #powerup-overlay.open{display:flex;}
 #powerup-title{color:#dd88ff;font-size:16px;font-weight:bold;letter-spacing:3px;margin-bottom:4px;}
@@ -92,11 +86,8 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 .pu-timer{font-size:9px;color:#88ffcc;margin-top:2px;min-height:14px;}
 #powerup-close{margin-top:10px;background:#3a006a;border:2px solid #aa44ff;color:#fff;font-size:12px;font-weight:bold;padding:6px 28px;cursor:pointer;font-family:monospace;}
 #powerup-close:hover{background:#6a00aa;}
-
-/* Active powerup indicators */
 #powerup-indicators{position:absolute;top:4px;left:8px;display:flex;flex-direction:column;gap:2px;z-index:60;}
 .pu-indicator{background:rgba(60,0,100,0.85);border:1px solid #aa44ff;color:#ffddff;font-size:9px;padding:2px 6px;border-radius:2px;}
-
 #msg{position:absolute;top:88px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.9);color:#ffd080;font-size:13px;font-weight:bold;padding:6px 16px;display:none;white-space:nowrap;z-index:160;border:2px solid #ff8800;letter-spacing:1px;pointer-events:none;}
 .coin-pop{position:absolute;font-size:13px;font-weight:bold;color:#ffdd00;pointer-events:none;z-index:155;animation:coinrise 1.2s ease-out forwards;text-shadow:1px 1px 0 #000;white-space:nowrap;}
 @keyframes coinrise{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-44px)}}
@@ -119,14 +110,18 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 #water-boost{position:absolute;top:80px;left:8px;background:rgba(0,100,200,0.7);color:#aaddff;font-size:9px;padding:1px 5px;border:1px solid #4488cc;z-index:50;display:none;}
 #round-banner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.9);color:#ffd080;font-size:22px;font-weight:bold;padding:16px 32px;z-index:210;display:none;text-align:center;border:3px solid #ff8800;letter-spacing:2px;}
 #series-score{position:absolute;top:4px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.75);color:#fff;font-size:11px;padding:2px 12px;border:1px solid #aa7700;z-index:55;letter-spacing:1px;}
-#main-menu{position:absolute;inset:0;background:rgba(10,5,0,0.97);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;border-radius:6px;}
+
+/* ── MAIN MENU ── */
+#main-menu{position:absolute;inset:0;background:rgba(10,5,0,0.97);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;border-radius:6px;}
 #menu-title{color:#ffd080;font-size:28px;font-weight:bold;letter-spacing:4px;text-shadow:0 0 15px #ff8800;}
 #menu-subtitle{color:#c09050;font-size:12px;letter-spacing:2px;margin-top:-8px;}
 .menu-canvas-row{display:flex;gap:16px;align-items:flex-end;margin:6px 0;}
 .menu-btn{background:#7a3800;border:2px solid #ffa020;color:#ffd080;font-size:14px;font-weight:bold;padding:10px 36px;cursor:pointer;letter-spacing:2px;font-family:monospace;transition:background 0.15s;}
 .menu-btn:hover{background:#cc6600;}
+.menu-btn.story{background:#2a1a6a;border-color:#8866ff;color:#ccaaff;position:relative;}
+.menu-btn.story:hover{background:#4a2aaa;}
+.menu-btn.story .coming-soon{position:absolute;top:-9px;right:-4px;background:#ff4444;color:#fff;font-size:8px;font-weight:bold;padding:1px 5px;border-radius:3px;letter-spacing:1px;}
 
-/* Super Tsjaad glow effect on units */
 .super-tsjaad-unit{filter:drop-shadow(0 0 4px #ffaa00) drop-shadow(0 0 8px #ff4400);}
 </style>
 </head>
@@ -169,7 +164,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
     <div id="shop-title">🪙 UPGRADE WINKEL 🪙</div>
     <div id="shop-coins-display">Coins: 0 / 500</div>
     <div id="shop-grid"></div>
-    <button id="shop-close" onclick="closeShop()"opzouten</button>
+    <button id="shop-close" onclick="closeShop()">opzouten</button>
   </div>
 
   <!-- Powerup shop -->
@@ -211,12 +206,19 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
     <p id="go-series" style="font-size:15px;color:#ffd080;"></p>
     <button id="restart-btn" onclick="nextRound()">VOLGENDE RONDE ▶</button>
   </div>
+
+  <!-- MAIN MENU -->
   <div id="main-menu">
     <div id="menu-title">⚔ TSJAAD WARS ⚔</div>
     <div id="menu-subtitle">BESTE VAN 3 POTJES</div>
     <div class="menu-canvas-row" id="menu-sprites"></div>
     <button class="menu-btn" onclick="startSeries()">▶ SPELEN</button>
+    <button class="menu-btn story" onclick="showComingSoon()">
+      📖 TSJAAD VERHAAL
+      <span class="coming-soon">BINNENKORT</span>
+    </button>
   </div>
+
   <div id="ui-bottom">
     <div id="water-bar">
       <div id="water-fill-wrap"><div id="water-fill" style="height:0%"></div></div>
@@ -439,7 +441,6 @@ function drawSprite(cvs,spr){
 }
 
 function initSprites(){
-  // Huts
   const HUT_P=(()=>{
     const w=26,h=34,d=[];
     for(let y=0;y<h;y++){
@@ -475,27 +476,14 @@ const BASE=[
   {name:'Barricade Maker', cost:4,dmg:0, hp:3, range:10,atkRate:99999,sprP:SPR_BAR,sprE:SPR_BAR_E,isBuilder:true,wallInterval:10000,wallHp:100},
 ];
 
-const UPG_COSTS=[
-  [20,30,40],
-  [19,25,45],
-  [30,46,50],
-  [30,100,200],
-  [12,30,60],
-  [15,35,55],
-];
-// For Tsjaadinator (index 3), star 3 uses 2× multiplier instead of 1.2×
-function getUpgMult(idx, starLevel) {
-  if (idx === 3 && starLevel === 3) return 2.0; // ×2 for max Tsjaadinator
-  return Math.pow(1.2, starLevel);
-}
-
+const UPG_COSTS=[[20,30,40],[19,25,45],[30,46,50],[30,100,200],[12,30,60],[15,35,55]];
+function getUpgMult(idx,starLevel){if(idx===3&&starLevel===3)return 2.0;return Math.pow(1.2,starLevel);}
 const MAX_NAMES=['Rijke Bedelaar','Ultimate Vechter','Schijt Gooier','Goddelijke Tsjaadinator','nucleare docter','Mega Barricade Maker'];
 const STAR3_SPR=[SPR_BEG_UP,SPR_WAR_UP,SPR_RNG_UP,SPR_LIO_GD,SPR_LOS_UP,SPR_BAR_UP];
 const COIN_KILL=[1,2,2,4,2,1];
 const MAX_COINS=99099,MAX_HUT_HP=200,MAX_WATER=20;
 const BASE_WATER_RATE=1.2;
 const UNIT_SPEED=1.2;
-const UNIT_WIDTH=28; // pixel width of a unit for collision
 const STORM_INTERVAL=30000,STORM_DURATION=3000,STORM_DAMAGE=2;
 const GAME_W=700;
 const ENEMY_UPG_INTERVAL=45000;
@@ -503,12 +491,7 @@ const WATER_BOOST_TIME=120000;
 const WINS_TO_WIN=3;
 const BUILDER_SPEED=0.4;
 
-// Powerup state — persists across rounds (not across full series reset)
-let powerups = {
-  goddelijkeboosheid: { active: false, endTime: 0 },    // 0: ×1.5 dmg for 1 min
-  zandbom: { used: false },                    // 1: instant 5 dmg to all enemies
-  superTsjaad: { bought: false }               // 2: permanent ×1.3 dmg+hp
-};
+let powerups={razernij:{active:false,endTime:0},zandbom:{used:false},superTsjaad:{bought:false}};
 
 function getStats(idx){
   const b=BASE[idx],s=starLevels[idx];
@@ -516,29 +499,14 @@ function getStats(idx){
   const spr=s===3?STAR3_SPR[idx]:b.sprP;
   let dmg=Math.round(b.dmg*m);
   let hp=Math.round(b.hp*m);
-  // Apply Super Tsjaad permanent buff
-  if(powerups.superTsjaad.bought){
-    dmg=Math.round(dmg*1.3);
-    hp=Math.round(hp*1.3);
-  }
-  return{
-    name:s===3?MAX_NAMES[idx]:b.name,
-    cost:b.cost,range:b.range,atkRate:b.atkRate,
-    dmg,hp,
-    sprP:spr,sprE:b.sprE,
-    isBuilder:b.isBuilder,
-    wallInterval:b.wallInterval||null,
-    wallHp:b.wallHp?Math.round(b.wallHp*m):null
-  };
+  if(powerups.superTsjaad.bought){dmg=Math.round(dmg*1.3);hp=Math.round(hp*1.3);}
+  return{name:s===3?MAX_NAMES[idx]:b.name,cost:b.cost,range:b.range,atkRate:b.atkRate,dmg,hp,sprP:spr,sprE:b.sprE,isBuilder:b.isBuilder,wallInterval:b.wallInterval||null,wallHp:b.wallHp?Math.round(b.wallHp*m):null};
 }
 
-// Get effective dmg for an attack (applies razernij buff)
-function getEffectiveDmg(baseDmg, isPlayer) {
-  if (!isPlayer) return baseDmg;
-  let d = baseDmg;
-  if (powerups.razernij.active && Date.now() < powerups.razernij.endTime) {
-    d = Math.round(d * 1.5);
-  }
+function getEffectiveDmg(baseDmg,isPlayer){
+  if(!isPlayer)return baseDmg;
+  let d=baseDmg;
+  if(powerups.razernij.active&&Date.now()<powerups.razernij.endTime)d=Math.round(d*1.5);
   return d;
 }
 
@@ -548,10 +516,14 @@ let myHutHp,enemyHutHp,lastAiSpawn,stormActive,sandParticles;
 let starLevels,enemyULvl,lastEnemyUnitUpg;
 let matchStartTime,waterBoosted,stormSecondsLeft;
 
+function showComingSoon(){
+  showSpecial('📖 TSJAAD VERHAAL — BINNENKORT BESCHIKBAAR! 🔜','#8866ff');
+}
+
 function startSeries(){
   playerWins=0;enemyWins=0;currentRound=1;
   starLevels=[0,0,0,0,0,0];
-  coins=0; // reset coins only on new full series
+  coins=0;
   powerups={razernij:{active:false,endTime:0},zandbom:{used:false},superTsjaad:{bought:false}};
   document.getElementById('main-menu').style.display='none';
   startRound();
@@ -606,10 +578,9 @@ function startRound(){
       document.getElementById('water-boost').style.display='block';
       showSpecial('💧 WATER STROOMT NU 2× ZO SNEL!','#22ffcc');
     }
-    // Update razernij timer
     if(powerups.razernij.active){
       const rem=Math.max(0,Math.ceil((powerups.razernij.endTime-Date.now())/1000));
-      if(rem<=0){powerups.razernij.active=false;}
+      if(rem<=0)powerups.razernij.active=false;
       updatePowerupIndicators();
     }
   },250);
@@ -655,8 +626,8 @@ function refreshCard(i){
   else if(s===3){if(i===3)starClass=' star3-gold';else if(i===5)starClass=' star3-wall';else starClass=' star3-purple';}
   el.className='card-btn'+starClass+(Math.floor(water)<c.cost?' disabled':'');
   document.getElementById('cname-'+i).textContent=c.name.substring(0,12).toUpperCase();
-  if(i===5){document.getElementById('ccost-'+i).textContent=c.cost+'💧 🧱';}
-  else{document.getElementById('ccost-'+i).textContent=c.cost+'💧 '+c.dmg+'dmg';}
+  if(i===5)document.getElementById('ccost-'+i).textContent=c.cost+'💧 🧱';
+  else document.getElementById('ccost-'+i).textContent=c.cost+'💧 '+c.dmg+'dmg';
   document.getElementById('stars-'+i).textContent=s>0?'★'.repeat(s):'';
   drawSprite(document.getElementById('card-sprite-'+i),c.sprP);
 }
@@ -677,7 +648,7 @@ function buildShop(){
     const st=document.createElement('div');st.className='sc-stars';st.textContent=s>0?'★'.repeat(s)+'☆'.repeat(3-s):'☆☆☆';card.appendChild(st);
     const nm=document.createElement('div');nm.className='sc-name';nm.textContent=c.name;card.appendChild(nm);
     const stat=document.createElement('div');stat.className='sc-current';
-    if(i===5){stat.textContent=c.hp+'hp wall:'+c.wallHp+'hp';}else{stat.textContent=c.dmg+'dmg/'+c.hp+'hp';}
+    if(i===5)stat.textContent=c.hp+'hp wall:'+c.wallHp+'hp';else stat.textContent=c.dmg+'dmg/'+c.hp+'hp';
     card.appendChild(stat);
     const btn=document.createElement('button');btn.className='upg-btn';
     if(s>=3){
@@ -714,7 +685,6 @@ function buyUpg(i){
 function buildPowerupShop(){
   updateCoinUI();
   const now=Date.now();
-  // Powerup 0: Razernij
   const btn0=document.getElementById('pu-btn-0');
   const tim0=document.getElementById('pu-timer-0');
   if(powerups.razernij.active&&now<powerups.razernij.endTime){
@@ -726,12 +696,10 @@ function buildPowerupShop(){
     btn0.className='pu-btn'+(coins<50?' pu-cant':'');
     tim0.textContent='';
   }
-  // Powerup 1: Zand Bom — can rebuy
   const btn1=document.getElementById('pu-btn-1');
   btn1.textContent='KOPEN (75🪙)';
   btn1.className='pu-btn'+(coins<75?' pu-cant':'');
   document.getElementById('pu-timer-1').textContent='';
-  // Powerup 2: Super Tsjaad — one time
   const btn2=document.getElementById('pu-btn-2');
   if(powerups.superTsjaad.bought){
     btn2.textContent='✓ GEKOCHT';btn2.className='pu-btn pu-bought';
@@ -754,14 +722,9 @@ function buyPowerup(idx){
   }else if(idx===1){
     if(coins<75){showSpecial('je bent te arm','#ff4444');return;}
     coins-=75;updateCoinUI();
-    // Damage all enemies for 5
     let hit=0;
     units.forEach(u=>{
-      if(!u.isPlayer){
-        u.hp-=5;hit++;
-        const hf=document.getElementById('hf-'+u.id);
-        if(hf)hf.style.width=Math.max(0,u.hp/u.maxHp*100)+'%';
-      }
+      if(!u.isPlayer){u.hp-=5;hit++;const hf=document.getElementById('hf-'+u.id);if(hf)hf.style.width=Math.max(0,u.hp/u.maxHp*100)+'%';}
     });
     walls.forEach(w=>{if(!w.isPlayer){w.hp-=5;const wf=document.getElementById('whf-'+w.id);if(wf)wf.style.width=Math.max(0,w.hp/w.maxHp*100)+'%';}});
     showSpecial('💥 ZAND BOM! '+hit+' VIJANDEN GERAAKT VOOR 5 SCHADE!','#ffdd00');
@@ -859,7 +822,7 @@ function spawnUnit(ci,isPlayer,oDmg,oHp){
   hb.innerHTML='<div class="unit-hp-fill" id="hf-'+id+'" style="width:100%"></div>';
   div.appendChild(cvs);div.appendChild(hb);
   div.style.left=startX+'px';
-  if(isPlayer&&powerups.superTsjaad.bought) div.querySelector('canvas').classList.add('super-tsjaad-unit');
+  if(isPlayer&&powerups.superTsjaad.bought)div.querySelector('canvas').classList.add('super-tsjaad-unit');
   document.getElementById('units-layer').appendChild(div);
 }
 
@@ -918,27 +881,6 @@ function showSpecial(txt,col){
   clearTimeout(m._t);m._t=setTimeout(()=>m.style.display='none',3000);
 }
 
-// Check if moving in direction dir by 1px from x would collide with a friendly unit or wall
-function isBlockedByFriendly(unit, newX) {
-  const dir = unit.isPlayer ? 1 : -1;
-  const unitW = 28;
-  // Check friendly units (not self, not builders)
-  for(const o of units) {
-    if(o.id === unit.id) continue;
-    if(o.isPlayer !== unit.isPlayer) continue;
-    // Simple overlap check
-    const dist = o.x - newX;
-    if(unit.isPlayer) {
-      // Moving right: blocked if o is just ahead
-      if(dist > 0 && dist < unitW) return true;
-    } else {
-      // Moving left: blocked if o is just behind (to the left)
-      if(dist < 0 && dist > -unitW) return true;
-    }
-  }
-  return false;
-}
-
 function tick(){
   if(!gameRunning)return;
   const now=Date.now();
@@ -966,48 +908,43 @@ function tick(){
     if(!el){toRemove.push({id:u.id,gc:false});continue;}
     const dir=u.isPlayer?1:-1;
 
-    // ── BUILDER LOGIC (fixed) ──
+    // ── BUILDER LOGIC ──
     if(u.isBuilder){
       const hutX=u.isPlayer?eHX:mHX;
       const stopDist=u.isPlayer?(eHX-u.x):(u.x-mHX);
 
-      // Stop at the hut
       if(stopDist<=18){
-        // At hut, just idle — place last wall if needed
         if(now-u.lastWall>u.wallInterval){
           u.lastWall=now;
           const wallX=u.isPlayer?u.x+20:u.x-20;
           const tooClose=walls.some(w=>w.isPlayer===u.isPlayer&&Math.abs(w.x-wallX)<25);
-          if(!tooClose){spawnWall(wallX,u.isPlayer);}
+          if(!tooClose)spawnWall(wallX,u.isPlayer);
         }
-        continue; // don't move
+        continue;
       }
 
-      // Place wall periodically
       if(now-u.lastWall>u.wallInterval){
         u.lastWall=now;
         const wallX=u.isPlayer?u.x+25:u.x-25;
         const tooClose=walls.some(w=>w.isPlayer===u.isPlayer&&Math.abs(w.x-wallX)<25);
-        if(!tooClose){spawnWall(wallX,u.isPlayer);}
+        if(!tooClose)spawnWall(wallX,u.isPlayer);
       }
 
-      // Move, but stop if blocked by friendly unit ahead
-      const newX=u.x+dir*BUILDER_SPEED;
-      if(!isBlockedByFriendly(u,newX)){
-        u.x=newX;
-      }
+      // Builders move freely — they pass through friendly units
+      u.x=u.x+dir*BUILDER_SPEED;
       el.style.left=u.x+'px';
       continue;
     }
 
     // ── REGULAR UNIT LOGIC ──
+    // Units pass through friendly units — only stop for enemies and walls
     let nE=null,nD=Infinity;
     for(const o of units){
       if(o.isPlayer===u.isPlayer||o.hp<=0)continue;
       const d=Math.abs(o.x-u.x);if(d<nD){nD=d;nE=o;}
     }
 
-    // Check for enemy walls blocking path
+    // Check for ENEMY walls blocking path
     let blockedByWall=null,wallDist=Infinity;
     for(const w of walls){
       if(u.isPlayer&&!w.isPlayer){
@@ -1045,11 +982,8 @@ function tick(){
         if(enemyHutHp<=0||myHutHp<=0){endRound();return;}
       }
     }else{
-      // Move forward, but don't push through friendly units
-      const newX=u.x+dir*UNIT_SPEED;
-      if(!isBlockedByFriendly(u,newX)){
-        u.x=newX;
-      }
+      // Move freely — no friendly collision blocking
+      u.x=u.x+dir*UNIT_SPEED;
       el.style.left=u.x+'px';
     }
   }
