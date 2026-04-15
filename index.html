@@ -120,9 +120,59 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 .menu-btn:hover{background:#cc6600;}
 .menu-btn.story{background:#2a1a6a;border-color:#8866ff;color:#ccaaff;position:relative;}
 .menu-btn.story:hover{background:#4a2aaa;}
-.menu-btn.story .coming-soon{position:absolute;top:-9px;right:-4px;background:#ff4444;color:#fff;font-size:8px;font-weight:bold;padding:1px 5px;border-radius:3px;letter-spacing:1px;}
 
 .super-tsjaad-unit{filter:drop-shadow(0 0 4px #ffaa00) drop-shadow(0 0 8px #ff4400);}
+
+/* ── VERHAAL / LEVEL SELECT ── */
+#story-screen{
+  position:absolute;inset:0;background:rgba(5,2,20,0.98);
+  z-index:350;display:none;flex-direction:column;align-items:center;
+  justify-content:center;gap:16px;border-radius:6px;
+  background-image:radial-gradient(ellipse at 50% 0%,rgba(80,40,160,0.4) 0%,transparent 70%);
+}
+#story-screen.open{display:flex;}
+#story-title{color:#cc99ff;font-size:22px;font-weight:bold;letter-spacing:4px;text-shadow:0 0 12px #8844ff;margin-bottom:4px;}
+#story-subtitle{color:#8866aa;font-size:10px;letter-spacing:2px;margin-top:-8px;}
+#level-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
+  padding:10px 14px;
+}
+.level-btn{
+  width:96px;height:80px;
+  background:rgba(40,20,80,0.85);
+  border:2px solid #6633bb;
+  color:#ddaaff;
+  font-family:monospace;font-size:13px;font-weight:bold;
+  cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;
+  border-radius:4px;
+  transition:background 0.15s,border-color 0.15s,transform 0.1s;
+  letter-spacing:1px;
+  position:relative;
+}
+.level-btn:hover{
+  background:rgba(80,40,160,0.85);
+  border-color:#aa66ff;
+  transform:scale(1.05);
+}
+.level-btn .lnum{font-size:22px;color:#cc99ff;font-weight:bold;text-shadow:0 0 8px #8844ff;}
+.level-btn .ltxt{font-size:8px;color:#9966cc;letter-spacing:0.5px;}
+.level-btn .lstar{font-size:10px;color:#ffcc00;height:12px;}
+#story-back{background:#1a0a3a;border:2px solid #8844ff;color:#cc99ff;font-size:12px;font-weight:bold;padding:8px 28px;cursor:pointer;font-family:monospace;letter-spacing:2px;}
+#story-back:hover{background:#3a1a7a;}
+
+/* coming soon popup inside story screen */
+#level-popup{
+  position:absolute;inset:0;background:rgba(0,0,0,0.88);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;z-index:400;border-radius:6px;
+}
+#level-popup.open{display:flex;}
+#level-popup .lp-title{color:#cc99ff;font-size:18px;font-weight:bold;letter-spacing:3px;}
+#level-popup .lp-msg{color:#9966cc;font-size:11px;text-align:center;line-height:1.6;}
+#level-popup .lp-close{background:#2a1060;border:2px solid #8844ff;color:#cc99ff;font-size:11px;font-weight:bold;padding:7px 24px;cursor:pointer;font-family:monospace;}
+#level-popup .lp-close:hover{background:#4a20a0;}
 </style>
 </head>
 <body>
@@ -183,7 +233,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
       <div class="pu-card">
         <div class="pu-icon">💥</div>
         <div class="pu-name">ZAND BOM</div>
-        <div class="pu-desc">Alle vijanden nemen direct 5 schade!</div>
+        <div class="pu-desc">Alle VIJANDEN nemen direct 5 schade!</div>
         <div class="pu-cost">75🪙</div>
         <button class="pu-btn" id="pu-btn-1" onclick="buyPowerup(1)">KOPEN</button>
         <div class="pu-timer" id="pu-timer-1"></div>
@@ -201,10 +251,25 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
   </div>
 
   <div id="game-over">
-    <h2 id="go-title">jij hebt echt tsjaadastisch!!</h2>
+    <h2 id="go-title">jij bent echt tsjaadastisch!!</h2>
     <p id="go-msg"></p>
     <p id="go-series" style="font-size:15px;color:#ffd080;"></p>
     <button id="restart-btn" onclick="nextRound()">VOLGENDE RONDE ▶</button>
+  </div>
+
+  <!-- STORY SCREEN -->
+  <div id="story-screen">
+    <div id="story-title">📖 TSJAAD VERHAAL</div>
+    <div id="story-subtitle">KIES EEN LEVEL</div>
+    <div id="level-grid"></div>
+    <button id="story-back" onclick="closeStory()">← TERUG</button>
+
+    <!-- Level coming soon popup -->
+    <div id="level-popup">
+      <div class="lp-title" id="lp-title-txt">LEVEL ?</div>
+      <div class="lp-msg">🚧 Dit level is nog in aanbouw!<br>De tsjaad goden werken eraan...<br>Kom later terug! 🚧</div>
+      <button class="lp-close" onclick="closeLevelPopup()">✖ SLUITEN</button>
+    </div>
   </div>
 
   <!-- MAIN MENU -->
@@ -213,9 +278,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
     <div id="menu-subtitle">BESTE VAN 3 POTJES</div>
     <div class="menu-canvas-row" id="menu-sprites"></div>
     <button class="menu-btn" onclick="startSeries()">▶ SPELEN</button>
-    <button class="menu-btn story" onclick="showComingSoon()">
-      📖 TSJAAD VERHAAL
-    </button>
+    <button class="menu-btn story" onclick="openStory()">📖 TSJAAD VERHAAL</button>
   </div>
 
   <div id="ui-bottom">
@@ -464,6 +527,37 @@ function initSprites(){
     c.width=16;c.height=16;c.style.cssText='width:32px;height:32px;image-rendering:pixelated;';
     drawSprite(c,s);row.appendChild(c);
   });
+  buildLevelGrid();
+}
+
+// ── STORY SCREEN ──
+function buildLevelGrid(){
+  const grid=document.getElementById('level-grid');
+  grid.innerHTML='';
+  const levelNames=['De Woestijn','Het Zand Dal','Tsjaad Rivier','De Gouden Tent','Storm van Boos','Nacht Aanval','De Heilige Pit','Berg van Botten','Poortwachter','De Tsjaad Baas'];
+  const levelEmojis=['🏜️','🌄','🌊','⛺','🌪️','🌙','💧','💀','🚪','👑'];
+  for(let i=0;i<10;i++){
+    const btn=document.createElement('button');
+    btn.className='level-btn';
+    btn.innerHTML=`<div class="lnum">${i+1}</div><div class="ltxt">${levelEmojis[i]} ${levelNames[i]}</div><div class="lstar">${i===0?'':'🔒'}</div>`;
+    btn.onclick=()=>openLevelPopup(i+1,levelNames[i]);
+    grid.appendChild(btn);
+  }
+}
+
+function openStory(){
+  document.getElementById('story-screen').classList.add('open');
+}
+function closeStory(){
+  document.getElementById('story-screen').classList.remove('open');
+  closeLevelPopup();
+}
+function openLevelPopup(num,name){
+  document.getElementById('lp-title-txt').textContent='LEVEL '+num+': '+name.toUpperCase();
+  document.getElementById('level-popup').classList.add('open');
+}
+function closeLevelPopup(){
+  document.getElementById('level-popup').classList.remove('open');
 }
 
 const BASE=[
@@ -514,10 +608,6 @@ let water,coins,units,walls,nextId,gameRunning,gameLoop,waterInterval,stormCount
 let myHutHp,enemyHutHp,lastAiSpawn,stormActive,sandParticles;
 let starLevels,enemyULvl,lastEnemyUnitUpg;
 let matchStartTime,waterBoosted,stormSecondsLeft;
-
-function showComingSoon(){
-  showSpecial('📖 TSJAAD VERHAAl','#8866ff');
-}
 
 function startSeries(){
   playerWins=0;enemyWins=0;currentRound=1;
@@ -722,12 +812,27 @@ function buyPowerup(idx){
     if(coins<75){showSpecial('je bent te arm','#ff4444');return;}
     coins-=75;updateCoinUI();
     let hit=0;
+    // FIX: Zand bom raakt ALLEEN vijandelijke units (isPlayer===false)
     units.forEach(u=>{
-      if(!u.isPlayer){u.hp-=5;hit++;const hf=document.getElementById('hf-'+u.id);if(hf)hf.style.width=Math.max(0,u.hp/u.maxHp*100)+'%';}
+      if(u.isPlayer)return; // sla vriendelijke eenheden over!
+      u.hp-=5;hit++;
+      const hf=document.getElementById('hf-'+u.id);
+      if(hf)hf.style.width=Math.max(0,u.hp/u.maxHp*100)+'%';
     });
-    walls.forEach(w=>{if(!w.isPlayer){w.hp-=5;const wf=document.getElementById('whf-'+w.id);if(wf)wf.style.width=Math.max(0,w.hp/w.maxHp*100)+'%';}});
+    // Vijandelijke muren ook raken
+    walls.forEach(w=>{
+      if(w.isPlayer)return; // sla vriendelijke muren over!
+      w.hp-=5;
+      const wf=document.getElementById('whf-'+w.id);
+      if(wf)wf.style.width=Math.max(0,w.hp/w.maxHp*100)+'%';
+    });
     showSpecial('💥 ZAND BOM! '+hit+' VIJANDEN GERAAKT VOOR 5 SCHADE!','#ffdd00');
     buildPowerupShop();
+    // Verwijder dode vijandelijke eenheden na de bom
+    const deadUnits=units.filter(u=>!u.isPlayer&&u.hp<=0).map(u=>u.id);
+    const deadWalls=walls.filter(w=>!w.isPlayer&&w.hp<=0).map(w=>w.id);
+    deadUnits.forEach(id=>killUnit(id,true));
+    deadWalls.forEach(id=>removeWall(id));
   }else if(idx===2){
     if(powerups.superTsjaad.bought){showSpecial('deze heb je al loser!','#aaaaaa');return;}
     if(coins<100){showSpecial('je bent te arm','#ff4444');return;}
@@ -929,21 +1034,18 @@ function tick(){
         if(!tooClose)spawnWall(wallX,u.isPlayer);
       }
 
-      // Builders move freely — they pass through friendly units
       u.x=u.x+dir*BUILDER_SPEED;
       el.style.left=u.x+'px';
       continue;
     }
 
     // ── REGULAR UNIT LOGIC ──
-    // Units pass through friendly units — only stop for enemies and walls
     let nE=null,nD=Infinity;
     for(const o of units){
       if(o.isPlayer===u.isPlayer||o.hp<=0)continue;
       const d=Math.abs(o.x-u.x);if(d<nD){nD=d;nE=o;}
     }
 
-    // Check for ENEMY walls blocking path
     let blockedByWall=null,wallDist=Infinity;
     for(const w of walls){
       if(u.isPlayer&&!w.isPlayer){
@@ -981,7 +1083,6 @@ function tick(){
         if(enemyHutHp<=0||myHutHp<=0){endRound();return;}
       }
     }else{
-      // Move freely — no friendly collision blocking
       u.x=u.x+dir*UNIT_SPEED;
       el.style.left=u.x+'px';
     }
