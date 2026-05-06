@@ -120,7 +120,6 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 .menu-btn:hover{background:#cc6600;}
 .menu-btn.story{background:#2a1a6a;border-color:#8866ff;color:#ccaaff;position:relative;}
 .menu-btn.story:hover{background:#4a2aaa;}
-
 .super-tsjaad-unit{filter:drop-shadow(0 0 4px #ffaa00) drop-shadow(0 0 8px #ff4400);}
 
 /* ── VERHAAL / LEVEL SELECT ── */
@@ -156,8 +155,18 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
   border-color:#aa66ff;
   transform:scale(1.05);
 }
+.level-btn.unlocked{
+  border-color:#ffcc00;
+  background:rgba(60,40,0,0.85);
+}
+.level-btn.unlocked:hover{
+  background:rgba(100,70,0,0.9);
+  border-color:#ffd700;
+}
 .level-btn .lnum{font-size:22px;color:#cc99ff;font-weight:bold;text-shadow:0 0 8px #8844ff;}
+.level-btn.unlocked .lnum{color:#ffd080;text-shadow:0 0 8px #ff8800;}
 .level-btn .ltxt{font-size:8px;color:#9966cc;letter-spacing:0.5px;}
+.level-btn.unlocked .ltxt{color:#cc9955;}
 .level-btn .lstar{font-size:10px;color:#ffcc00;height:12px;}
 #story-back{background:#1a0a3a;border:2px solid #8844ff;color:#cc99ff;font-size:12px;font-weight:bold;padding:8px 28px;cursor:pointer;font-family:monospace;letter-spacing:2px;}
 #story-back:hover{background:#3a1a7a;}
@@ -173,6 +182,78 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 #level-popup .lp-msg{color:#9966cc;font-size:11px;text-align:center;line-height:1.6;}
 #level-popup .lp-close{background:#2a1060;border:2px solid #8844ff;color:#cc99ff;font-size:11px;font-weight:bold;padding:7px 24px;cursor:pointer;font-family:monospace;}
 #level-popup .lp-close:hover{background:#4a20a0;}
+
+/* ── STORY INTRO ── */
+#story-intro{
+  position:absolute;inset:0;background:rgba(0,0,0,0.97);
+  z-index:380;display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;border-radius:6px;
+  background-image:radial-gradient(ellipse at 50% 30%,rgba(120,60,0,0.5) 0%,transparent 70%);
+}
+#story-intro.open{display:flex;}
+#intro-level-badge{color:#ffd080;font-size:11px;letter-spacing:3px;border:1px solid #aa7700;padding:3px 14px;margin-bottom:4px;}
+#intro-title{color:#ffd080;font-size:20px;font-weight:bold;letter-spacing:4px;text-shadow:0 0 15px #ff8800;}
+#intro-enemy-row{display:flex;gap:20px;margin:6px 0;align-items:flex-end;}
+.intro-enemy{display:flex;flex-direction:column;align-items:center;gap:4px;color:#ffaa88;font-size:9px;letter-spacing:1px;background:rgba(80,20,0,0.6);border:1px solid #aa4400;padding:8px 10px;border-radius:3px;}
+.intro-enemy canvas{image-rendering:pixelated;}
+.intro-enemy .en-name{font-size:9px;color:#ff8855;font-weight:bold;}
+.intro-enemy .en-stat{font-size:8px;color:#cc7744;}
+#intro-story-text{
+  color:#e0c8a0;font-size:11px;line-height:1.8;text-align:center;max-width:480px;
+  border:1px solid #5a3800;background:rgba(30,10,0,0.7);padding:12px 18px;
+  font-style:italic;letter-spacing:0.3px;
+}
+#intro-start-btn{
+  background:#6a3000;border:2px solid #ffa020;color:#ffd080;
+  font-size:13px;font-weight:bold;padding:10px 32px;cursor:pointer;
+  letter-spacing:2px;font-family:monospace;margin-top:4px;
+  transition:background 0.15s;
+}
+#intro-start-btn:hover{background:#aa5500;}
+#intro-back-btn{
+  background:transparent;border:1px solid #555;color:#888;
+  font-size:10px;padding:5px 18px;cursor:pointer;font-family:monospace;
+  transition:color 0.15s;
+}
+#intro-back-btn:hover{color:#ccc;}
+
+/* ── LEVEL WIN SCREEN ── */
+#level-win{
+  position:absolute;inset:0;background:rgba(0,0,0,0.92);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  z-index:250;gap:14px;
+  background-image:radial-gradient(ellipse at 50% 30%,rgba(60,40,0,0.7) 0%,transparent 70%);
+}
+#level-win h2{color:#ffd080;font-size:22px;font-weight:bold;letter-spacing:3px;text-shadow:0 0 15px #ff8800;}
+#level-win .lw-badge{color:#ff8800;font-size:11px;letter-spacing:2px;border:1px solid #aa6600;padding:3px 14px;}
+#level-win .lw-text{color:#e0c080;font-size:12px;text-align:center;max-width:400px;line-height:1.7;font-style:italic;}
+#level-win .lw-coins{color:#ffdd44;font-size:14px;font-weight:bold;}
+#level-win .lw-stars{font-size:22px;letter-spacing:4px;}
+#lw-continue-btn{background:#5a2000;border:2px solid #ffa020;color:#ffd080;font-size:12px;font-weight:bold;padding:9px 28px;cursor:pointer;letter-spacing:2px;font-family:monospace;margin-top:4px;}
+#lw-continue-btn:hover{background:#8a3800;}
+#lw-retry-btn{background:transparent;border:1px solid #666;color:#aaa;font-size:10px;padding:5px 20px;cursor:pointer;font-family:monospace;}
+#lw-retry-btn:hover{color:#fff;}
+
+/* ── LEVEL LOSE SCREEN ── */
+#level-lose{
+  position:absolute;inset:0;background:rgba(0,0,0,0.92);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  z-index:250;gap:12px;
+}
+#level-lose h2{color:#ff4444;font-size:22px;font-weight:bold;letter-spacing:3px;}
+#level-lose .ll-text{color:#cc8888;font-size:11px;text-align:center;line-height:1.7;}
+#ll-retry-btn{background:#5a0000;border:2px solid #ff4400;color:#ff8888;font-size:12px;font-weight:bold;padding:9px 28px;cursor:pointer;letter-spacing:2px;font-family:monospace;}
+#ll-retry-btn:hover{background:#880000;}
+#ll-back-btn{background:transparent;border:1px solid #555;color:#888;font-size:10px;padding:5px 18px;cursor:pointer;font-family:monospace;}
+#ll-back-btn:hover{color:#ccc;}
+
+/* story mode top badge */
+#story-mode-badge{
+  position:absolute;top:4px;left:50%;transform:translateX(-50%);
+  background:rgba(30,10,60,0.9);color:#cc99ff;font-size:10px;
+  padding:2px 12px;border:1px solid #8844ff;z-index:55;letter-spacing:1px;
+  display:none;
+}
 </style>
 </head>
 <body>
@@ -194,6 +275,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
     <div class="hut-hp" id="enemy-hut-hp">200HP</div>
   </div>
   <div id="series-score">JIJ: <span id="p-wins">0</span> ⭐ vs ⭐ <span id="e-wins">0</span> :vijand</div>
+  <div id="story-mode-badge">📖 LEVEL 1 — DE WOESTIJN</div>
   <div id="score-area">
     <div class="score-box">Ronde <span id="round-num">1</span> — win 3 potjes</div>
   </div>
@@ -250,11 +332,37 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
     <button id="powerup-close" onclick="closePowerup()">✖ SLUITEN</button>
   </div>
 
+  <!-- Normal game-over -->
   <div id="game-over">
     <h2 id="go-title">jij bent echt tsjaadastisch!!</h2>
     <p id="go-msg"></p>
     <p id="go-series" style="font-size:15px;color:#ffd080;"></p>
     <button id="restart-btn" onclick="nextRound()">VOLGENDE RONDE ▶</button>
+  </div>
+
+  <!-- LEVEL WIN -->
+  <div id="level-win">
+    <div class="lw-badge">⭐ LEVEL GEWONNEN ⭐</div>
+    <h2>🏆 DE WOESTIJN IS BEVRIJD!</h2>
+    <div class="lw-stars" id="lw-stars">⭐⭐⭐</div>
+    <div class="lw-text" id="lw-text">
+      Jullie hebben de bandieten verslagen!<br>
+      De tsjaad kinderen kunnen weer veilig spelen...
+    </div>
+    <div class="lw-coins" id="lw-coins">+50🪙 beloond!</div>
+    <button id="lw-continue-btn" onclick="levelWinContinue()">📖 VERDER NAAR VERHAAL ▶</button>
+    <button id="lw-retry-btn" onclick="retryLevel1()">↩ opnieuw proberen</button>
+  </div>
+
+  <!-- LEVEL LOSE -->
+  <div id="level-lose">
+    <h2>💀 AANVAL MISLUKT...</h2>
+    <div class="ll-text">
+      De bandieten zijn te sterk...<br>
+      Je dorp is ingenomen. Probeer het opnieuw!
+    </div>
+    <button id="ll-retry-btn" onclick="retryLevel1()">↩ OPNIEUW PROBEREN</button>
+    <button id="ll-back-btn" onclick="backToStoryFromLose()">← Terug naar verhaal</button>
   </div>
 
   <!-- STORY SCREEN -->
@@ -270,6 +378,36 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
       <div class="lp-msg">🚧 Dit level is nog in aanbouw!<br>De tsjaad goden werken eraan...<br>Kom later terug! 🚧</div>
       <button class="lp-close" onclick="closeLevelPopup()">✖ SLUITEN</button>
     </div>
+  </div>
+
+  <!-- STORY INTRO (shown before level 1 starts) -->
+  <div id="story-intro">
+    <div id="intro-level-badge">📖 LEVEL 1 — DE WOESTIJN</div>
+    <div id="intro-title">DE BANDIET AANVAL</div>
+    <div id="intro-story-text">
+      "Een bende gevaarlijke bandieten heeft jullie dorp aangevallen!<br>
+      Ze komen uit de brandende woestijn met zwaarden, bogen en een gevreesde Stam Leider.<br>
+      Verdedig jullie hut en sla de aanvallers terug voordat het te laat is!"
+    </div>
+    <div id="intro-enemy-row">
+      <div class="intro-enemy" id="intro-enemy-0">
+        <canvas width="16" height="16" style="width:28px;height:28px" id="intro-spr-0"></canvas>
+        <div class="en-name">BANDIET</div>
+        <div class="en-stat">Snel & gevaarlijk</div>
+      </div>
+      <div class="intro-enemy" id="intro-enemy-1">
+        <canvas width="16" height="16" style="width:28px;height:28px" id="intro-spr-1"></canvas>
+        <div class="en-name">BOOGSCHUTTER</div>
+        <div class="en-stat">Aanval van afstand</div>
+      </div>
+      <div class="intro-enemy" id="intro-enemy-2">
+        <canvas width="16" height="16" style="width:28px;height:28px" id="intro-spr-2"></canvas>
+        <div class="en-name">STAM LEIDER</div>
+        <div class="en-stat">Zwaar & dodelijk</div>
+      </div>
+    </div>
+    <button id="intro-start-btn" onclick="startLevel1Game()">⚔ AANVAL AFSLAAN! ▶</button>
+    <button id="intro-back-btn" onclick="closeIntro()">← terug naar levelkeuze</button>
   </div>
 
   <!-- MAIN MENU -->
@@ -349,6 +487,10 @@ const PAL={
   teal:'#22BBAA',dteal:'#117766',lteal:'#55DDCC',
   wblue:'#4488BB',dwblue:'#224466',lwblue:'#88CCEE',
   wbrown:'#7a6040',dwbrown:'#4a3820',lwbrown:'#b09060',
+  // Story enemy colors
+  bandit:'#5A3A1A',dbandit:'#3A1A00',lbandit:'#8B6040',   // dark brown bandit
+  archer:'#2A4A2A',darcher:'#1A2A1A',larcher:'#4A7A4A',   // green archer
+  chief:'#4A0000',dchief:'#2A0000',lchief:'#8A1A1A',      // deep crimson chief
 };
 const T=null;
 
@@ -496,11 +638,48 @@ const SPR_RNG_E=mirror(SPR_RNG);
 const SPR_LIO_E=mirrorRecolor(SPR_LIO,{purple:'red',lpurp:'lred',dpurp:'dred'});
 const SPR_LOS_E=mirrorRecolor(SPR_LOS,{teal:'red',dteal:'dred'});
 
+// ── STORY ENEMY SPRITES ── unique recolors for level 1 enemies
+// Bandiet = Tsjaad Vechter recolored to dark brown/bandit colors (mirrored = enemy direction)
+const SPR_BANDIET_E=mirrorRecolor(SPR_WAR,{
+  red:'bandit',dred:'dbandit',lred:'lbandit',
+  brown:'dbandit',dbrown:'dbandit',gold:'tan'
+});
+// Boogschutter = Zand Gooier recolored to green archer (mirrored)
+const SPR_BOOG_E=mirrorRecolor(SPR_RNG,{
+  gray:'archer',lgray:'larcher',dgray:'darcher',
+  rock:'archer',drock:'darcher',black:'black'
+});
+// Stam Leider = Tsjaadinator recolored to deep crimson (mirrored)
+const SPR_CHIEF_E=mirrorRecolor(SPR_LIO,{
+  purple:'chief',lpurp:'lchief',dpurp:'dchief',gold:'tan'
+});
+
+// Preview sprites for intro screen (facing right, player-side perspective)
+const SPR_BANDIET_PREV=recolor(SPR_WAR,{
+  red:'bandit',dred:'dbandit',lred:'lbandit',
+  brown:'dbandit',dbrown:'dbandit',gold:'tan'
+});
+const SPR_BOOG_PREV=recolor(SPR_RNG,{
+  gray:'archer',lgray:'larcher',dgray:'darcher',
+  rock:'archer',drock:'darcher'
+});
+const SPR_CHIEF_PREV=recolor(SPR_LIO,{
+  purple:'chief',lpurp:'lchief',dpurp:'dchief',gold:'tan'
+});
+
 function drawSprite(cvs,spr){
   cvs.width=spr[0].length;cvs.height=spr.length;
   const ctx=cvs.getContext('2d');ctx.clearRect(0,0,cvs.width,cvs.height);
   for(let y=0;y<spr.length;y++)for(let x=0;x<spr[y].length;x++){const c=spr[y][x];if(!c)continue;ctx.fillStyle=PAL[c]||c;ctx.fillRect(x,y,1,1);}
 }
+
+// Story enemy definitions (indices 10,11,12 = story-only)
+// They map to BASE indices 1,2,3 for stats but use custom sprites & names
+const STORY_ENEMIES=[
+  {name:'Bandiet',     baseCi:1, sprE:SPR_BANDIET_E, dmgMult:1.0, hpMult:1.0},
+  {name:'Boogschutter',baseCi:2, sprE:SPR_BOOG_E,    dmgMult:1.0, hpMult:1.0},
+  {name:'Stam Leider', baseCi:3, sprE:SPR_CHIEF_E,   dmgMult:0.9, hpMult:1.1},
+];
 
 function initSprites(){
   const HUT_P=(()=>{
@@ -527,6 +706,10 @@ function initSprites(){
     c.width=16;c.height=16;c.style.cssText='width:32px;height:32px;image-rendering:pixelated;';
     drawSprite(c,s);row.appendChild(c);
   });
+  // Draw intro enemy previews
+  drawSprite(document.getElementById('intro-spr-0'),SPR_BANDIET_PREV);
+  drawSprite(document.getElementById('intro-spr-1'),SPR_BOOG_PREV);
+  drawSprite(document.getElementById('intro-spr-2'),SPR_CHIEF_PREV);
   buildLevelGrid();
 }
 
@@ -538,9 +721,11 @@ function buildLevelGrid(){
   const levelEmojis=['🏜️','🌄','🌊','⛺','🌪️','🌙','💧','💀','🚪','👑'];
   for(let i=0;i<10;i++){
     const btn=document.createElement('button');
-    btn.className='level-btn';
-    btn.innerHTML=`<div class="lnum">${i+1}</div><div class="ltxt">${levelEmojis[i]} ${levelNames[i]}</div><div class="lstar">${i===0?'':'🔒'}</div>`;
-    btn.onclick=()=>openLevelPopup(i+1,levelNames[i]);
+    btn.className='level-btn'+(i===0?' unlocked':'');
+    const lockIcon=i===0?'▶ SPELEN':'🔒';
+    btn.innerHTML=`<div class="lnum">${i+1}</div><div class="ltxt">${levelEmojis[i]} ${levelNames[i]}</div><div class="lstar">${lockIcon}</div>`;
+    if(i===0){btn.onclick=()=>openLevel1Intro();}
+    else{btn.onclick=()=>openLevelPopup(i+1,levelNames[i]);}
     grid.appendChild(btn);
   }
 }
@@ -558,6 +743,143 @@ function openLevelPopup(num,name){
 }
 function closeLevelPopup(){
   document.getElementById('level-popup').classList.remove('open');
+}
+
+// ── LEVEL 1 STORY INTRO ──
+function openLevel1Intro(){
+  document.getElementById('story-screen').classList.remove('open');
+  document.getElementById('story-intro').classList.add('open');
+}
+function closeIntro(){
+  document.getElementById('story-intro').classList.remove('open');
+  document.getElementById('story-screen').classList.add('open');
+}
+
+// ── LEVEL 1 GAME ──
+let isStoryMode=false;
+let storyLevel1WaveTimer=0,storyWaveCount=0,storyMaxWaves=12;
+let storySpawnIntervals=[4000,3500,3000,2500,2200,2000,2000,1800,1800,1600,1500,1500];
+
+function startLevel1Game(){
+  document.getElementById('story-intro').classList.remove('open');
+  isStoryMode=true;
+  storyWaveCount=0;
+  starLevels=[0,0,0,0,0,0];
+  coins=50; // starting bonus for story mode
+  powerups={razernij:{active:false,endTime:0},zandbom:{used:false},superTsjaad:{bought:false}};
+  document.getElementById('main-menu').style.display='none';
+  document.getElementById('series-score').style.display='none';
+  document.getElementById('score-area').style.display='none';
+  document.getElementById('story-mode-badge').style.display='block';
+  startStoryRound();
+}
+
+function startStoryRound(){
+  water=6;units=[];walls=[];nextId=0;
+  myHutHp=MAX_HUT_HP;enemyHutHp=MAX_HUT_HP;
+  lastAiSpawn=0;stormActive=false;sandParticles=[];
+  enemyULvl=[0,0,0,0,0,0];lastEnemyUnitUpg=Date.now()+(99999999);
+  waterBoosted=false;matchStartTime=Date.now();
+  storyLevel1WaveTimer=0;storyWaveCount=0;
+  document.getElementById('units-layer').innerHTML='';
+  document.getElementById('walls-layer').innerHTML='';
+  document.getElementById('game-over').style.display='none';
+  document.getElementById('round-banner').style.display='none';
+  document.getElementById('level-win').style.display='none';
+  document.getElementById('level-lose').style.display='none';
+  document.getElementById('sandstorm-overlay').classList.remove('active');
+  document.getElementById('water-boost').style.display='none';
+  updateHutUI();updateWaterUI();updateCoinUI();refreshAllCards();
+  updatePowerupIndicators();
+  gameRunning=true;
+  stormSecondsLeft=STORM_INTERVAL/1000;
+  clearInterval(waterInterval);clearInterval(gameLoop);
+  clearInterval(stormCountdown);clearInterval(matchTimerInterval);
+
+  waterInterval=setInterval(()=>{
+    if(!gameRunning)return;
+    const rate=waterBoosted?BASE_WATER_RATE*2:BASE_WATER_RATE;
+    water=Math.min(MAX_WATER,water+rate*0.25);
+    updateWaterUI();refreshAllCards();
+  },250);
+
+  stormSecondsLeft=STORM_INTERVAL/1000;
+  stormCountdown=setInterval(()=>{
+    if(!gameRunning)return;
+    stormSecondsLeft-=0.25;
+    const s=Math.max(0,Math.ceil(stormSecondsLeft));
+    document.getElementById('storm-timer').textContent=stormActive?'🌪 STORM!':'⏳ Storm: '+s+'s';
+    if(stormSecondsLeft<=0&&!stormActive){stormSecondsLeft=STORM_INTERVAL/1000;triggerSandstorm();}
+  },250);
+
+  matchTimerInterval=setInterval(()=>{
+    if(!gameRunning)return;
+    const elapsed=Date.now()-matchStartTime;
+    const sec=Math.floor(elapsed/1000);
+    const m=Math.floor(sec/60),s=sec%60;
+    document.getElementById('match-timer').textContent='⏱ '+m+':'+(s<10?'0':'')+s;
+    if(elapsed>=WATER_BOOST_TIME&&!waterBoosted){
+      waterBoosted=true;
+      document.getElementById('water-boost').style.display='block';
+      showSpecial('de waterput is bijgevuld!','#22ffcc');
+    }
+    if(powerups.razernij.active){
+      const rem=Math.max(0,Math.ceil((powerups.razernij.endTime-Date.now())/1000));
+      if(rem<=0)powerups.razernij.active=false;
+      updatePowerupIndicators();
+    }
+  },250);
+
+  gameLoop=setInterval(tick,60);
+  showRoundBanner('⚔ VERDEDIG JE DORP! ⚔',2000);
+}
+
+function endStoryLevel(playerWon){
+  gameRunning=false;
+  clearInterval(gameLoop);clearInterval(waterInterval);
+  clearInterval(stormCountdown);clearInterval(matchTimerInterval);
+  if(playerWon){
+    const reward=60;
+    addCoins(reward,350,200);
+    const elapsed=Date.now()-matchStartTime;
+    const stars=elapsed<90000?3:elapsed<150000?2:1;
+    document.getElementById('lw-stars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);
+    document.getElementById('lw-coins').textContent='+'+reward+'🪙 beloond!';
+    setTimeout(()=>{document.getElementById('level-win').style.display='flex';},800);
+  }else{
+    setTimeout(()=>{document.getElementById('level-lose').style.display='flex';},600);
+  }
+}
+
+function levelWinContinue(){
+  document.getElementById('level-win').style.display='none';
+  isStoryMode=false;
+  document.getElementById('series-score').style.display='block';
+  document.getElementById('score-area').style.display='flex';
+  document.getElementById('story-mode-badge').style.display='none';
+  // Show coming-soon for level 2
+  document.getElementById('story-screen').classList.add('open');
+  openLevelPopup(2,'de zandstorm');
+}
+
+function retryLevel1(){
+  document.getElementById('level-win').style.display='none';
+  document.getElementById('level-lose').style.display='none';
+  isStoryMode=true;
+  storyWaveCount=0;
+  startStoryRound();
+}
+
+function backToStoryFromLose(){
+  document.getElementById('level-lose').style.display='none';
+  isStoryMode=false;
+  document.getElementById('series-score').style.display='block';
+  document.getElementById('score-area').style.display='flex';
+  document.getElementById('story-mode-badge').style.display='none';
+  gameRunning=false;
+  clearInterval(gameLoop);clearInterval(waterInterval);
+  clearInterval(stormCountdown);clearInterval(matchTimerInterval);
+  document.getElementById('story-screen').classList.add('open');
 }
 
 const BASE=[
@@ -610,11 +932,15 @@ let starLevels,enemyULvl,lastEnemyUnitUpg;
 let matchStartTime,waterBoosted,stormSecondsLeft;
 
 function startSeries(){
+  isStoryMode=false;
   playerWins=0;enemyWins=0;currentRound=1;
   starLevels=[0,0,0,0,0,0];
   coins=0;
   powerups={razernij:{active:false,endTime:0},zandbom:{used:false},superTsjaad:{bought:false}};
   document.getElementById('main-menu').style.display='none';
+  document.getElementById('series-score').style.display='block';
+  document.getElementById('score-area').style.display='flex';
+  document.getElementById('story-mode-badge').style.display='none';
   startRound();
 }
 
@@ -628,6 +954,8 @@ function startRound(){
   document.getElementById('walls-layer').innerHTML='';
   document.getElementById('game-over').style.display='none';
   document.getElementById('round-banner').style.display='none';
+  document.getElementById('level-win').style.display='none';
+  document.getElementById('level-lose').style.display='none';
   document.getElementById('sandstorm-overlay').classList.remove('active');
   document.getElementById('water-boost').style.display='none';
   updateSeriesUI();
@@ -812,23 +1140,20 @@ function buyPowerup(idx){
     if(coins<75){showSpecial('je bent te arm','#ff4444');return;}
     coins-=75;updateCoinUI();
     let hit=0;
-    // FIX: Zand bom raakt ALLEEN vijandelijke units (isPlayer===false)
     units.forEach(u=>{
-      if(u.isPlayer)return; // sla vriendelijke eenheden over!
+      if(u.isPlayer)return;
       u.hp-=5;hit++;
       const hf=document.getElementById('hf-'+u.id);
       if(hf)hf.style.width=Math.max(0,u.hp/u.maxHp*100)+'%';
     });
-    // Vijandelijke muren ook raken
     walls.forEach(w=>{
-      if(w.isPlayer)return; // sla vriendelijke muren over!
+      if(w.isPlayer)return;
       w.hp-=5;
       const wf=document.getElementById('whf-'+w.id);
       if(wf)wf.style.width=Math.max(0,w.hp/w.maxHp*100)+'%';
     });
     showSpecial('💥 ZAND BOM! '+hit+' VIJANDEN GERAAKT VOOR 5 SCHADE!','#ffdd00');
     buildPowerupShop();
-    // Verwijder dode vijandelijke eenheden na de bom
     const deadUnits=units.filter(u=>!u.isPlayer&&u.hp<=0).map(u=>u.id);
     const deadWalls=walls.filter(w=>!w.isPlayer&&w.hp<=0).map(w=>w.id);
     deadUnits.forEach(id=>killUnit(id,true));
@@ -903,8 +1228,18 @@ function removeWall(wid){
   if(el){el.style.opacity='0';el.style.transition='opacity 0.2s';setTimeout(()=>el.remove(),250);}
 }
 
-function spawnUnit(ci,isPlayer,oDmg,oHp){
-  const c=isPlayer?getStats(ci):BASE[ci];
+// spawnUnit with optional story enemy override
+function spawnUnit(ci,isPlayer,oDmg,oHp,storyEnemyIdx){
+  let c,spr;
+  if(!isPlayer && storyEnemyIdx!==undefined && storyEnemyIdx>=0){
+    const se=STORY_ENEMIES[storyEnemyIdx];
+    const base=BASE[se.baseCi];
+    c={...base,dmg:Math.round(base.dmg*se.dmgMult),hp:Math.round(base.hp*se.hpMult)};
+    spr=se.sprE;
+  }else{
+    c=isPlayer?getStats(ci):BASE[ci];
+    spr=isPlayer?c.sprP:c.sprE;
+  }
   const dmg=oDmg!==undefined?oDmg:c.dmg;
   const hp=oHp!==undefined?oHp:c.hp;
   const id='u'+nextId++;
@@ -915,13 +1250,14 @@ function spawnUnit(ci,isPlayer,oDmg,oHp){
     isBuilder:c.isBuilder||false,
     wallInterval:c.wallInterval||null,
     wallHp:c.wallHp||75,
-    lastWall:0
+    lastWall:0,
+    storyEnemyIdx:storyEnemyIdx
   };
   units.push(unit);
   const div=document.createElement('div');div.className='unit';div.id=id;
   const cvs=document.createElement('canvas');
   cvs.width=16;cvs.height=16;cvs.style.cssText='width:28px;height:28px;image-rendering:pixelated';
-  drawSprite(cvs,isPlayer?c.sprP:c.sprE);
+  drawSprite(cvs,spr);
   const hb=document.createElement('div');hb.className='unit-hp-bar';
   hb.innerHTML='<div class="unit-hp-fill" id="hf-'+id+'" style="width:100%"></div>';
   div.appendChild(cvs);div.appendChild(hb);
@@ -985,24 +1321,65 @@ function showSpecial(txt,col){
   clearTimeout(m._t);m._t=setTimeout(()=>m.style.display='none',3000);
 }
 
+// Story mode wave spawning
+// Wave pattern: escalating waves of bandieten, boogschutters, stam leiders
+// Wave schedule: 12 waves total, mix of enemy types
+const STORY_WAVE_SCHEDULE=[
+  // [storyEnemyIdx, delay_ms_from_start]
+  [0,3000],[0,5000],                              // wave 1-2: bandieten
+  [0,8000],[1,10000],                             // wave 3-4: bandiet + boogschutter
+  [0,13000],[0,15000],[1,17000],                  // wave 5-7: meer druk
+  [0,20000],[1,22000],[0,24000],                  // wave 8-10: intensificer
+  [2,28000],                                      // wave 11: STAM LEIDER
+  [0,31000],[1,33000],[0,35000],[2,38000],        // wave 12: eindaanval
+  [0,42000],[0,44000],[1,46000],[2,50000],        // wave 13: final push
+];
+let storyWavesDispatched=[];
+
+function initStoryWaves(){
+  storyWavesDispatched=STORY_WAVE_SCHEDULE.map(()=>false);
+}
+
+function tickStoryWaves(){
+  const elapsed=Date.now()-matchStartTime;
+  for(let i=0;i<STORY_WAVE_SCHEDULE.length;i++){
+    if(storyWavesDispatched[i])continue;
+    const [enemyIdx, spawnTime]=STORY_WAVE_SCHEDULE[i];
+    if(elapsed>=spawnTime){
+      storyWavesDispatched[i]=true;
+      spawnUnit(STORY_ENEMIES[enemyIdx].baseCi,false,undefined,undefined,enemyIdx);
+      // Show enemy arrival message for notable enemies
+      if(enemyIdx===2&&storyWavesDispatched.filter((v,j)=>v&&STORY_WAVE_SCHEDULE[j][0]===2).length===1){
+        showSpecial('⚠️ DE STAM LEIDER VERSCHIJNT!','#ff4444');
+      }
+    }
+  }
+}
+
 function tick(){
   if(!gameRunning)return;
   const now=Date.now();
   const eHX=GAME_W-80,mHX=70;
 
-  // AI spawning
-  if(now-lastAiSpawn>3800){
-    lastAiSpawn=now;
-    const r=Math.random();
-    const ci=r<0.18?0:r<0.36?1:r<0.50?2:r<0.62?3:r<0.80?4:5;
-    const lv=enemyULvl[ci],b=BASE[ci];
-    spawnUnit(ci,false,b.dmg+lv,b.hp+lv*2);
-  }
-  if(now-lastEnemyUnitUpg>ENEMY_UPG_INTERVAL){
-    lastEnemyUnitUpg=now;
-    const ci=Math.floor(Math.random()*6);
-    enemyULvl[ci]++;
-    showSpecial('👹 VIJAND '+BASE[ci].name.toUpperCase()+' STERKER! ★'+enemyULvl[ci],'#ff6644');
+  if(isStoryMode){
+    // Story mode: use wave schedule
+    if(!storyWavesDispatched){initStoryWaves();}
+    tickStoryWaves();
+  }else{
+    // Normal AI spawning
+    if(now-lastAiSpawn>3800){
+      lastAiSpawn=now;
+      const r=Math.random();
+      const ci=r<0.18?0:r<0.36?1:r<0.50?2:r<0.62?3:r<0.80?4:5;
+      const lv=enemyULvl[ci],b=BASE[ci];
+      spawnUnit(ci,false,b.dmg+lv,b.hp+lv*2);
+    }
+    if(now-lastEnemyUnitUpg>ENEMY_UPG_INTERVAL){
+      lastEnemyUnitUpg=now;
+      const ci=Math.floor(Math.random()*6);
+      enemyULvl[ci]++;
+      showSpecial('👹 VIJAND '+BASE[ci].name.toUpperCase()+' STERKER! ★'+enemyULvl[ci],'#ff6644');
+    }
   }
 
   const toRemove=[];
@@ -1012,11 +1389,9 @@ function tick(){
     if(!el){toRemove.push({id:u.id,gc:false});continue;}
     const dir=u.isPlayer?1:-1;
 
-    // ── BUILDER LOGIC ──
     if(u.isBuilder){
       const hutX=u.isPlayer?eHX:mHX;
       const stopDist=u.isPlayer?(eHX-u.x):(u.x-mHX);
-
       if(stopDist<=18){
         if(now-u.lastWall>u.wallInterval){
           u.lastWall=now;
@@ -1026,20 +1401,17 @@ function tick(){
         }
         continue;
       }
-
       if(now-u.lastWall>u.wallInterval){
         u.lastWall=now;
         const wallX=u.isPlayer?u.x+25:u.x-25;
         const tooClose=walls.some(w=>w.isPlayer===u.isPlayer&&Math.abs(w.x-wallX)<25);
         if(!tooClose)spawnWall(wallX,u.isPlayer);
       }
-
       u.x=u.x+dir*BUILDER_SPEED;
       el.style.left=u.x+'px';
       continue;
     }
 
-    // ── REGULAR UNIT LOGIC ──
     let nE=null,nD=Infinity;
     for(const o of units){
       if(o.isPlayer===u.isPlayer||o.hp<=0)continue;
@@ -1080,11 +1452,25 @@ function tick(){
         const dmg=getEffectiveDmg(u.dmg,u.isPlayer);
         if(u.isPlayer)enemyHutHp-=dmg;else myHutHp-=dmg;
         u.lastAtk=now;updateHutUI();
-        if(enemyHutHp<=0||myHutHp<=0){endRound();return;}
+        if(enemyHutHp<=0||myHutHp<=0){
+          if(isStoryMode){endStoryLevel(enemyHutHp<=0);}
+          else{endRound();}
+          return;
+        }
       }
     }else{
       u.x=u.x+dir*UNIT_SPEED;
       el.style.left=u.x+'px';
+    }
+  }
+
+  // Story mode: check if all waves dispatched and no enemies left = victory
+  if(isStoryMode&&storyWavesDispatched){
+    const allDispatched=storyWavesDispatched.every(v=>v);
+    const noEnemies=units.every(u=>u.isPlayer);
+    if(allDispatched&&noEnemies&&myHutHp>0){
+      endStoryLevel(true);
+      return;
     }
   }
 
@@ -1128,6 +1514,18 @@ function nextRound(){
   document.getElementById('game-over').style.display='none';
   startRound();
 }
+
+// init story wave array on first story start
+function startLevel1GameInit(){
+  storyWavesDispatched=STORY_WAVE_SCHEDULE.map(()=>false);
+}
+
+// Override startStoryRound to also init waves
+const _origStartStoryRound=startStoryRound;
+window.startStoryRound=function(){
+  startLevel1GameInit();
+  _origStartStoryRound();
+};
 
 initSprites();
 document.getElementById('main-menu').style.display='flex';
