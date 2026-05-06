@@ -267,12 +267,12 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
   <div class="hut" id="my-hut" style="left:14px">
     <canvas id="hut-p-canvas" width="26" height="34" style="width:52px;height:68px;image-rendering:pixelated"></canvas>
     <div class="hp-bar-wrap"><div class="hp-bar" id="my-hut-bar" style="background:#4ade80;width:100%"></div></div>
-    <div class="hut-hp" id="my-hut-hp">200HP</div>
+    <div class="hut-hp" id="my-hut-hp">250HP</div>
   </div>
   <div class="hut" id="enemy-hut" style="right:14px">
     <canvas id="hut-e-canvas" width="26" height="34" style="width:52px;height:68px;image-rendering:pixelated"></canvas>
     <div class="hp-bar-wrap"><div class="hp-bar" id="enemy-hut-bar" style="background:#f87171;width:100%"></div></div>
-    <div class="hut-hp" id="enemy-hut-hp">200HP</div>
+    <div class="hut-hp" id="enemy-hut-hp">250HP</div>
   </div>
   <div id="series-score">JIJ: <span id="p-wins">0</span> ⭐ vs ⭐ <span id="e-wins">0</span> :vijand</div>
   <div id="story-mode-badge">📖 LEVEL 1 — DE WOESTIJN</div>
@@ -676,9 +676,9 @@ function drawSprite(cvs,spr){
 // Story enemy definitions (indices 10,11,12 = story-only)
 // They map to BASE indices 1,2,3 for stats but use custom sprites & names
 const STORY_ENEMIES=[
-  {name:'Bandiet',     baseCi:1, sprE:SPR_BANDIET_E, dmgMult:1.0, hpMult:1.0},
-  {name:'Boogschutter',baseCi:2, sprE:SPR_BOOG_E,    dmgMult:1.0, hpMult:1.0},
-  {name:'Stam Leider', baseCi:3, sprE:SPR_CHIEF_E,   dmgMult:0.9, hpMult:1.1},
+  {name:'Bandiet',     baseCi:1, sprE:SPR_BANDIET_E, dmgMult:1.4, hpMult:1.5},
+  {name:'Boogschutter',baseCi:2, sprE:SPR_BOOG_E,    dmgMult:1.5, hpMult:1.4},
+  {name:'Stam Leider', baseCi:3, sprE:SPR_CHIEF_E,   dmgMult:1.3, hpMult:1.8},
 ];
 
 function initSprites(){
@@ -1326,13 +1326,13 @@ function showSpecial(txt,col){
 // Wave schedule: 12 waves total, mix of enemy types
 const STORY_WAVE_SCHEDULE=[
   // [storyEnemyIdx, delay_ms_from_start]
-  [0,3000],[0,5000],                              // wave 1-2: bandieten
-  [0,8000],[1,10000],                             // wave 3-4: bandiet + boogschutter
-  [0,13000],[0,15000],[1,17000],                  // wave 5-7: meer druk
-  [0,20000],[1,22000],[0,24000],                  // wave 8-10: intensificer
-  [2,28000],                                      // wave 11: STAM LEIDER
-  [0,31000],[1,33000],[0,35000],[2,38000],        // wave 12: eindaanval
-  [0,42000],[0,44000],[1,46000],[2,50000],        // wave 13: final push
+  [0,5000],[0,9000],                               // wave 1-2: bandieten
+  [0,14000],[1,18000],                             // wave 3-4: bandiet + boogschutter
+  [0,23000],[0,27000],[1,31000],                   // wave 5-7: meer druk
+  [0,36000],[1,40000],[0,44000],                   // wave 8-10: intensificer
+  [2,50000],                                       // wave 11: STAM LEIDER
+  [0,55000],[1,59000],[0,63000],[2,68000],         // wave 12: eindaanval
+  [0,73000],[0,77000],[1,81000],[2,86000],         // wave 13: final push
 ];
 let storyWavesDispatched=[];
 
@@ -1362,9 +1362,18 @@ function tick(){
   const eHX=GAME_W-80,mHX=70;
 
   if(isStoryMode){
-    // Story mode: use wave schedule
+    // Story mode: use wave schedule, then keep spawning after all waves done
     if(!storyWavesDispatched){initStoryWaves();}
     tickStoryWaves();
+    // After all scheduled waves, keep spawning so only hut destruction ends the level
+    if(storyWavesDispatched&&storyWavesDispatched.every(v=>v)){
+      if(now-lastAiSpawn>6000){
+        lastAiSpawn=now;
+        const r=Math.random();
+        const sei=r<0.5?0:r<0.8?1:2;
+        spawnUnit(STORY_ENEMIES[sei].baseCi,false,undefined,undefined,sei);
+      }
+    }
   }else{
     // Normal AI spawning
     if(now-lastAiSpawn>3800){
@@ -1461,16 +1470,6 @@ function tick(){
     }else{
       u.x=u.x+dir*UNIT_SPEED;
       el.style.left=u.x+'px';
-    }
-  }
-
-  // Story mode: check if all waves dispatched and no enemies left = victory
-  if(isStoryMode&&storyWavesDispatched){
-    const allDispatched=storyWavesDispatched.every(v=>v);
-    const noEnemies=units.every(u=>u.isPlayer);
-    if(allDispatched&&noEnemies&&myHutHp>0){
-      endStoryLevel(true);
-      return;
     }
   }
 
