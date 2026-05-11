@@ -267,12 +267,12 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
   <div class="hut" id="my-hut" style="left:14px">
     <canvas id="hut-p-canvas" width="26" height="34" style="width:52px;height:68px;image-rendering:pixelated"></canvas>
     <div class="hp-bar-wrap"><div class="hp-bar" id="my-hut-bar" style="background:#4ade80;width:100%"></div></div>
-    <div class="hut-hp" id="my-hut-hp">250HP</div>
+    <div class="hut-hp" id="my-hut-hp">300HP</div>
   </div>
   <div class="hut" id="enemy-hut" style="right:14px">
     <canvas id="hut-e-canvas" width="26" height="34" style="width:52px;height:68px;image-rendering:pixelated"></canvas>
     <div class="hp-bar-wrap"><div class="hp-bar" id="enemy-hut-bar" style="background:#f87171;width:100%"></div></div>
-    <div class="hut-hp" id="enemy-hut-hp">250HP</div>
+    <div class="hut-hp" id="enemy-hut-hp">300HP</div>
   </div>
   <div id="series-score">JIJ: <span id="p-wins">0</span> ⭐ vs ⭐ <span id="e-wins">0</span> :vijand</div>
   <div id="story-mode-badge">📖 LEVEL 1 — DE WOESTIJN</div>
@@ -294,7 +294,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
   <!-- Upgrade shop -->
   <div id="shop-overlay">
     <div id="shop-title">WINKEL</div>
-    <div id="shop-coins-display">Coins: 0 / 500</div>
+    <div id="shop-coins-display">Coins: 0 / 9999</div>
     <div id="shop-grid"></div>
     <button id="shop-close" onclick="closeShop()">opzouten</button>
   </div>
@@ -302,7 +302,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
   <!-- Powerup shop -->
   <div id="powerup-overlay">
     <div id="powerup-title">goddelijke krachten</div>
-    <div id="powerup-coins-display">Coins: 0 / 500</div>
+    <div id="powerup-coins-display">Coins: 0 / 9999</div>
     <div id="powerup-grid">
       <div class="pu-card">
         <div class="pu-icon">🔥</div>
@@ -765,7 +765,7 @@ function startLevel1Game(){
   isStoryMode=true;
   storyWaveCount=0;
   starLevels=[0,0,0,0,0,0];
-  coins=50; // starting bonus for story mode
+  coins=50; 
   powerups={razernij:{active:false,endTime:0},zandbom:{used:false},superTsjaad:{bought:false}};
   document.getElementById('main-menu').style.display='none';
   document.getElementById('series-score').style.display='none';
@@ -896,12 +896,12 @@ function getUpgMult(idx,starLevel){if(idx===3&&starLevel===3)return 2.0;return M
 const MAX_NAMES=['Rijke Bedelaar','Ultimate Vechter','Schijt Gooier','Goddelijke Tsjaadinator','nucleare docter','Mega Barricade Maker'];
 const STAR3_SPR=[SPR_BEG_UP,SPR_WAR_UP,SPR_RNG_UP,SPR_LIO_GD,SPR_LOS_UP,SPR_BAR_UP];
 const COIN_KILL=[2,4,6,7,3,3];
-const MAX_COINS=9999,MAX_HUT_HP=250,MAX_WATER=20;
+const MAX_COINS=9999,MAX_HUT_HP=300,MAX_WATER=20ml;
 const BASE_WATER_RATE=1.3;
 const UNIT_SPEED=1.3;
 const STORM_INTERVAL=60000,STORM_DURATION=3000,STORM_DAMAGE=3;
 const GAME_W=700;
-const ENEMY_UPG_INTERVAL=250000;
+const ENEMY_UPG_INTERVAL=25000;
 const WATER_BOOST_TIME=120000;
 const WINS_TO_WIN=3;
 const BUILDER_SPEED=0.4;
