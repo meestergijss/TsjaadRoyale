@@ -111,6 +111,31 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 #round-banner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.9);color:#ffd080;font-size:22px;font-weight:bold;padding:16px 32px;z-index:210;display:none;text-align:center;border:3px solid #ff8800;letter-spacing:2px;}
 #series-score{position:absolute;top:4px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.75);color:#fff;font-size:11px;padding:2px 12px;border:1px solid #aa7700;z-index:55;letter-spacing:1px;}
 
+/* ── STORY INTRO LEVEL 3 ── */
+#story-intro3{
+  position:absolute;inset:0;background:rgba(0,0,0,0.97);
+  z-index:380;display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;border-radius:6px;
+  background-image:radial-gradient(ellipse at 50% 30%,rgba(20,80,20,0.5) 0%,transparent 70%);
+}
+#story-intro3.open{display:flex;}
+
+/* ── SURVIVAL TIMER (level 2) ── */
+#survival-timer{
+  position:absolute;top:4px;right:8px;
+  background:rgba(0,40,0,0.85);
+  color:#44ff88;font-size:12px;font-weight:bold;
+  padding:3px 10px;border:2px solid #22bb55;z-index:60;
+  letter-spacing:1px;display:none;
+  text-shadow:0 0 6px #00ff44;
+}
+#survival-timer.urgent{
+  background:rgba(80,0,0,0.9);color:#ff4444;border-color:#ff2222;
+  text-shadow:0 0 6px #ff0000;
+  animation:urgentPulse 0.5s ease-in-out infinite alternate;
+}
+@keyframes urgentPulse{from{opacity:1}to{opacity:0.6}}
+
 /* ── MAIN MENU ── */
 #main-menu{position:absolute;inset:0;background:rgba(10,5,0,0.97);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;border-radius:6px;}
 #menu-title{color:#ffd080;font-size:28px;font-weight:bold;letter-spacing:4px;text-shadow:0 0 15px #ff8800;}
@@ -217,6 +242,15 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 }
 #intro-back-btn:hover{color:#ccc;}
 
+/* ── LEVEL 2 INTRO ── */
+#story-intro2{
+  position:absolute;inset:0;background:rgba(0,0,0,0.97);
+  z-index:380;display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;border-radius:6px;
+  background-image:radial-gradient(ellipse at 50% 30%,rgba(60,80,20,0.5) 0%,transparent 70%);
+}
+#story-intro2.open{display:flex;}
+
 /* ── LEVEL WIN SCREEN ── */
 #level-win{
   position:absolute;inset:0;background:rgba(0,0,0,0.92);
@@ -281,6 +315,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
   </div>
   <div id="storm-timer">⏳ Storm: 30s</div>
   <div id="match-timer">⏱ 0:00</div>
+  <div id="survival-timer">⏳ 3:00</div>
   <div id="water-boost">je bent minder uitgedroogt! x2 water!</div>
   <div id="powerup-indicators"></div>
   <div id="msg"></div>
@@ -342,8 +377,8 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 
   <!-- LEVEL WIN -->
   <div id="level-win">
-    <div class="lw-badge">⭐ LEVEL GEWONNEN ⭐</div>
-    <h2>🏆 DE WOESTIJN IS BEVRIJD!</h2>
+    <div class="lw-badge" id="lw-badge">⭐ LEVEL GEWONNEN ⭐</div>
+    <h2 id="lw-title">🏆 DE WOESTIJN IS BEVRIJD!</h2>
     <div class="lw-stars" id="lw-stars">⭐⭐⭐</div>
     <div class="lw-text" id="lw-text">
       Jullie hebben de bandieten verslagen!<br>
@@ -351,17 +386,17 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
     </div>
     <div class="lw-coins" id="lw-coins">+50🪙 beloond!</div>
     <button id="lw-continue-btn" onclick="levelWinContinue()">📖 VERDER NAAR VERHAAL ▶</button>
-    <button id="lw-retry-btn" onclick="retryLevel1()">↩ opnieuw proberen</button>
+    <button id="lw-retry-btn" onclick="retryCurrentLevel()">↩ opnieuw proberen</button>
   </div>
 
   <!-- LEVEL LOSE -->
   <div id="level-lose">
-    <h2>💀 AANVAL MISLUKT...</h2>
-    <div class="ll-text">
+    <h2 id="ll-title">💀 AANVAL MISLUKT...</h2>
+    <div class="ll-text" id="ll-text">
       De bandieten zijn te sterk...<br>
       Je dorp is ingenomen. Probeer het opnieuw!
     </div>
-    <button id="ll-retry-btn" onclick="retryLevel1()">↩ OPNIEUW PROBEREN</button>
+    <button id="ll-retry-btn" onclick="retryCurrentLevel()">↩ OPNIEUW PROBEREN</button>
     <button id="ll-back-btn" onclick="backToStoryFromLose()">← Terug naar verhaal</button>
   </div>
 
@@ -380,7 +415,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
     </div>
   </div>
 
-  <!-- STORY INTRO (shown before level 1 starts) -->
+  <!-- STORY INTRO LEVEL 1 -->
   <div id="story-intro">
     <div id="intro-level-badge">📖 LEVEL 1 — DE WOESTIJN</div>
     <div id="intro-title">DE BANDIET AANVAL</div>
@@ -408,6 +443,58 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
     </div>
     <button id="intro-start-btn" onclick="startLevel1Game()">⚔ AANVAL AFSLAAN! ▶</button>
     <button id="intro-back-btn" onclick="closeIntro()">← terug naar levelkeuze</button>
+  </div>
+
+  <!-- STORY INTRO LEVEL 2 -->
+  <div id="story-intro2">
+    <div style="color:#88ffcc;font-size:11px;letter-spacing:3px;border:1px solid #226644;padding:3px 14px;margin-bottom:4px;">📖 LEVEL 2 — DE ZANDSTORM</div>
+    <div style="color:#88ffcc;font-size:20px;font-weight:bold;letter-spacing:4px;text-shadow:0 0 15px #22ff88;">OVERLEVEN!</div>
+    <div style="color:#e0c8a0;font-size:11px;line-height:1.8;text-align:center;max-width:480px;border:1px solid #2a5838;background:rgba(0,30,10,0.7);padding:12px 18px;font-style:italic;letter-spacing:0.3px;">
+      "Een enorme zandstorm trekt over de woestijn!<br>
+      In de chaos duiken honderden Zand Vechters op — snelle krijgers gehard door het zand.<br>
+      Je hoeft ze niet te verslaan. <strong style="color:#ffdd44">Overleef gewoon 3 minuten!</strong><br>
+      Zolang jouw hut nog staat, win je!"
+    </div>
+    <div id="intro-enemy-row2" style="display:flex;gap:20px;margin:6px 0;align-items:flex-end;">
+      <div class="intro-enemy" style="border-color:#226644;">
+        <canvas width="16" height="16" style="width:28px;height:28px" id="intro-spr-sv"></canvas>
+        <div class="en-name" style="color:#88ffcc;">ZAND VECHTER</div>
+        <div class="en-stat" style="color:#44aa88;">Snel & talrijk</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:#ffdd44;font-size:9px;letter-spacing:1px;background:rgba(40,30,0,0.7);border:1px solid #aa8800;padding:8px 10px;border-radius:3px;">
+        <div style="font-size:24px;">⏱</div>
+        <div style="color:#ffdd44;font-weight:bold;font-size:10px;">3 MINUTEN</div>
+        <div style="color:#cc9933;font-size:8px;">overleven!</div>
+      </div>
+    </div>
+    <button style="background:#1a5030;border:2px solid #22ff88;color:#88ffcc;font-size:13px;font-weight:bold;padding:10px 32px;cursor:pointer;letter-spacing:2px;font-family:monospace;margin-top:4px;transition:background 0.15s;" onmouseover="this.style.background='#2a8050'" onmouseout="this.style.background='#1a5030'" onclick="startLevel2Game()">🛡 OVERLEVEN! ▶</button>
+    <button style="background:transparent;border:1px solid #555;color:#888;font-size:10px;padding:5px 18px;cursor:pointer;font-family:monospace;" onmouseover="this.style.color='#ccc'" onmouseout="this.style.color='#888'" onclick="closeIntro2()">← terug naar levelkeuze</button>
+  </div>
+
+
+  <!-- STORY INTRO LEVEL 3 -->
+  <div id="story-intro3">
+    <div style="color:#aaffaa;font-size:11px;letter-spacing:3px;border:1px solid #447744;padding:3px 14px;margin-bottom:4px;">📖 LEVEL 3 — TSJAAD MEER</div>
+    <div style="color:#aaffaa;font-size:20px;font-weight:bold;letter-spacing:4px;text-shadow:0 0 15px #44ff44;">DE BOEREN REVOLTE!</div>
+    <div style="color:#e0c8a0;font-size:11px;line-height:1.8;text-align:center;max-width:480px;border:1px solid #3a5a2a;background:rgba(0,20,0,0.7);padding:12px 18px;font-style:italic;letter-spacing:0.3px;">
+      "De woedende boeren van het Tsjaad Meer komen eraan!<br>
+      Ze zwaaien met hun harken en brengen hun varkens mee als wapen.<br>
+      Versla de vijandige hut voordat je eigen hut vernietigd wordt!"
+    </div>
+    <div style="display:flex;gap:20px;margin:6px 0;align-items:flex-end;">
+      <div class="intro-enemy" style="border-color:#447744;">
+        <canvas width="16" height="16" style="width:28px;height:28px" id="intro-spr-boer"></canvas>
+        <div class="en-name" style="color:#aaffaa;">BOER</div>
+        <div class="en-stat" style="color:#77cc77;">7dmg / 15hp</div>
+      </div>
+      <div class="intro-enemy" style="border-color:#aa8844;">
+        <canvas width="16" height="16" style="width:28px;height:28px" id="intro-spr-varken"></canvas>
+        <div class="en-name" style="color:#ffcc88;">VARKEN</div>
+        <div class="en-stat" style="color:#cc9955;">4dmg / 6hp — razendsnel!</div>
+      </div>
+    </div>
+    <button style="background:#1a4020;border:2px solid #44ff44;color:#aaffaa;font-size:13px;font-weight:bold;padding:10px 32px;cursor:pointer;letter-spacing:2px;font-family:monospace;margin-top:4px;transition:background 0.15s;" onmouseover="this.style.background='#2a6030'" onmouseout="this.style.background='#1a4020'" onclick="startLevel3Game()">⚔ AANVALLEN! ▶</button>
+    <button style="background:transparent;border:1px solid #555;color:#888;font-size:10px;padding:5px 18px;cursor:pointer;font-family:monospace;" onmouseover="this.style.color='#ccc'" onmouseout="this.style.color='#888'" onclick="closeIntro3()">← terug naar levelkeuze</button>
   </div>
 
   <!-- MAIN MENU -->
@@ -487,10 +574,11 @@ const PAL={
   teal:'#22BBAA',dteal:'#117766',lteal:'#55DDCC',
   wblue:'#4488BB',dwblue:'#224466',lwblue:'#88CCEE',
   wbrown:'#7a6040',dwbrown:'#4a3820',lwbrown:'#b09060',
-  // Story enemy colors
-  bandit:'#5A3A1A',dbandit:'#3A1A00',lbandit:'#8B6040',   // dark brown bandit
-  archer:'#2A4A2A',darcher:'#1A2A1A',larcher:'#4A7A4A',   // green archer
-  chief:'#4A0000',dchief:'#2A0000',lchief:'#8A1A1A',      // deep crimson chief
+  bandit:'#5A3A1A',dbandit:'#3A1A00',lbandit:'#8B6040',
+  archer:'#2A4A2A',darcher:'#1A2A1A',larcher:'#4A7A4A',
+  chief:'#4A0000',dchief:'#2A0000',lchief:'#8A1A1A',
+  // Zand Vechter: sandy yellow-orange
+  svecht:'#C8A020',dsvecht:'#806010',lsvecht:'#F0CC60',
 };
 const T=null;
 
@@ -638,33 +726,51 @@ const SPR_RNG_E=mirror(SPR_RNG);
 const SPR_LIO_E=mirrorRecolor(SPR_LIO,{purple:'red',lpurp:'lred',dpurp:'dred'});
 const SPR_LOS_E=mirrorRecolor(SPR_LOS,{teal:'red',dteal:'dred'});
 
-// ── STORY ENEMY SPRITES ── unique recolors for level 1 enemies
-// Bandiet = Tsjaad Vechter recolored to dark brown/bandit colors (mirrored = enemy direction)
-const SPR_BANDIET_E=mirrorRecolor(SPR_WAR,{
-  red:'bandit',dred:'dbandit',lred:'lbandit',
-  brown:'dbandit',dbrown:'dbandit',gold:'tan'
+// Level 1 enemy sprites
+const SPR_BANDIET_E=mirrorRecolor(SPR_WAR,{red:'bandit',dred:'dbandit',lred:'lbandit',brown:'dbandit',dbrown:'dbandit',gold:'tan'});
+const SPR_BOOG_E=mirrorRecolor(SPR_RNG,{gray:'archer',lgray:'larcher',dgray:'darcher',rock:'archer',drock:'darcher',black:'black'});
+const SPR_CHIEF_E=mirrorRecolor(SPR_LIO,{purple:'chief',lpurp:'lchief',dpurp:'dchief',gold:'tan'});
+const SPR_BANDIET_PREV=recolor(SPR_WAR,{red:'bandit',dred:'dbandit',lred:'lbandit',brown:'dbandit',dbrown:'dbandit',gold:'tan'});
+const SPR_BOOG_PREV=recolor(SPR_RNG,{gray:'archer',lgray:'larcher',dgray:'darcher',rock:'archer',drock:'darcher'});
+const SPR_CHIEF_PREV=recolor(SPR_LIO,{purple:'chief',lpurp:'lchief',dpurp:'dchief',gold:'tan'});
+
+
+// ── BOER sprite (level 3) ── farmer with rake: green overalls, brown hat
+// Based on BEG shape, recolored to green farmer
+const SPR_BOER_E=mirrorRecolor(SPR_BEG,{
+  tan:'#5a8a30',dtan:'#3a6a10',
+  brown:'#7a4a10',dbrown:'#4a2a00',
+  skin:'#E8B87A',skin2:'#C8905A'
 });
-// Boogschutter = Zand Gooier recolored to green archer (mirrored)
-const SPR_BOOG_E=mirrorRecolor(SPR_RNG,{
-  gray:'archer',lgray:'larcher',dgray:'darcher',
-  rock:'archer',drock:'darcher',black:'black'
-});
-// Stam Leider = Tsjaadinator recolored to deep crimson (mirrored)
-const SPR_CHIEF_E=mirrorRecolor(SPR_LIO,{
-  purple:'chief',lpurp:'lchief',dpurp:'dchief',gold:'tan'
+const SPR_BOER_PREV=recolor(SPR_BEG,{
+  tan:'#5a8a30',dtan:'#3a6a10',
+  brown:'#7a4a10',dbrown:'#4a2a00'
 });
 
-// Preview sprites for intro screen (facing right, player-side perspective)
-const SPR_BANDIET_PREV=recolor(SPR_WAR,{
-  red:'bandit',dred:'dbandit',lred:'lbandit',
-  brown:'dbandit',dbrown:'dbandit',gold:'tan'
+// ── VARKEN sprite (level 3) ── small pink pig, based on BEG but tiny & pink
+// Use BEG recolored to pink pig colors
+const SPR_VARKEN_E=mirrorRecolor(SPR_BEG,{
+  tan:'#F0A0B0',dtan:'#C07080',
+  brown:'#D06080',dbrown:'#A04060',
+  skin:'#F5C0C8',skin2:'#E09090'
 });
-const SPR_BOOG_PREV=recolor(SPR_RNG,{
-  gray:'archer',lgray:'larcher',dgray:'darcher',
-  rock:'archer',drock:'darcher'
+const SPR_VARKEN_PREV=recolor(SPR_BEG,{
+  tan:'#F0A0B0',dtan:'#C07080',
+  brown:'#D06080',dbrown:'#A04060',
+  skin:'#F5C0C8',skin2:'#E09090'
 });
-const SPR_CHIEF_PREV=recolor(SPR_LIO,{
-  purple:'chief',lpurp:'lchief',dpurp:'dchief',gold:'tan'
+
+// ── ZAND VECHTER sprite (level 2) ──
+// Same shape as Tsjaad Vechter (SPR_WAR) but sandy yellow colors, mirrored (enemy direction)
+const SPR_ZVECHT_E=mirrorRecolor(SPR_WAR,{
+  red:'svecht',dred:'dsvecht',lred:'lsvecht',
+  brown:'dsvecht',dbrown:'dsvecht',
+  gold:'lsvecht'
+});
+const SPR_ZVECHT_PREV=recolor(SPR_WAR,{
+  red:'svecht',dred:'dsvecht',lred:'lsvecht',
+  brown:'dsvecht',dbrown:'dsvecht',
+  gold:'lsvecht'
 });
 
 function drawSprite(cvs,spr){
@@ -673,12 +779,16 @@ function drawSprite(cvs,spr){
   for(let y=0;y<spr.length;y++)for(let x=0;x<spr[y].length;x++){const c=spr[y][x];if(!c)continue;ctx.fillStyle=PAL[c]||c;ctx.fillRect(x,y,1,1);}
 }
 
-// Story enemy definitions (indices 10,11,12 = story-only)
-// They map to BASE indices 1,2,3 for stats but use custom sprites & names
 const STORY_ENEMIES=[
   {name:'Bandiet',     baseCi:1, sprE:SPR_BANDIET_E, dmgMult:1.4, hpMult:1.5},
   {name:'Boogschutter',baseCi:2, sprE:SPR_BOOG_E,    dmgMult:1.5, hpMult:1.4},
   {name:'Stam Leider', baseCi:3, sprE:SPR_CHIEF_E,   dmgMult:1.3, hpMult:1.8},
+  // idx 3 = Zand Vechter (level 2)
+  {name:'Zand Vechter',baseCi:1, sprE:SPR_ZVECHT_E,  dmgMult:1.0, hpMult:1.0},
+  // idx 4 = Boer (level 3) — 7 dmg, 15 hp
+  {name:'Boer',         baseCi:1, sprE:SPR_BOER_E,    fixedDmg:7,  fixedHp:15},
+  // idx 5 = Varken (level 3) — 4 dmg, 6 hp, fast
+  {name:'Varken',       baseCi:0, sprE:SPR_VARKEN_E,  fixedDmg:4,  fixedHp:6,  fast:true},
 ];
 
 function initSprites(){
@@ -706,46 +816,42 @@ function initSprites(){
     c.width=16;c.height=16;c.style.cssText='width:32px;height:32px;image-rendering:pixelated;';
     drawSprite(c,s);row.appendChild(c);
   });
-  // Draw intro enemy previews
   drawSprite(document.getElementById('intro-spr-0'),SPR_BANDIET_PREV);
   drawSprite(document.getElementById('intro-spr-1'),SPR_BOOG_PREV);
   drawSprite(document.getElementById('intro-spr-2'),SPR_CHIEF_PREV);
+  drawSprite(document.getElementById('intro-spr-sv'),SPR_ZVECHT_PREV);
+  drawSprite(document.getElementById('intro-spr-boer'),SPR_BOER_PREV);
+  drawSprite(document.getElementById('intro-spr-varken'),SPR_VARKEN_PREV);
   buildLevelGrid();
 }
 
-// ── STORY SCREEN ──
 function buildLevelGrid(){
   const grid=document.getElementById('level-grid');
   grid.innerHTML='';
   const levelNames=['De Woestijn','de zandstorm','Tsjaad meer','De Gouden Tent','de waarschuwing','overleef de nacht','De Heilige tempel','Berg van Botten','Poortwachter','De Tsjaad tiran'];
-  const levelEmojis=['🏜️','🌄','🌊','⛺','🌪️','🌙','💧','💀','🚪','👑'];
+  const levelEmojis=['🏜️','🌪️','🌊','⛺','🌪️','🌙','💧','💀','🚪','👑'];
   for(let i=0;i<10;i++){
     const btn=document.createElement('button');
-    btn.className='level-btn'+(i===0?' unlocked':'');
-    const lockIcon=i===0?'▶ SPELEN':'🔒';
+    const isUnlocked=i===0||i===1||i===2;
+    btn.className='level-btn'+(isUnlocked?' unlocked':'');
+    const lockIcon=i===0?'▶ SPELEN':i===1?'▶ SPELEN':i===2?'▶ SPELEN':'🔒';
     btn.innerHTML=`<div class="lnum">${i+1}</div><div class="ltxt">${levelEmojis[i]} ${levelNames[i]}</div><div class="lstar">${lockIcon}</div>`;
-    if(i===0){btn.onclick=()=>openLevel1Intro();}
-    else{btn.onclick=()=>openLevelPopup(i+1,levelNames[i]);}
+    if(i===0)btn.onclick=()=>openLevel1Intro();
+    else if(i===1)btn.onclick=()=>openLevel2Intro();
+    else if(i===2)btn.onclick=()=>openLevel3Intro();
+    else btn.onclick=()=>openLevelPopup(i+1,levelNames[i]);
     grid.appendChild(btn);
   }
 }
 
-function openStory(){
-  document.getElementById('story-screen').classList.add('open');
-}
-function closeStory(){
-  document.getElementById('story-screen').classList.remove('open');
-  closeLevelPopup();
-}
+function openStory(){document.getElementById('story-screen').classList.add('open');}
+function closeStory(){document.getElementById('story-screen').classList.remove('open');closeLevelPopup();}
 function openLevelPopup(num,name){
   document.getElementById('lp-title-txt').textContent='LEVEL '+num+': '+name.toUpperCase();
   document.getElementById('level-popup').classList.add('open');
 }
-function closeLevelPopup(){
-  document.getElementById('level-popup').classList.remove('open');
-}
+function closeLevelPopup(){document.getElementById('level-popup').classList.remove('open');}
 
-// ── LEVEL 1 STORY INTRO ──
 function openLevel1Intro(){
   document.getElementById('story-screen').classList.remove('open');
   document.getElementById('story-intro').classList.add('open');
@@ -755,32 +861,72 @@ function closeIntro(){
   document.getElementById('story-screen').classList.add('open');
 }
 
-// ── LEVEL 1 GAME ──
+function openLevel2Intro(){
+  document.getElementById('story-screen').classList.remove('open');
+  document.getElementById('story-intro2').classList.add('open');
+}
+function closeIntro2(){
+  document.getElementById('story-intro2').classList.remove('open');
+  document.getElementById('story-screen').classList.add('open');
+}
+
+// ── GAME STATE ──
 let isStoryMode=false;
-let storyLevel1WaveTimer=0,storyWaveCount=0,storyMaxWaves=12;
-let storySpawnIntervals=[4000,3500,3000,2500,2200,2000,2000,1800,1800,1600,1500,1500];
+let currentStoryLevel=0; // 1 or 2
+let storyWavesDispatched=[];
+
+// Level 2 survival
+const LEVEL2_SURVIVE_MS=3*60*1000; // 3 minutes
+let level2SurvivalEnd=0;
+let survivalInterval=null;
 
 function startLevel1Game(){
   document.getElementById('story-intro').classList.remove('open');
   isStoryMode=true;
-  storyWaveCount=0;
+  currentStoryLevel=1;
   starLevels=[0,0,0,0,0,0];
-  coins=50; 
+  coins=50;
   powerups={razernij:{active:false,endTime:0},zandbom:{used:false},superTsjaad:{bought:false}};
   document.getElementById('main-menu').style.display='none';
   document.getElementById('series-score').style.display='none';
   document.getElementById('score-area').style.display='none';
+  document.getElementById('story-mode-badge').textContent='📖 LEVEL 1 — DE WOESTIJN';
   document.getElementById('story-mode-badge').style.display='block';
+  document.getElementById('survival-timer').style.display='none';
+  startStoryRound();
+}
+
+function startLevel2Game(){
+  document.getElementById('story-intro2').classList.remove('open');
+  isStoryMode=true;
+  currentStoryLevel=2;
+  starLevels=[0,0,0,0,0,0];
+  coins=60;
+  powerups={razernij:{active:false,endTime:0},zandbom:{used:false},superTsjaad:{bought:false}};
+  document.getElementById('main-menu').style.display='none';
+  document.getElementById('series-score').style.display='none';
+  document.getElementById('score-area').style.display='none';
+  document.getElementById('story-mode-badge').textContent='📖 LEVEL 2 — DE ZANDSTORM';
+  document.getElementById('story-mode-badge').style.display='block';
+  document.getElementById('survival-timer').style.display='block';
   startStoryRound();
 }
 
 function startStoryRound(){
-  water=6;units=[];walls=[];nextId=0;
+  storyWavesDispatched=[];
+  if(currentStoryLevel===2){
+    // Build level 2 wave schedule
+    level2SurvivalEnd=Date.now()+LEVEL2_SURVIVE_MS;
+    clearInterval(survivalInterval);
+    // survival timer handled in matchTimerInterval tick below
+  }
+  water=currentStoryLevel===2?8:6;
+  units=[];walls=[];nextId=0;
   myHutHp=MAX_HUT_HP;enemyHutHp=MAX_HUT_HP;
   lastAiSpawn=0;stormActive=false;sandParticles=[];
   enemyULvl=[0,0,0,0,0,0];lastEnemyUnitUpg=Date.now()+(99999999);
   waterBoosted=false;matchStartTime=Date.now();
-  storyLevel1WaveTimer=0;storyWaveCount=0;
+
   document.getElementById('units-layer').innerHTML='';
   document.getElementById('walls-layer').innerHTML='';
   document.getElementById('game-over').style.display='none';
@@ -818,10 +964,29 @@ function startStoryRound(){
     const sec=Math.floor(elapsed/1000);
     const m=Math.floor(sec/60),s=sec%60;
     document.getElementById('match-timer').textContent='⏱ '+m+':'+(s<10?'0':'')+s;
+
+    // Level 2 survival countdown
+    if(currentStoryLevel===2){
+      const remaining=Math.max(0,level2SurvivalEnd-Date.now());
+      const rm=Math.floor(remaining/60000);
+      const rs=Math.floor((remaining%60000)/1000);
+      const survEl=document.getElementById('survival-timer');
+      survEl.textContent='⏱ Overleven: '+rm+':'+(rs<10?'0':'')+rs;
+      if(remaining<=30000){
+        survEl.classList.add('urgent');
+      }else{
+        survEl.classList.remove('urgent');
+      }
+      if(remaining<=0&&gameRunning){
+        endStoryLevel(true);
+        return;
+      }
+    }
+
     if(elapsed>=WATER_BOOST_TIME&&!waterBoosted){
       waterBoosted=true;
       document.getElementById('water-boost').style.display='block';
-      showSpecial('de waterput is bijgevuld!','#22ffcc');
+      showSpecial('de waterput is bijgevuld! x2 water!','#22ffcc');
     }
     if(powerups.razernij.active){
       const rem=Math.max(0,Math.ceil((powerups.razernij.endTime-Date.now())/1000));
@@ -831,47 +996,179 @@ function startStoryRound(){
   },250);
 
   gameLoop=setInterval(tick,60);
-  showRoundBanner('⚔ VERDEDIG JE DORP! ⚔',2000);
+
+  if(currentStoryLevel===2){
+    showRoundBanner('🛡 OVERLEEF 3 MINUTEN!',2200);
+  }else{
+    showRoundBanner('⚔ VERDEDIG JE DORP! ⚔',2000);
+  }
 }
+
+// ── LEVEL 2 SPAWN SCHEDULE ──
+// Zand Vechters (storyEnemyIdx=3) spawn rapidly, escalating
+// spawn every ~1.5-2.5 seconds after a brief grace period
+// schedule: [delay_ms_from_start, ...]
+function buildLevel2Schedule(){
+  const schedule=[];
+  // Grace period: 4 seconds
+  // Then spawn rapidly for 3 minutes
+  // Escalation: start at 2200ms interval, ramp down to 900ms by end
+  const totalMs=LEVEL2_SURVIVE_MS;
+  let t=4000;
+  let interval=4000;
+  while(t<totalMs-500){
+    schedule.push(t);
+    // Decrease interval over time (escalation)
+    const progress=t/totalMs; // 0..1
+    interval=4000-Math.floor(progress*2000); // 4000 -> 2000
+    interval=Math.max(2000,interval);
+    t+=interval;
+  }
+  return schedule;
+}
+
+const LEVEL2_WAVE_TIMES=buildLevel2Schedule();
 
 function endStoryLevel(playerWon){
   gameRunning=false;
   clearInterval(gameLoop);clearInterval(waterInterval);
   clearInterval(stormCountdown);clearInterval(matchTimerInterval);
-  if(playerWon){
-    const reward=60;
-    addCoins(reward,350,200);
-    const elapsed=Date.now()-matchStartTime;
-    const stars=elapsed<90000?3:elapsed<150000?2:1;
-    document.getElementById('lw-stars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);
-    document.getElementById('lw-coins').textContent='+'+reward+'🪙 beloond!';
-    setTimeout(()=>{document.getElementById('level-win').style.display='flex';},800);
-  }else{
-    setTimeout(()=>{document.getElementById('level-lose').style.display='flex';},600);
+
+  if(currentStoryLevel===1){
+    if(playerWon){
+      const reward=60;
+      addCoins(reward,350,200);
+      const elapsed=Date.now()-matchStartTime;
+      const stars=elapsed<90000?3:elapsed<150000?2:1;
+      document.getElementById('lw-badge').textContent='⭐ LEVEL 1 GEWONNEN ⭐';
+      document.getElementById('lw-title').textContent='🏆 DE WOESTIJN IS BEVRIJD!';
+      document.getElementById('lw-stars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);
+      document.getElementById('lw-text').textContent='Jullie hebben de bandieten verslagen! De tsjaad kinderen kunnen weer veilig spelen...';
+      document.getElementById('lw-coins').textContent='+'+reward+'🪙 beloond!';
+      document.getElementById('lw-continue-btn').onclick=levelWinContinue;
+      document.getElementById('lw-retry-btn').onclick=retryCurrentLevel;
+      setTimeout(()=>{document.getElementById('level-win').style.display='flex';},800);
+    }else{
+      document.getElementById('ll-title').textContent='💀 AANVAL MISLUKT...';
+      document.getElementById('ll-text').textContent='De bandieten zijn te sterk...\nJe dorp is ingenomen. Probeer het opnieuw!';
+      setTimeout(()=>{document.getElementById('level-lose').style.display='flex';},600);
+    }
+  }else if(currentStoryLevel===2){
+    if(playerWon){
+      const reward=80;
+      addCoins(reward,350,200);
+      const elapsed=Date.now()-matchStartTime;
+      const hpLeft=myHutHp;
+      const stars=hpLeft>200?3:hpLeft>100?2:1;
+      document.getElementById('lw-badge').textContent='⭐ LEVEL 2 GEWONNEN ⭐';
+      document.getElementById('lw-title').textContent='🌪 JE HEBT OVERLEEFD!';
+      document.getElementById('lw-stars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);
+      document.getElementById('lw-text').textContent='3 minuten overleefd! De zandstorm trekt weg...\nJe hut staat nog overeind — de Zand Vechters zijn verslagen!';
+      document.getElementById('lw-coins').textContent='+'+reward+'🪙 beloond!';
+      document.getElementById('lw-continue-btn').onclick=levelWin2Continue;
+      document.getElementById('lw-retry-btn').onclick=retryCurrentLevel;
+      setTimeout(()=>{document.getElementById('level-win').style.display='flex';},800);
+    }else{
+      document.getElementById('ll-title').textContent='💀 JE HUT IS VERWOEST!';
+      document.getElementById('ll-text').textContent='De Zand Vechters waren te snel...\nJe dorp is verwoest. Probeer het opnieuw!';
+      setTimeout(()=>{document.getElementById('level-lose').style.display='flex';},600);
+    }
+  }else if(currentStoryLevel===3){
+    if(playerWon){
+      document.getElementById('lw-badge').textContent='⭐ LEVEL 3 GEWONNEN ⭐';
+      document.getElementById('lw-title').textContent='🐷 DE BOEREN ZIJN VERSLAGEN!';
+      const stars=myHutHp>200?3:myHutHp>100?2:1;
+      document.getElementById('lw-stars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);
+      document.getElementById('lw-text').textContent='De boeren en hun varkens zijn teruggedreven!\nHet Tsjaad Meer is eindelijk veilig...';
+      document.getElementById('lw-coins').textContent='🎉 Goed gedaan!';
+      document.getElementById('lw-continue-btn').onclick=levelWin3Continue;
+      document.getElementById('lw-retry-btn').onclick=retryCurrentLevel;
+      setTimeout(()=>{document.getElementById('level-win').style.display='flex';},800);
+    }else{
+      document.getElementById('ll-title').textContent='💀 DE BOEREN HEBBEN GEWONNEN!';
+      document.getElementById('ll-text').textContent='De boeren met hun harken waren te sterk...\nProbeer het opnieuw!';
+      setTimeout(()=>{document.getElementById('level-lose').style.display='flex';},600);
+    }
   }
 }
 
-function levelWinContinue(){
+function levelWin3Continue(){
   document.getElementById('level-win').style.display='none';
   isStoryMode=false;
   document.getElementById('series-score').style.display='block';
   document.getElementById('score-area').style.display='flex';
   document.getElementById('story-mode-badge').style.display='none';
-  // Show coming-soon for level 2
   document.getElementById('story-screen').classList.add('open');
-  openLevelPopup(2,'de zandstorm');
+  openLevelPopup(4,'De Gouden Tent');
 }
 
-function retryLevel1(){
+function levelWinContinue(){
+  document.getElementById('level-win').style.display='none';
+  document.getElementById('survival-timer').style.display='none';
+  isStoryMode=false;
+  document.getElementById('series-score').style.display='block';
+  document.getElementById('score-area').style.display='flex';
+  document.getElementById('story-mode-badge').style.display='none';
+  document.getElementById('story-screen').classList.add('open');
+  openLevel2Intro();
+}
+
+function levelWin2Continue(){
+  document.getElementById('level-win').style.display='none';
+  document.getElementById('survival-timer').style.display='none';
+  isStoryMode=false;
+  document.getElementById('series-score').style.display='block';
+  document.getElementById('score-area').style.display='flex';
+  document.getElementById('story-mode-badge').style.display='none';
+  document.getElementById('story-screen').classList.add('open');
+  openLevel3Intro();
+}
+
+function openLevel3Intro(){
+  document.getElementById('story-screen').classList.remove('open');
+  document.getElementById('story-intro3').classList.add('open');
+}
+function closeIntro3(){
+  document.getElementById('story-intro3').classList.remove('open');
+  document.getElementById('story-screen').classList.add('open');
+}
+
+function startLevel3Game(){
+  document.getElementById('story-intro3').classList.remove('open');
+  isStoryMode=true;
+  currentStoryLevel=3;
+  starLevels=[0,0,0,0,0,0];
+  coins=70;
+  powerups={razernij:{active:false,endTime:0},zandbom:{used:false},superTsjaad:{bought:false}};
+  document.getElementById('main-menu').style.display='none';
+  document.getElementById('series-score').style.display='none';
+  document.getElementById('score-area').style.display='none';
+  document.getElementById('story-mode-badge').textContent='📖 LEVEL 3 — TSJAAD MEER';
+  document.getElementById('story-mode-badge').style.display='block';
+  document.getElementById('survival-timer').style.display='none';
+  storyWavesDispatched=[];
+  startStoryRound();
+}
+
+function retryCurrentLevel(){
   document.getElementById('level-win').style.display='none';
   document.getElementById('level-lose').style.display='none';
-  isStoryMode=true;
-  storyWaveCount=0;
+  if(currentStoryLevel===2){
+    isStoryMode=true;
+    document.getElementById('survival-timer').style.display='block';
+    level2SurvivalEnd=Date.now()+LEVEL2_SURVIVE_MS;
+  }
+  if(currentStoryLevel===3){
+    isStoryMode=true;
+    document.getElementById('survival-timer').style.display='none';
+  }
+  storyWavesDispatched=[];
   startStoryRound();
 }
 
 function backToStoryFromLose(){
   document.getElementById('level-lose').style.display='none';
+  document.getElementById('survival-timer').style.display='none';
   isStoryMode=false;
   document.getElementById('series-score').style.display='block';
   document.getElementById('score-area').style.display='flex';
@@ -933,6 +1230,7 @@ let matchStartTime,waterBoosted,stormSecondsLeft;
 
 function startSeries(){
   isStoryMode=false;
+  currentStoryLevel=0;
   playerWins=0;enemyWins=0;currentRound=1;
   starLevels=[0,0,0,0,0,0];
   coins=0;
@@ -941,6 +1239,7 @@ function startSeries(){
   document.getElementById('series-score').style.display='block';
   document.getElementById('score-area').style.display='flex';
   document.getElementById('story-mode-badge').style.display='none';
+  document.getElementById('survival-timer').style.display='none';
   startRound();
 }
 
@@ -1228,14 +1527,18 @@ function removeWall(wid){
   if(el){el.style.opacity='0';el.style.transition='opacity 0.2s';setTimeout(()=>el.remove(),250);}
 }
 
-// spawnUnit with optional story enemy override
 function spawnUnit(ci,isPlayer,oDmg,oHp,storyEnemyIdx){
   let c,spr;
-  if(!isPlayer && storyEnemyIdx!==undefined && storyEnemyIdx>=0){
+  let isFast=false;
+  if(!isPlayer&&storyEnemyIdx!==undefined&&storyEnemyIdx>=0){
     const se=STORY_ENEMIES[storyEnemyIdx];
     const base=BASE[se.baseCi];
-    c={...base,dmg:Math.round(base.dmg*se.dmgMult),hp:Math.round(base.hp*se.hpMult)};
+    // Support fixedDmg/fixedHp directly, or dmgMult/hpMult
+    const finalDmg=se.fixedDmg!==undefined?se.fixedDmg:Math.round(base.dmg*(se.dmgMult||1));
+    const finalHp=se.fixedHp!==undefined?se.fixedHp:Math.round(base.hp*(se.hpMult||1));
+    c={...base,dmg:finalDmg,hp:finalHp};
     spr=se.sprE;
+    isFast=!!se.fast;
   }else{
     c=isPlayer?getStats(ci):BASE[ci];
     spr=isPlayer?c.sprP:c.sprE;
@@ -1243,7 +1546,12 @@ function spawnUnit(ci,isPlayer,oDmg,oHp,storyEnemyIdx){
   const dmg=oDmg!==undefined?oDmg:c.dmg;
   const hp=oHp!==undefined?oHp:c.hp;
   const id='u'+nextId++;
-  const startX=isPlayer?90:GAME_W-120;
+  // Spawn inside/behind the hut so units don't jam when something is blocking near it
+  const startX=isPlayer
+    ?(55+Math.random()*20)
+    :(GAME_W-55-Math.random()*20);
+  // Varkens are razendsnel: speed 3.5x normal
+  const unitSpeed=isFast?UNIT_SPEED*3.5:UNIT_SPEED;
   const unit={
     id,ci,isPlayer,x:startX,hp,maxHp:hp,dmg,
     range:c.range,lastAtk:0,atkRate:c.atkRate||1200,
@@ -1251,7 +1559,8 @@ function spawnUnit(ci,isPlayer,oDmg,oHp,storyEnemyIdx){
     wallInterval:c.wallInterval||null,
     wallHp:c.wallHp||75,
     lastWall:0,
-    storyEnemyIdx:storyEnemyIdx
+    storyEnemyIdx:storyEnemyIdx,
+    speed:unitSpeed
   };
   units.push(unit);
   const div=document.createElement('div');div.className='unit';div.id=id;
@@ -1321,52 +1630,38 @@ function showSpecial(txt,col){
   clearTimeout(m._t);m._t=setTimeout(()=>m.style.display='none',3000);
 }
 
-// Story mode wave spawning
-// Wave pattern: escalating waves of bandieten, boogschutters, stam leiders
-// Wave schedule: 12 waves total, mix of enemy types
+// Level 1 wave schedule
 const STORY_WAVE_SCHEDULE=[
-  // [storyEnemyIdx, delay_ms_from_start]
-  [0,5000],[0,9000],                               // wave 1-2: bandieten
-  [0,14000],[1,18000],                             // wave 3-4: bandiet + boogschutter
-  [0,23000],[0,27000],[1,31000],                   // wave 5-7: meer druk
-  [0,36000],[1,40000],[0,44000],                   // wave 8-10: intensificer
-  [2,50000],                                       // wave 11: STAM LEIDER
-  [0,55000],[1,59000],[0,63000],[2,68000],         // wave 12: eindaanval
-  [0,73000],[0,77000],[1,81000],[2,86000],         // wave 13: final push
+  [0,5000],[0,9000],
+  [0,14000],[1,18000],
+  [0,23000],[0,27000],[1,31000],
+  [0,36000],[1,40000],[0,44000],
+  [2,50000],
+  [0,55000],[1,59000],[0,63000],[2,68000],
+  [0,73000],[0,77000],[1,81000],[2,86000],
 ];
-let storyWavesDispatched=[];
-
-function initStoryWaves(){
-  storyWavesDispatched=STORY_WAVE_SCHEDULE.map(()=>false);
-}
-
-function tickStoryWaves(){
-  const elapsed=Date.now()-matchStartTime;
-  for(let i=0;i<STORY_WAVE_SCHEDULE.length;i++){
-    if(storyWavesDispatched[i])continue;
-    const [enemyIdx, spawnTime]=STORY_WAVE_SCHEDULE[i];
-    if(elapsed>=spawnTime){
-      storyWavesDispatched[i]=true;
-      spawnUnit(STORY_ENEMIES[enemyIdx].baseCi,false,undefined,undefined,enemyIdx);
-      // Show enemy arrival message for notable enemies
-      if(enemyIdx===2&&storyWavesDispatched.filter((v,j)=>v&&STORY_WAVE_SCHEDULE[j][0]===2).length===1){
-        showSpecial('⚠️ DE STAM LEIDER VERSCHIJNT!','#ff4444');
-      }
-    }
-  }
-}
 
 function tick(){
   if(!gameRunning)return;
   const now=Date.now();
+  const elapsed=now-matchStartTime;
   const eHX=GAME_W-80,mHX=70;
 
-  if(isStoryMode){
-    // Story mode: use wave schedule, then keep spawning after all waves done
-    if(!storyWavesDispatched){initStoryWaves();}
-    tickStoryWaves();
-    // After all scheduled waves, keep spawning so only hut destruction ends the level
-    if(storyWavesDispatched&&storyWavesDispatched.every(v=>v)){
+  if(isStoryMode&&currentStoryLevel===1){
+    // Level 1 wave tick
+    if(!storyWavesDispatched||storyWavesDispatched.length===0)
+      storyWavesDispatched=STORY_WAVE_SCHEDULE.map(()=>false);
+    for(let i=0;i<STORY_WAVE_SCHEDULE.length;i++){
+      if(storyWavesDispatched[i])continue;
+      const[enemyIdx,spawnTime]=STORY_WAVE_SCHEDULE[i];
+      if(elapsed>=spawnTime){
+        storyWavesDispatched[i]=true;
+        spawnUnit(STORY_ENEMIES[enemyIdx].baseCi,false,undefined,undefined,enemyIdx);
+        if(enemyIdx===2&&storyWavesDispatched.filter((v,j)=>v&&STORY_WAVE_SCHEDULE[j][0]===2).length===1)
+          showSpecial('⚠️ DE STAM LEIDER VERSCHIJNT!','#ff4444');
+      }
+    }
+    if(storyWavesDispatched.every(v=>v)){
       if(now-lastAiSpawn>6000){
         lastAiSpawn=now;
         const r=Math.random();
@@ -1374,7 +1669,62 @@ function tick(){
         spawnUnit(STORY_ENEMIES[sei].baseCi,false,undefined,undefined,sei);
       }
     }
-  }else{
+  }else if(isStoryMode&&currentStoryLevel===2){
+    // Level 2: spawn Zand Vechters per schedule
+    if(storyWavesDispatched.length===0)
+      storyWavesDispatched=LEVEL2_WAVE_TIMES.map(()=>false);
+    let anyNew=false;
+    for(let i=0;i<LEVEL2_WAVE_TIMES.length;i++){
+      if(storyWavesDispatched[i])continue;
+      if(elapsed>=LEVEL2_WAVE_TIMES[i]){
+        storyWavesDispatched[i]=true;
+        anyNew=true;
+        spawnUnit(BASE[1].cost,false,undefined,undefined,3); // storyEnemyIdx=3 = Zand Vechter
+      }
+    }
+    // Warning messages
+    if(elapsed>=30000&&elapsed<31000&&!storyWavesDispatched._warn1){
+      storyWavesDispatched._warn1=true;
+      showSpecial('🌪 Ze worden sneller!','#ffcc44');
+    }
+    if(elapsed>=90000&&elapsed<91000&&!storyWavesDispatched._warn2){
+      storyWavesDispatched._warn2=true;
+      showSpecial('⚠️ Nog 2 minuten!','#ff8844');
+    }
+    if(elapsed>=150000&&elapsed<151000&&!storyWavesDispatched._warn3){
+      storyWavesDispatched._warn3=true;
+      showSpecial('🔥 Nog 1 minuut! BIJNA!','#ff4444');
+    }
+    if(elapsed>=170000&&elapsed<171000&&!storyWavesDispatched._warn4){
+      storyWavesDispatched._warn4=true;
+      showSpecial('💀 LAATSTE 10 SECONDEN!','#ff2222');
+    }
+  }else if(isStoryMode&&currentStoryLevel===3){
+    // Level 3: Boeren every 1s (storyEnemyIdx=4), Varkens every 4s (storyEnemyIdx=5)
+    if(!storyWavesDispatched._l3init){
+      storyWavesDispatched._l3init=true;
+      storyWavesDispatched._lastBoer=now;
+      storyWavesDispatched._lastVarken=now;
+      storyWavesDispatched._lastVechter=now-1500; // offset so they don't all spawn at once
+      storyWavesDispatched._warned=false;
+    }
+    if(now-storyWavesDispatched._lastBoer>=3000){
+      storyWavesDispatched._lastBoer=now;
+      spawnUnit(1,false,undefined,undefined,4); // Boer
+    }
+    if(now-storyWavesDispatched._lastVarken>=3000){
+      storyWavesDispatched._lastVarken=now;
+      spawnUnit(0,false,undefined,undefined,5); // Varken
+    }
+    if(now-storyWavesDispatched._lastVechter>=3000){
+      storyWavesDispatched._lastVechter=now;
+      spawnUnit(1,false); // gewone Tsjaad Vechter (vijand)
+    }
+    if(elapsed>=5000&&!storyWavesDispatched._warnBoer){
+      storyWavesDispatched._warnBoer=true;
+      showSpecial('🐷 PAS OP! DE VARKENS RENNEN MEE!','#ffcc44');
+    }
+  }else if(!isStoryMode){
     // Normal AI spawning
     if(now-lastAiSpawn>5000){
       lastAiSpawn=now;
@@ -1461,14 +1811,20 @@ function tick(){
         const dmg=getEffectiveDmg(u.dmg,u.isPlayer);
         if(u.isPlayer)enemyHutHp-=dmg;else myHutHp-=dmg;
         u.lastAtk=now;updateHutUI();
-        if(enemyHutHp<=0||myHutHp<=0){
-          if(isStoryMode){endStoryLevel(enemyHutHp<=0);}
+        if(myHutHp<=0){
+          if(isStoryMode){endStoryLevel(false);}
+          else{endRound();}
+          return;
+        }
+        if(enemyHutHp<=0){
+          if(isStoryMode){endStoryLevel(true);}
           else{endRound();}
           return;
         }
       }
     }else{
-      u.x=u.x+dir*UNIT_SPEED;
+      const spd=u.speed||UNIT_SPEED;
+      u.x=u.x+dir*spd;
       el.style.left=u.x+'px';
     }
   }
@@ -1496,8 +1852,7 @@ function endRound(){
     document.getElementById('restart-btn').textContent='opnieuw arm zijn?';
     document.getElementById('restart-btn').onclick=()=>{
       playerWins=0;enemyWins=0;currentRound=1;
-      starLevels=[0,0,0,0,0,0];
-      coins=0;
+      starLevels=[0,0,0,0,0,0];coins=0;
       powerups={razernij:{active:false,endTime:0},zandbom:{used:false},superTsjaad:{bought:false}};
       nextRound();
     };
@@ -1513,18 +1868,6 @@ function nextRound(){
   document.getElementById('game-over').style.display='none';
   startRound();
 }
-
-// init story wave array on first story start
-function startLevel1GameInit(){
-  storyWavesDispatched=STORY_WAVE_SCHEDULE.map(()=>false);
-}
-
-// Override startStoryRound to also init waves
-const _origStartStoryRound=startStoryRound;
-window.startStoryRound=function(){
-  startLevel1GameInit();
-  _origStartStoryRound();
-};
 
 initSprites();
 document.getElementById('main-menu').style.display='flex';
