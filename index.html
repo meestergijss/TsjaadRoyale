@@ -497,6 +497,38 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
     <button style="background:transparent;border:1px solid #555;color:#888;font-size:10px;padding:5px 18px;cursor:pointer;font-family:monospace;" onmouseover="this.style.color='#ccc'" onmouseout="this.style.color='#888'" onclick="closeIntro3()">← terug naar levelkeuze</button>
   </div>
 
+  <!-- STORY INTRO LEVEL 4 -->
+  <div id="story-intro4" style="position:absolute;inset:0;background:rgba(0,0,0,0.97);z-index:380;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;border-radius:6px;background-image:radial-gradient(ellipse at 50% 30%,rgba(120,90,0,0.6) 0%,transparent 70%);">
+    <div style="color:#FFD700;font-size:11px;letter-spacing:3px;border:1px solid #aa8800;padding:3px 14px;margin-bottom:4px;">📖 LEVEL 4 — DE GOUDEN TENT</div>
+    <div style="color:#FFD700;font-size:20px;font-weight:bold;letter-spacing:4px;text-shadow:0 0 15px #FFD700;">HET GOUDEN LEGER!</div>
+    <div style="color:#e0c8a0;font-size:11px;line-height:1.8;text-align:center;max-width:480px;border:1px solid #6a5000;background:rgba(30,20,0,0.8);padding:12px 18px;font-style:italic;letter-spacing:0.3px;">
+      "Het rijke Gouden Leger beschermt hun tent!<br>
+      Gouden soldaten met zwaarden en schilden, magiërs die wonden helen,<br>
+      en zware speerwerpers die bijna niet te stoppen zijn.<br>
+      <strong style='color:#FFD700'>Let op: elke minuut is er een Gold Rush — gratis 30 goud!</strong><br>
+      Vernietig hun hut om te winnen!"
+    </div>
+    <div style="display:flex;gap:16px;margin:6px 0;align-items:flex-end;">
+      <div class="intro-enemy" style="border-color:#aa8800;">
+        <canvas width="16" height="16" style="width:28px;height:28px" id="intro-spr-gvecht"></canvas>
+        <div class="en-name" style="color:#FFD700;">GOUDEN VECHTER</div>
+        <div class="en-stat" style="color:#cc9900;">7dmg / 10hp</div>
+      </div>
+      <div class="intro-enemy" style="border-color:#aa8800;">
+        <canvas width="16" height="16" style="width:28px;height:28px" id="intro-spr-gmagier"></canvas>
+        <div class="en-name" style="color:#FFD700;">GOUDEN MAGIER</div>
+        <div class="en-stat" style="color:#cc9900;">healt +3hp / 5s</div>
+      </div>
+      <div class="intro-enemy" style="border-color:#aa8800;">
+        <canvas width="16" height="16" style="width:28px;height:28px" id="intro-spr-gspeer"></canvas>
+        <div class="en-name" style="color:#FFD700;">GOUDEN SPEERWERPER</div>
+        <div class="en-stat" style="color:#cc9900;">9dmg / 30hp — zwaar!</div>
+      </div>
+    </div>
+    <button style="background:#3a2800;border:2px solid #FFD700;color:#FFD700;font-size:13px;font-weight:bold;padding:10px 32px;cursor:pointer;letter-spacing:2px;font-family:monospace;margin-top:4px;transition:background 0.15s;" onmouseover="this.style.background='#6a4800'" onmouseout="this.style.background='#3a2800'" onclick="startLevel4Game()">⚔ AANVALLEN! ▶</button>
+    <button style="background:transparent;border:1px solid #555;color:#888;font-size:10px;padding:5px 18px;cursor:pointer;font-family:monospace;" onmouseover="this.style.color='#ccc'" onmouseout="this.style.color='#888'" onclick="closeIntro4()">← terug naar levelkeuze</button>
+  </div>
+
   <!-- MAIN MENU -->
   <div id="main-menu">
     <div id="menu-title">⚔ TSJAAD WARS ⚔</div>
@@ -557,6 +589,9 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 </div>
 
 <script>
+let isStoryMode=false;
+let currentStoryLevel=0;
+
 const PAL={
   skin:'#E8B87A',skin2:'#C8905A',
   brown:'#8B4513',dbrown:'#5C2E00',lbrown:'#C4955A',
@@ -574,6 +609,8 @@ const PAL={
   teal:'#22BBAA',dteal:'#117766',lteal:'#55DDCC',
   wblue:'#4488BB',dwblue:'#224466',lwblue:'#88CCEE',
   wbrown:'#7a6040',dwbrown:'#4a3820',lwbrown:'#b09060',
+  // Level 4 gold armor
+  garmor:'#D4AF37',dgarmor:'#8B6914',lgarmor:'#FFD700',gsword:'#C0C0C0',gshield:'#B8860B',
   bandit:'#5A3A1A',dbandit:'#3A1A00',lbandit:'#8B6040',
   archer:'#2A4A2A',darcher:'#1A2A1A',larcher:'#4A7A4A',
   chief:'#4A0000',dchief:'#2A0000',lchief:'#8A1A1A',
@@ -779,6 +816,38 @@ function drawSprite(cvs,spr){
   for(let y=0;y<spr.length;y++)for(let x=0;x<spr[y].length;x++){const c=spr[y][x];if(!c)continue;ctx.fillStyle=PAL[c]||c;ctx.fillRect(x,y,1,1);}
 }
 
+
+// ── GOUDEN VECHTER sprite (level 4) ── gold-armored warrior
+const SPR_GVECHT_E=mirrorRecolor(SPR_WAR,{
+  red:'garmor',dred:'dgarmor',lred:'lgarmor',
+  brown:'dgarmor',dbrown:'dgarmor',
+  gold:'lgarmor'
+});
+const SPR_GVECHT_PREV=recolor(SPR_WAR,{
+  red:'garmor',dred:'dgarmor',lred:'lgarmor',
+  brown:'dgarmor',dbrown:'dgarmor',
+  gold:'lgarmor'
+});
+
+// ── GOUDEN MAGIER sprite (level 4) ── gold robe healer
+const SPR_GMAGIER_E=mirrorRecolor(SPR_LOS,{
+  teal:'garmor',dteal:'dgarmor',lteal:'lgarmor'
+});
+const SPR_GMAGIER_PREV=recolor(SPR_LOS,{
+  teal:'garmor',dteal:'dgarmor',lteal:'lgarmor'
+});
+
+// ── GOUDEN SPEERWERPER sprite (level 4) ── heavy gold shield bearer
+const SPR_GSPEER_E=mirrorRecolor(SPR_LIO,{
+  purple:'garmor',lpurp:'lgarmor',dpurp:'dgarmor',
+  gold:'lgarmor'
+});
+const SPR_GSPEER_PREV=recolor(SPR_LIO,{
+  purple:'garmor',lpurp:'lgarmor',dpurp:'dgarmor',
+  gold:'lgarmor'
+});
+
+
 const STORY_ENEMIES=[
   {name:'Bandiet',     baseCi:1, sprE:SPR_BANDIET_E, dmgMult:1.4, hpMult:1.5},
   {name:'Boogschutter',baseCi:2, sprE:SPR_BOOG_E,    dmgMult:1.5, hpMult:1.4},
@@ -789,7 +858,14 @@ const STORY_ENEMIES=[
   {name:'Boer',         baseCi:1, sprE:SPR_BOER_E,    fixedDmg:7,  fixedHp:15},
   // idx 5 = Varken (level 3) — 4 dmg, 6 hp, fast
   {name:'Varken',       baseCi:0, sprE:SPR_VARKEN_E,  fixedDmg:4,  fixedHp:6,  fast:true},
+  // idx 6 = Gouden Vechter (level 4) — 7 dmg, 10 hp, slow spawn
+  {name:'Gouden Vechter',  baseCi:1, sprE:SPR_GVECHT_E,  fixedDmg:7,  fixedHp:10},
+  // idx 7 = Gouden Magier (level 4) — healer, 1 dmg, 8 hp, slow, heals enemies
+  {name:'Gouden Magier',   baseCi:4, sprE:SPR_GMAGIER_E, fixedDmg:1,  fixedHp:8,  healer:true, healAmt:3, healInterval:5000},
+  // idx 8 = Gouden Speerwerper (level 4) — 9 dmg, 30 hp, heavy shield, very slow spawn
+  {name:'Gouden Speerwerper',baseCi:3,sprE:SPR_GSPEER_E, fixedDmg:9,  fixedHp:30},
 ];
+
 
 function initSprites(){
   const HUT_P=(()=>{
@@ -822,6 +898,9 @@ function initSprites(){
   drawSprite(document.getElementById('intro-spr-sv'),SPR_ZVECHT_PREV);
   drawSprite(document.getElementById('intro-spr-boer'),SPR_BOER_PREV);
   drawSprite(document.getElementById('intro-spr-varken'),SPR_VARKEN_PREV);
+  if(document.getElementById('intro-spr-gvecht'))drawSprite(document.getElementById('intro-spr-gvecht'),SPR_GVECHT_PREV);
+  if(document.getElementById('intro-spr-gmagier'))drawSprite(document.getElementById('intro-spr-gmagier'),SPR_GMAGIER_PREV);
+  if(document.getElementById('intro-spr-gspeer'))drawSprite(document.getElementById('intro-spr-gspeer'),SPR_GSPEER_PREV);
   buildLevelGrid();
 }
 
@@ -832,13 +911,14 @@ function buildLevelGrid(){
   const levelEmojis=['🏜️','🌪️','🌊','⛺','🌪️','🌙','💧','💀','🚪','👑'];
   for(let i=0;i<10;i++){
     const btn=document.createElement('button');
-    const isUnlocked=i===0||i===1||i===2;
+    const isUnlocked=i===0||i===1||i===2||i===3;
     btn.className='level-btn'+(isUnlocked?' unlocked':'');
-    const lockIcon=i===0?'▶ SPELEN':i===1?'▶ SPELEN':i===2?'▶ SPELEN':'🔒';
+    const lockIcon=i===0?'▶ SPELEN':i===1?'▶ SPELEN':i===2?'▶ SPELEN':i===3?'▶ SPELEN':'🔒';
     btn.innerHTML=`<div class="lnum">${i+1}</div><div class="ltxt">${levelEmojis[i]} ${levelNames[i]}</div><div class="lstar">${lockIcon}</div>`;
     if(i===0)btn.onclick=()=>openLevel1Intro();
     else if(i===1)btn.onclick=()=>openLevel2Intro();
     else if(i===2)btn.onclick=()=>openLevel3Intro();
+    else if(i===3)btn.onclick=()=>openLevel4Intro();
     else btn.onclick=()=>openLevelPopup(i+1,levelNames[i]);
     grid.appendChild(btn);
   }
@@ -871,8 +951,7 @@ function closeIntro2(){
 }
 
 // ── GAME STATE ──
-let isStoryMode=false;
-let currentStoryLevel=0; // 1 or 2
+// isStoryMode declared at top of script
 let storyWavesDispatched=[];
 
 // Level 2 survival
@@ -952,10 +1031,22 @@ function startStoryRound(){
   stormSecondsLeft=STORM_INTERVAL/1000;
   stormCountdown=setInterval(()=>{
     if(!gameRunning)return;
-    stormSecondsLeft-=0.25;
-    const s=Math.max(0,Math.ceil(stormSecondsLeft));
-    document.getElementById('storm-timer').textContent=stormActive?'🌪 STORM!':'⏳ Storm: '+s+'s';
-    if(stormSecondsLeft<=0&&!stormActive){stormSecondsLeft=STORM_INTERVAL/1000;triggerSandstorm();}
+    if(currentStoryLevel===4){
+      // Gold Rush instead of sandstorm
+      stormSecondsLeft-=0.25;
+      const s=Math.max(0,Math.ceil(stormSecondsLeft));
+      document.getElementById('storm-timer').textContent='💰 Gold Rush: '+s+'s';
+      document.getElementById('storm-timer').style.color='#FFD700';
+      document.getElementById('storm-timer').style.borderColor='#aa8800';
+      if(stormSecondsLeft<=0){stormSecondsLeft=STORM_INTERVAL/1000;triggerGoldRush();}
+    }else{
+      stormSecondsLeft-=0.25;
+      const s=Math.max(0,Math.ceil(stormSecondsLeft));
+      document.getElementById('storm-timer').textContent=stormActive?'🌪 STORM!':'⏳ Storm: '+s+'s';
+      document.getElementById('storm-timer').style.color='#ffd080';
+      document.getElementById('storm-timer').style.borderColor='#555';
+      if(stormSecondsLeft<=0&&!stormActive){stormSecondsLeft=STORM_INTERVAL/1000;triggerSandstorm();}
+    }
   },250);
 
   matchTimerInterval=setInterval(()=>{
@@ -1089,6 +1180,22 @@ function endStoryLevel(playerWon){
       document.getElementById('ll-text').textContent='De boeren met hun harken waren te sterk...\nProbeer het opnieuw!';
       setTimeout(()=>{document.getElementById('level-lose').style.display='flex';},600);
     }
+  }else if(currentStoryLevel===4){
+    if(playerWon){
+      document.getElementById('lw-badge').textContent='⭐ LEVEL 4 GEWONNEN ⭐';
+      document.getElementById('lw-title').textContent='🥇 HET GOUDEN LEGER VERSLAAN!';
+      const stars=myHutHp>200?3:myHutHp>100?2:1;
+      document.getElementById('lw-stars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);
+      document.getElementById('lw-text').textContent='De Gouden Tent is gevallen! De magiërs, vechters en speerwerpers vluchten...\nJe portemonnee glinstert van het goud!';
+      document.getElementById('lw-coins').textContent='🥇 Goud voor eeuwig!';
+      document.getElementById('lw-continue-btn').onclick=levelWin4Continue;
+      document.getElementById('lw-retry-btn').onclick=retryCurrentLevel;
+      setTimeout(()=>{document.getElementById('level-win').style.display='flex';},800);
+    }else{
+      document.getElementById('ll-title').textContent='💀 HET GOUDEN LEGER HEEFT GEWONNEN!';
+      document.getElementById('ll-text').textContent='De Gouden Speerwerpers waren te sterk...\nProbeer het opnieuw!';
+      setTimeout(()=>{document.getElementById('level-lose').style.display='flex';},600);
+    }
   }
 }
 
@@ -1099,7 +1206,7 @@ function levelWin3Continue(){
   document.getElementById('score-area').style.display='flex';
   document.getElementById('story-mode-badge').style.display='none';
   document.getElementById('story-screen').classList.add('open');
-  openLevelPopup(4,'De Gouden Tent');
+  openLevel4Intro();
 }
 
 function levelWinContinue(){
@@ -1124,6 +1231,40 @@ function levelWin2Continue(){
   openLevel3Intro();
 }
 
+
+function openLevel4Intro(){
+  document.getElementById('story-screen').classList.remove('open');
+  document.getElementById('story-intro4').style.display='flex';
+}
+function closeIntro4(){
+  document.getElementById('story-intro4').style.display='none';
+  document.getElementById('story-screen').classList.add('open');
+}
+function startLevel4Game(){
+  document.getElementById('story-intro4').style.display='none';
+  isStoryMode=true;
+  currentStoryLevel=4;
+  starLevels=[0,0,0,0,0,0];
+  coins=80;
+  powerups={razernij:{active:false,endTime:0},zandbom:{used:false},superTsjaad:{bought:false}};
+  document.getElementById('main-menu').style.display='none';
+  document.getElementById('series-score').style.display='none';
+  document.getElementById('score-area').style.display='none';
+  document.getElementById('story-mode-badge').textContent='📖 LEVEL 4 — DE GOUDEN TENT';
+  document.getElementById('story-mode-badge').style.display='block';
+  document.getElementById('survival-timer').style.display='none';
+  storyWavesDispatched=[];
+  startStoryRound();
+}
+function levelWin4Continue(){
+  document.getElementById('level-win').style.display='none';
+  isStoryMode=false;
+  document.getElementById('series-score').style.display='block';
+  document.getElementById('score-area').style.display='flex';
+  document.getElementById('story-mode-badge').style.display='none';
+  document.getElementById('story-screen').classList.add('open');
+  openLevelPopup(5,'de waarschuwing');
+}
 function openLevel3Intro(){
   document.getElementById('story-screen').classList.remove('open');
   document.getElementById('story-intro3').classList.add('open');
@@ -1158,7 +1299,7 @@ function retryCurrentLevel(){
     document.getElementById('survival-timer').style.display='block';
     level2SurvivalEnd=Date.now()+LEVEL2_SURVIVE_MS;
   }
-  if(currentStoryLevel===3){
+  if(currentStoryLevel===3||currentStoryLevel===4){
     isStoryMode=true;
     document.getElementById('survival-timer').style.display='none';
   }
@@ -1277,10 +1418,22 @@ function startRound(){
   stormSecondsLeft=STORM_INTERVAL/1000;
   stormCountdown=setInterval(()=>{
     if(!gameRunning)return;
-    stormSecondsLeft-=0.25;
-    const s=Math.max(0,Math.ceil(stormSecondsLeft));
-    document.getElementById('storm-timer').textContent=stormActive?'🌪 STORM!':'⏳ Storm: '+s+'s';
-    if(stormSecondsLeft<=0&&!stormActive){stormSecondsLeft=STORM_INTERVAL/1000;triggerSandstorm();}
+    if(currentStoryLevel===4){
+      // Gold Rush instead of sandstorm
+      stormSecondsLeft-=0.25;
+      const s=Math.max(0,Math.ceil(stormSecondsLeft));
+      document.getElementById('storm-timer').textContent='💰 Gold Rush: '+s+'s';
+      document.getElementById('storm-timer').style.color='#FFD700';
+      document.getElementById('storm-timer').style.borderColor='#aa8800';
+      if(stormSecondsLeft<=0){stormSecondsLeft=STORM_INTERVAL/1000;triggerGoldRush();}
+    }else{
+      stormSecondsLeft-=0.25;
+      const s=Math.max(0,Math.ceil(stormSecondsLeft));
+      document.getElementById('storm-timer').textContent=stormActive?'🌪 STORM!':'⏳ Storm: '+s+'s';
+      document.getElementById('storm-timer').style.color='#ffd080';
+      document.getElementById('storm-timer').style.borderColor='#555';
+      if(stormSecondsLeft<=0&&!stormActive){stormSecondsLeft=STORM_INTERVAL/1000;triggerSandstorm();}
+    }
   },250);
 
   matchTimerInterval=setInterval(()=>{
@@ -1583,6 +1736,17 @@ function killUnit(id,giveCoins){
   units=units.filter(x=>x.id!==id);
 }
 
+
+function triggerGoldRush(){
+  if(!gameRunning)return;
+  showSpecial('💰 GOLD RUSH! +30 GOUD!','#FFD700');
+  addCoins(30,350,180);
+  // Flash the storm timer gold
+  const el=document.getElementById('storm-timer');
+  el.style.background='rgba(120,90,0,0.9)';
+  setTimeout(()=>{el.style.background='rgba(0,0,0,0.65)';},1500);
+}
+
 function triggerSandstorm(){
   if(!gameRunning)return;
   stormActive=true;
@@ -1708,21 +1872,64 @@ function tick(){
       storyWavesDispatched._lastVechter=now-1500; // offset so they don't all spawn at once
       storyWavesDispatched._warned=false;
     }
-    if(now-storyWavesDispatched._lastBoer>=3000){
+    if(now-storyWavesDispatched._lastBoer>=7000){
       storyWavesDispatched._lastBoer=now;
       spawnUnit(1,false,undefined,undefined,4); // Boer
     }
-    if(now-storyWavesDispatched._lastVarken>=3000){
+    if(now-storyWavesDispatched._lastVarken>=7000){
       storyWavesDispatched._lastVarken=now;
       spawnUnit(0,false,undefined,undefined,5); // Varken
     }
-    if(now-storyWavesDispatched._lastVechter>=3000){
+    if(now-storyWavesDispatched._lastVechter>=7000){
       storyWavesDispatched._lastVechter=now;
       spawnUnit(1,false); // gewone Tsjaad Vechter (vijand)
     }
     if(elapsed>=5000&&!storyWavesDispatched._warnBoer){
       storyWavesDispatched._warnBoer=true;
       showSpecial('🐷 PAS OP! DE VARKENS RENNEN MEE!','#ffcc44');
+    }
+  }else if(isStoryMode&&currentStoryLevel===4){
+    // Level 4: Gouden Vechter every 8s, Gouden Magier every 12s, Gouden Speerwerper every 30s
+    if(!storyWavesDispatched._l4init){
+      storyWavesDispatched._l4init=true;
+      storyWavesDispatched._lastGVecht=now;
+      storyWavesDispatched._lastGMagier=now+4000; // offset
+      storyWavesDispatched._lastGSpeer=now;
+    }
+    if(now-storyWavesDispatched._lastGVecht>=8000){
+      storyWavesDispatched._lastGVecht=now;
+      spawnUnit(1,false,undefined,undefined,6); // Gouden Vechter
+    }
+    if(now-storyWavesDispatched._lastGMagier>=12000){
+      storyWavesDispatched._lastGMagier=now;
+      spawnUnit(4,false,undefined,undefined,7); // Gouden Magier
+    }
+    if(now-storyWavesDispatched._lastGSpeer>=30000){
+      storyWavesDispatched._lastGSpeer=now;
+      spawnUnit(3,false,undefined,undefined,8); // Gouden Speerwerper
+      showSpecial('🛡 EEN GOUDEN SPEERWERPER ARRIVEERT!','#FFD700');
+    }
+    // Healer logic: Gouden Magier heals nearby enemy units every 5s
+    for(const u of units){
+      if(u.isPlayer)continue;
+      const se=u.storyEnemyIdx!==undefined?STORY_ENEMIES[u.storyEnemyIdx]:null;
+      if(!se||!se.healer)continue;
+      if(!u.lastHeal)u.lastHeal=now;
+      if(now-u.lastHeal>=se.healInterval){
+        u.lastHeal=now;
+        // Heal closest enemy unit (not self, not player)
+        let healed=0;
+        for(const target of units){
+          if(target.isPlayer||target.id===u.id)continue;
+          if(target.hp<target.maxHp&&Math.abs(target.x-u.x)<120){
+            target.hp=Math.min(target.maxHp,target.hp+se.healAmt);
+            const hf=document.getElementById('hf-'+target.id);
+            if(hf)hf.style.width=Math.max(0,target.hp/target.maxHp*100)+'%';
+            healed++;
+          }
+        }
+        if(healed>0)showSpecial('✨ Magier healt '+healed+' eenheden!','#FFD700');
+      }
     }
   }else if(!isStoryMode){
     // Normal AI spawning
