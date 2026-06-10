@@ -158,11 +158,12 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 #story-title{color:#cc99ff;font-size:22px;font-weight:bold;letter-spacing:4px;text-shadow:0 0 12px #8844ff;margin-bottom:4px;}
 #story-subtitle{color:#8866aa;font-size:10px;letter-spacing:2px;margin-top:-8px;}
 #level-grid{
-  display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:16px;
   padding:10px 14px;
+  justify-content:center;
 }
 .level-btn{
-  width:96px;height:80px;
+  width:120px;height:96px;
   background:rgba(40,20,80,0.85);
   border:2px solid #6633bb;
   color:#ddaaff;
@@ -188,11 +189,11 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
   background:rgba(100,70,0,0.9);
   border-color:#ffd700;
 }
-.level-btn .lnum{font-size:22px;color:#cc99ff;font-weight:bold;text-shadow:0 0 8px #8844ff;}
+.level-btn .lnum{font-size:28px;color:#cc99ff;font-weight:bold;text-shadow:0 0 8px #8844ff;}
 .level-btn.unlocked .lnum{color:#ffd080;text-shadow:0 0 8px #ff8800;}
-.level-btn .ltxt{font-size:8px;color:#9966cc;letter-spacing:0.5px;}
+.level-btn .ltxt{font-size:9px;color:#9966cc;letter-spacing:0.5px;}
 .level-btn.unlocked .ltxt{color:#cc9955;}
-.level-btn .lstar{font-size:10px;color:#ffcc00;height:12px;}
+.level-btn .lstar{font-size:11px;color:#ffcc00;height:14px;}
 #story-back{background:#1a0a3a;border:2px solid #8844ff;color:#cc99ff;font-size:12px;font-weight:bold;padding:8px 28px;cursor:pointer;font-family:monospace;letter-spacing:2px;}
 #story-back:hover{background:#3a1a7a;}
 
@@ -907,19 +908,16 @@ function initSprites(){
 function buildLevelGrid(){
   const grid=document.getElementById('level-grid');
   grid.innerHTML='';
-  const levelNames=['De Woestijn','de zandstorm','Tsjaad meer','De Gouden Tent','de waarschuwing','overleef de nacht','De Heilige tempel','Berg van Botten','Poortwachter','De Tsjaad tiran'];
-  const levelEmojis=['🏜️','🌪️','🌊','⛺','🌪️','🌙','💧','💀','🚪','👑'];
-  for(let i=0;i<10;i++){
+  const levelNames=['De Woestijn','De Zandstorm','Tsjaad Meer','De Gouden Tent'];
+  const levelEmojis=['🏜️','🌪️','🌊','⛺'];
+  for(let i=0;i<4;i++){
     const btn=document.createElement('button');
-    const isUnlocked=i===0||i===1||i===2||i===3;
-    btn.className='level-btn'+(isUnlocked?' unlocked':'');
-    const lockIcon=i===0?'▶ SPELEN':i===1?'▶ SPELEN':i===2?'▶ SPELEN':i===3?'▶ SPELEN':'🔒';
-    btn.innerHTML=`<div class="lnum">${i+1}</div><div class="ltxt">${levelEmojis[i]} ${levelNames[i]}</div><div class="lstar">${lockIcon}</div>`;
+    btn.className='level-btn unlocked';
+    btn.innerHTML=`<div class="lnum">${i+1}</div><div class="ltxt">${levelEmojis[i]} ${levelNames[i]}</div><div class="lstar">▶ SPELEN</div>`;
     if(i===0)btn.onclick=()=>openLevel1Intro();
     else if(i===1)btn.onclick=()=>openLevel2Intro();
     else if(i===2)btn.onclick=()=>openLevel3Intro();
     else if(i===3)btn.onclick=()=>openLevel4Intro();
-    else btn.onclick=()=>openLevelPopup(i+1,levelNames[i]);
     grid.appendChild(btn);
   }
 }
@@ -1086,7 +1084,7 @@ function startStoryRound(){
     }
   },250);
 
-  gameLoop=setInterval(tick,60);
+  gameLoop=setInterval(tick,50);
 
   if(currentStoryLevel===2){
     showRoundBanner('🛡 OVERLEEF 3 MINUTEN!',2200);
@@ -1136,6 +1134,7 @@ function endStoryLevel(playerWon){
       document.getElementById('lw-stars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);
       document.getElementById('lw-text').textContent='Jullie hebben de bandieten verslagen! De tsjaad kinderen kunnen weer veilig spelen...';
       document.getElementById('lw-coins').textContent='+'+reward+'🪙 beloond!';
+      document.getElementById('lw-continue-btn').textContent='📖 VERDER NAAR VERHAAL ▶';
       document.getElementById('lw-continue-btn').onclick=levelWinContinue;
       document.getElementById('lw-retry-btn').onclick=retryCurrentLevel;
       setTimeout(()=>{document.getElementById('level-win').style.display='flex';},800);
@@ -1156,6 +1155,7 @@ function endStoryLevel(playerWon){
       document.getElementById('lw-stars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);
       document.getElementById('lw-text').textContent='3 minuten overleefd! De zandstorm trekt weg...\nJe hut staat nog overeind — de Zand Vechters zijn verslagen!';
       document.getElementById('lw-coins').textContent='+'+reward+'🪙 beloond!';
+      document.getElementById('lw-continue-btn').textContent='📖 VERDER NAAR VERHAAL ▶';
       document.getElementById('lw-continue-btn').onclick=levelWin2Continue;
       document.getElementById('lw-retry-btn').onclick=retryCurrentLevel;
       setTimeout(()=>{document.getElementById('level-win').style.display='flex';},800);
@@ -1172,6 +1172,7 @@ function endStoryLevel(playerWon){
       document.getElementById('lw-stars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);
       document.getElementById('lw-text').textContent='De boeren en hun varkens zijn teruggedreven!\nHet Tsjaad Meer is eindelijk veilig...';
       document.getElementById('lw-coins').textContent='🎉 Goed gedaan!';
+      document.getElementById('lw-continue-btn').textContent='📖 VERDER NAAR VERHAAL ▶';
       document.getElementById('lw-continue-btn').onclick=levelWin3Continue;
       document.getElementById('lw-retry-btn').onclick=retryCurrentLevel;
       setTimeout(()=>{document.getElementById('level-win').style.display='flex';},800);
@@ -1188,6 +1189,7 @@ function endStoryLevel(playerWon){
       document.getElementById('lw-stars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);
       document.getElementById('lw-text').textContent='De Gouden Tent is gevallen! De magiërs, vechters en speerwerpers vluchten...\nJe portemonnee glinstert van het goud!';
       document.getElementById('lw-coins').textContent='🥇 Goud voor eeuwig!';
+      document.getElementById('lw-continue-btn').textContent='🏆 TERUG NAAR VERHAAL ▶';
       document.getElementById('lw-continue-btn').onclick=levelWin4Continue;
       document.getElementById('lw-retry-btn').onclick=retryCurrentLevel;
       setTimeout(()=>{document.getElementById('level-win').style.display='flex';},800);
@@ -1263,7 +1265,7 @@ function levelWin4Continue(){
   document.getElementById('score-area').style.display='flex';
   document.getElementById('story-mode-badge').style.display='none';
   document.getElementById('story-screen').classList.add('open');
-  openLevelPopup(5,'de waarschuwing');
+  showSpecial('🏆 Alle levels voltooid! Goed gedaan!','#FFD700');
 }
 function openLevel3Intro(){
   document.getElementById('story-screen').classList.remove('open');
@@ -1314,6 +1316,8 @@ function backToStoryFromLose(){
   document.getElementById('series-score').style.display='block';
   document.getElementById('score-area').style.display='flex';
   document.getElementById('story-mode-badge').style.display='none';
+  const st=document.getElementById('storm-timer');
+  st.style.color='#ffd080';st.style.borderColor='#555';st.textContent='⏳ Storm: 60s';
   gameRunning=false;
   clearInterval(gameLoop);clearInterval(waterInterval);
   clearInterval(stormCountdown);clearInterval(matchTimerInterval);
@@ -1454,7 +1458,7 @@ function startRound(){
     }
   },250);
 
-  gameLoop=setInterval(tick,60);
+  gameLoop=setInterval(tick,50);
   showRoundBanner('RONDE '+currentRound,1500);
 }
 
@@ -1843,7 +1847,7 @@ function tick(){
       if(elapsed>=LEVEL2_WAVE_TIMES[i]){
         storyWavesDispatched[i]=true;
         anyNew=true;
-        spawnUnit(BASE[1].cost,false,undefined,undefined,3); // storyEnemyIdx=3 = Zand Vechter
+        spawnUnit(1,false,undefined,undefined,3); // storyEnemyIdx=3 = Zand Vechter
       }
     }
     // Warning messages
