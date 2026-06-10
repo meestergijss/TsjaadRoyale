@@ -109,6 +109,22 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 #match-timer{position:absolute;top:60px;left:8px;background:rgba(0,0,0,0.65);color:#80ffcc;font-size:10px;padding:2px 6px;border:1px solid #555;z-index:50;}
 #water-boost{position:absolute;top:80px;left:8px;background:rgba(0,100,200,0.7);color:#aaddff;font-size:9px;padding:1px 5px;border:1px solid #4488cc;z-index:50;display:none;}
 #round-banner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.9);color:#ffd080;font-size:22px;font-weight:bold;padding:16px 32px;z-index:210;display:none;text-align:center;border:3px solid #ff8800;letter-spacing:2px;}
+
+/* ── BOSS HP BAR ── */
+#boss-hpbar-wrap{
+  position:absolute;top:0;left:0;right:0;
+  background:rgba(0,0,0,0.92);
+  border-bottom:3px solid #ff2200;
+  padding:6px 12px 5px;
+  z-index:120;display:none;
+  flex-direction:column;align-items:center;gap:2px;
+}
+#boss-hpbar-wrap.active{display:flex;}
+#boss-hpbar-label{color:#ff4422;font-size:11px;font-weight:bold;letter-spacing:3px;text-shadow:0 0 8px #ff0000;text-transform:uppercase;}
+#boss-hpbar-name{color:#ff2200;font-size:13px;font-weight:bold;letter-spacing:4px;text-shadow:0 0 12px #ff0000,0 0 24px #880000;margin-bottom:1px;}
+#boss-hpbar-outer{width:80%;height:14px;background:#2a0000;border:2px solid #880000;border-radius:2px;overflow:hidden;}
+#boss-hpbar-inner{height:100%;background:linear-gradient(90deg,#cc0000,#ff4400,#ff6600);transition:width 0.3s;box-shadow:0 0 8px #ff3300 inset;}
+#boss-hpbar-num{color:#ff8866;font-size:9px;margin-top:1px;letter-spacing:1px;}
 #series-score{position:absolute;top:4px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.75);color:#fff;font-size:11px;padding:2px 12px;border:1px solid #aa7700;z-index:55;letter-spacing:1px;}
 
 /* ── STORY INTRO LEVEL 3 ── */
@@ -528,6 +544,14 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
     </div>
     <button style="background:#3a2800;border:2px solid #FFD700;color:#FFD700;font-size:13px;font-weight:bold;padding:10px 32px;cursor:pointer;letter-spacing:2px;font-family:monospace;margin-top:4px;transition:background 0.15s;" onmouseover="this.style.background='#6a4800'" onmouseout="this.style.background='#3a2800'" onclick="startLevel4Game()">⚔ AANVALLEN! ▶</button>
     <button style="background:transparent;border:1px solid #555;color:#888;font-size:10px;padding:5px 18px;cursor:pointer;font-family:monospace;" onmouseover="this.style.color='#ccc'" onmouseout="this.style.color='#888'" onclick="closeIntro4()">← terug naar levelkeuze</button>
+  </div>
+
+  <!-- BOSS HP BAR -->
+  <div id="boss-hpbar-wrap">
+    <div id="boss-hpbar-label">⚔ EINDBAAS ⚔</div>
+    <div id="boss-hpbar-name">TSJAAD TIRAN</div>
+    <div id="boss-hpbar-outer"><div id="boss-hpbar-inner" style="width:100%"></div></div>
+    <div id="boss-hpbar-num">200 / 200 HP</div>
   </div>
 
   <!-- MAIN MENU -->
@@ -1184,10 +1208,10 @@ function endStoryLevel(playerWon){
   }else if(currentStoryLevel===4){
     if(playerWon){
       document.getElementById('lw-badge').textContent='⭐ LEVEL 4 GEWONNEN ⭐';
-      document.getElementById('lw-title').textContent='🥇 HET GOUDEN LEGER VERSLAAN!';
+      document.getElementById('lw-title').textContent='💀 DE TSJAAD TIRAN IS VERSLAGEN!';
       const stars=myHutHp>200?3:myHutHp>100?2:1;
       document.getElementById('lw-stars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);
-      document.getElementById('lw-text').textContent='De Gouden Tent is gevallen! De magiërs, vechters en speerwerpers vluchten...\nJe portemonnee glinstert van het goud!';
+      document.getElementById('lw-text').textContent='De Tsjaad Tiran is gevallen! Het Gouden Leger vlucht in paniek...\nJij bent de echte kampioen van Tsjaad!';
       document.getElementById('lw-coins').textContent='🥇 Goud voor eeuwig!';
       document.getElementById('lw-continue-btn').textContent='🏆 TERUG NAAR VERHAAL ▶';
       document.getElementById('lw-continue-btn').onclick=levelWin4Continue;
@@ -1256,6 +1280,8 @@ function startLevel4Game(){
   document.getElementById('story-mode-badge').style.display='block';
   document.getElementById('survival-timer').style.display='none';
   storyWavesDispatched=[];
+  bossSpawned=false;bossDefeated=false;bossUnit=null;
+  document.getElementById('boss-hpbar-wrap').classList.remove('active');
   startStoryRound();
 }
 function levelWin4Continue(){
@@ -1304,6 +1330,10 @@ function retryCurrentLevel(){
   if(currentStoryLevel===3||currentStoryLevel===4){
     isStoryMode=true;
     document.getElementById('survival-timer').style.display='none';
+  }
+  if(currentStoryLevel===4){
+    bossSpawned=false;bossDefeated=false;bossUnit=null;
+    document.getElementById('boss-hpbar-wrap').classList.remove('active');
   }
   storyWavesDispatched=[];
   startStoryRound();
@@ -1372,6 +1402,92 @@ let water,coins,units,walls,nextId,gameRunning,gameLoop,waterInterval,stormCount
 let myHutHp,enemyHutHp,lastAiSpawn,stormActive,sandParticles;
 let starLevels,enemyULvl,lastEnemyUnitUpg;
 let matchStartTime,waterBoosted,stormSecondsLeft;
+
+// BOSS STATE
+let bossSpawned=false,bossDefeated=false,bossUnit=null;
+const BOSS_HP=200,BOSS_DMG=25,BOSS_MAX_HP=200;
+
+function spawnBoss(){
+  bossSpawned=true;
+  const bossId='boss_tiran';
+  const startX=GAME_W-70;
+  const boss={
+    id:bossId,ci:3,isPlayer:false,
+    x:startX,hp:BOSS_HP,maxHp:BOSS_MAX_HP,dmg:BOSS_DMG,
+    range:12,lastAtk:0,atkRate:2000,
+    isBuilder:false,wallInterval:null,
+    speed:0.35, // langzaam
+    isBoss:true,
+    storyEnemyIdx:undefined
+  };
+  units.push(boss);
+  bossUnit=boss;
+
+  // Big boss sprite element
+  const div=document.createElement('div');div.className='unit';div.id=bossId;div.style.zIndex='15';
+  const cvs=document.createElement('canvas');
+  cvs.width=16;cvs.height=16;
+  cvs.style.cssText='width:64px;height:64px;image-rendering:pixelated;filter:drop-shadow(0 0 8px #ff0000) drop-shadow(0 0 16px #880000);';
+  // Draw big boss sprite — red armored warrior
+  (function drawBossSprite(c){
+    const ctx=c.getContext('2d');
+    const p=ctx.createImageData(16,16);
+    const set=(x,y,r,g,b,a=255)=>{const i=(y*16+x)*4;p.data[i]=r;p.data[i+1]=g;p.data[i+2]=b;p.data[i+3]=a;};
+    // Body pixels for big red boss
+    const skin=0xCC,sk2=0x88;
+    const bd=[
+      [5,1],[6,1],[7,1],[8,1],[9,1],// crown
+      [4,2],[5,2],[6,2],[7,2],[8,2],[9,2],[10,2],// head
+      [4,3],[5,3],[6,3],[7,3],[8,3],[9,3],[10,3],
+      [4,4],[5,4],[6,4],[7,4],[8,4],[9,4],[10,4],// neck
+      [3,5],[4,5],[5,5],[6,5],[7,5],[8,5],[9,5],[10,5],[11,5],// shoulders
+      [3,6],[4,6],[5,6],[6,6],[7,6],[8,6],[9,6],[10,6],[11,6],
+      [3,7],[4,7],[5,7],[6,7],[7,7],[8,7],[9,7],[10,7],[11,7],// torso
+      [3,8],[4,8],[5,8],[6,8],[7,8],[8,8],[9,8],[10,8],[11,8],
+      [2,9],[3,9],[4,9],[5,9],[6,9],[7,9],[8,9],[9,9],[10,9],[11,9],[12,9],// waist
+      [4,10],[5,10],[6,10],[7,10],[8,10],[9,10],[10,10],[11,10],
+      [4,11],[5,11],[6,11],[7,11],[8,11],[9,11],[10,11],
+      [4,12],[5,12],[8,12],[9,12],// legs
+      [4,13],[5,13],[8,13],[9,13],
+      [4,14],[5,14],[8,14],[9,14],
+      [4,15],[5,15],[8,15],[9,15],
+    ];
+    bd.forEach(([x,y])=>set(x,y,180,0,0));
+    // Crown gold
+    [[5,0],[6,0],[7,0],[8,0],[9,0],[6,1],[8,1]].forEach(([x,y])=>set(x,y,220,160,0));
+    // Face
+    [[5,3],[6,3],[9,3],[10,3]].forEach(([x,y])=>set(x,y,210,140,90));// eyes
+    set(6,3,255,50,50);set(9,3,255,50,50);// red evil eyes
+    // Sword (right side)
+    [[13,4],[13,5],[13,6],[13,7],[13,8],[12,5],[14,5]].forEach(([x,y])=>set(x,y,180,180,200));
+    ctx.putImageData(p,0,0);
+  })(cvs);
+
+  const hb=document.createElement('div');hb.className='unit-hp-bar';
+  hb.style.cssText='width:60px;height:6px;background:#330000;border:1px solid #880000;margin-top:2px;';
+  hb.innerHTML='<div id="hf-'+bossId+'" style="height:100%;width:100%;background:#ff2200;"></div>';
+  div.appendChild(cvs);div.appendChild(hb);
+  div.style.left=startX+'px';
+  document.getElementById('units-layer').appendChild(div);
+
+  // Show boss HP bar
+  document.getElementById('boss-hpbar-wrap').classList.add('active');
+  updateBossHpBar();
+  showSpecial('💀 DE TSJAAD TIRAN VERSCHIJNT!!','#ff2200');
+  showRoundBanner('⚠ EINDBAAS! ⚠',2500);
+}
+
+function updateBossHpBar(){
+  if(!bossUnit)return;
+  const pct=Math.max(0,bossUnit.hp/BOSS_MAX_HP*100);
+  document.getElementById('boss-hpbar-inner').style.width=pct+'%';
+  document.getElementById('boss-hpbar-num').textContent=Math.max(0,bossUnit.hp)+' / '+BOSS_MAX_HP+' HP';
+  // Color shift
+  const bar=document.getElementById('boss-hpbar-inner');
+  if(pct>60)bar.style.background='linear-gradient(90deg,#cc0000,#ff4400,#ff6600)';
+  else if(pct>30)bar.style.background='linear-gradient(90deg,#aa0000,#dd2200,#ff4400)';
+  else bar.style.background='linear-gradient(90deg,#660000,#aa0000,#cc0000)';
+}
 
 function startSeries(){
   isStoryMode=false;
@@ -1894,6 +2010,8 @@ function tick(){
     }
   }else if(isStoryMode&&currentStoryLevel===4){
     // Level 4: Gouden Vechter every 8s, Gouden Magier every 12s, Gouden Speerwerper every 30s
+    // Stop spawning when boss is active
+    if(!bossSpawned){
     if(!storyWavesDispatched._l4init){
       storyWavesDispatched._l4init=true;
       storyWavesDispatched._lastGVecht=now;
@@ -1913,6 +2031,7 @@ function tick(){
       spawnUnit(3,false,undefined,undefined,8); // Gouden Speerwerper
       showSpecial('🛡 EEN GOUDEN SPEERWERPER ARRIVEERT!','#FFD700');
     }
+    } // end !bossSpawned
     // Healer logic: Gouden Magier heals nearby enemy units every 5s
     for(const u of units){
       if(u.isPlayer)continue;
@@ -2028,9 +2147,16 @@ function tick(){
           return;
         }
         if(enemyHutHp<=0){
-          if(isStoryMode){endStoryLevel(true);}
-          else{endRound();}
-          return;
+          // Level 4: spawn boss instead of winning immediately
+          if(isStoryMode&&currentStoryLevel===4&&!bossSpawned&&!bossDefeated){
+            enemyHutHp=1; // keep hut "alive" while boss lives
+            updateHutUI();
+            spawnBoss();
+          }else{
+            if(isStoryMode){endStoryLevel(true);}
+            else{endRound();}
+            return;
+          }
         }
       }
     }else{
@@ -2043,6 +2169,22 @@ function tick(){
   const seen=new Set();
   for(const{id,gc}of toRemove){if(seen.has(id))continue;seen.add(id);killUnit(id,gc);}
   units=units.filter(u=>u.hp>0);
+
+  // Boss HP bar update & death check
+  if(bossSpawned&&!bossDefeated){
+    const stillAlive=units.find(u=>u.isBoss);
+    if(stillAlive){
+      updateBossHpBar();
+    }else{
+      bossDefeated=true;
+      document.getElementById('boss-hpbar-wrap').classList.remove('active');
+      enemyHutHp=0;
+      updateHutUI();
+      if(isStoryMode){endStoryLevel(true);}
+      else{endRound();}
+      return;
+    }
+  }
 }
 
 function endRound(){
