@@ -51,6 +51,9 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
 #shop-btn:hover{background:rgba(160,100,0,0.7);}
 #powerup-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(60,0,100,0.5);border:2px solid #aa44ff;padding:4px 5px;cursor:pointer;color:#dd88ff;font-size:9px;font-weight:bold;min-width:34px;height:80px;letter-spacing:0.5px;transition:background 0.1s;}
 #powerup-btn:hover{background:rgba(100,0,160,0.7);}
+#pause-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,40,60,0.5);border:2px solid #4488aa;padding:4px 5px;cursor:pointer;color:#aaddff;font-size:9px;font-weight:bold;min-width:34px;height:80px;letter-spacing:0.5px;transition:background 0.1s;}
+#pause-btn:hover{background:rgba(0,80,120,0.7);}
+#pause-btn.paused{background:rgba(0,80,0,0.5);border-color:#44cc44;color:#88ff88;}
 #shop-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.92);z-index:180;display:none;flex-direction:column;align-items:center;padding:12px 12px 8px;border-radius:8px;}
 #shop-overlay.open{display:flex;}
 #shop-title{color:#ffd080;font-size:16px;font-weight:bold;letter-spacing:3px;margin-bottom:4px;}
@@ -346,6 +349,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
   <!-- Upgrade shop -->
   <div id="shop-overlay">
     <div id="shop-title">WINKEL</div>
+    <div style="color:#88ffcc;font-size:9px;letter-spacing:2px;margin-bottom:2px;opacity:0.8">⏸ SPEL GEPAUZEERD</div>
     <div id="shop-coins-display">Coins: 0 / 999</div>
     <div id="shop-grid"></div>
     <button id="shop-close" onclick="closeShop()">terug</button>
@@ -354,6 +358,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
   <!-- Powerup shop -->
   <div id="powerup-overlay">
     <div id="powerup-title">goddelijke krachten</div>
+    <div style="color:#88ffcc;font-size:9px;letter-spacing:2px;margin-bottom:2px;opacity:0.8">⏸ SPEL GEPAUZEERD</div>
     <div id="powerup-coins-display">Coins: 0 / 999</div>
     <div id="powerup-grid">
       <div class="pu-card">
@@ -382,6 +387,13 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
       </div>
     </div>
     <button id="powerup-close" onclick="closePowerup()">✖ SLUITEN</button>
+  </div>
+
+  <!-- Pause overlay -->
+  <div id="pause-overlay" style="position:absolute;inset:0;background:rgba(0,0,0,0.75);z-index:170;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;border-radius:8px;">
+    <div style="color:#aaddff;font-size:28px;font-weight:bold;letter-spacing:4px;text-shadow:0 0 12px #4488aa;">⏸ GEPAUZEERD</div>
+    <div style="color:#7799aa;font-size:11px;letter-spacing:2px;">druk op pauze om verder te gaan</div>
+    <button onclick="togglePause()" style="background:#003344;border:2px solid #4488aa;color:#aaddff;font-size:13px;font-weight:bold;padding:9px 28px;cursor:pointer;font-family:monospace;letter-spacing:2px;margin-top:4px;">▶ DOORGAAN</button>
   </div>
 
   <!-- Normal game-over -->
@@ -606,6 +618,7 @@ h1{color:#ffd080;font-size:22px;letter-spacing:3px;margin-bottom:8px;text-shadow
     </div>
     <div id="shop-btn" onclick="openShop()">🪙<br>winkel</div>
     <div id="powerup-btn" onclick="openPowerup()">⚡<br>power</div>
+    <div id="pause-btn" onclick="togglePause()">⏸<br>pauze</div>
     <div id="coin-bar">
       <div id="coin-fill-wrap"><div id="coin-fill" style="height:0%"></div></div>
       <div id="coin-count">0🪙</div>
@@ -1402,6 +1415,8 @@ let water,coins,units,walls,nextId,gameRunning,gameLoop,waterInterval,stormCount
 let myHutHp,enemyHutHp,lastAiSpawn,stormActive,sandParticles;
 let starLevels,enemyULvl,lastEnemyUnitUpg;
 let matchStartTime,waterBoosted,stormSecondsLeft;
+let totalPausedMs=0,pauseStartTime=0;
+let gamePaused=false;
 
 // BOSS STATE
 let bossSpawned=false,bossDefeated=false,bossUnit=null;
@@ -1509,7 +1524,7 @@ function startRound(){
   myHutHp=MAX_HUT_HP;enemyHutHp=MAX_HUT_HP;
   lastAiSpawn=0;stormActive=false;sandParticles=[];
   enemyULvl=[0,0,0,0,0,0];lastEnemyUnitUpg=Date.now();
-  waterBoosted=false;matchStartTime=Date.now();
+  waterBoosted=false;matchStartTime=Date.now();totalPausedMs=0;pauseStartTime=0;gamePaused=false;
   document.getElementById('units-layer').innerHTML='';
   document.getElementById('walls-layer').innerHTML='';
   document.getElementById('game-over').style.display='none';
@@ -1518,6 +1533,8 @@ function startRound(){
   document.getElementById('level-lose').style.display='none';
   document.getElementById('sandstorm-overlay').classList.remove('active');
   document.getElementById('water-boost').style.display='none';
+  document.getElementById('pause-overlay').style.display='none';
+  const pb=document.getElementById('pause-btn');if(pb){pb.classList.remove('paused');pb.innerHTML='⏸<br>pauze';}
   updateSeriesUI();
   document.getElementById('round-num').textContent=currentRound;
   closeShop();closePowerup();
@@ -1558,7 +1575,7 @@ function startRound(){
 
   matchTimerInterval=setInterval(()=>{
     if(!gameRunning)return;
-    const elapsed=Date.now()-matchStartTime;
+    const elapsed=Date.now()-matchStartTime-totalPausedMs;
     const sec=Math.floor(elapsed/1000);
     const m=Math.floor(sec/60),s=sec%60;
     document.getElementById('match-timer').textContent='⏱ '+m+':'+(s<10?'0':'')+s;
@@ -1621,10 +1638,88 @@ function refreshCard(i){
   drawSprite(document.getElementById('card-sprite-'+i),c.sprP);
 }
 
-function openShop(){if(!gameRunning)return;buildShop();document.getElementById('shop-overlay').classList.add('open');}
-function closeShop(){document.getElementById('shop-overlay').classList.remove('open');}
-function openPowerup(){if(!gameRunning)return;buildPowerupShop();document.getElementById('powerup-overlay').classList.add('open');}
-function closePowerup(){document.getElementById('powerup-overlay').classList.remove('open');}
+function pauseForOverlay(){
+  if(!gameRunning)return;
+  pauseStartTime=Date.now();
+  clearInterval(gameLoop);
+  clearInterval(waterInterval);
+  clearInterval(stormCountdown);
+  clearInterval(matchTimerInterval);
+}
+function resumeAfterOverlay(){
+  if(!gameRunning)return;
+  // only resume if no overlays are open
+  if(document.getElementById('shop-overlay').classList.contains('open'))return;
+  if(document.getElementById('powerup-overlay').classList.contains('open'))return;
+  if(pauseStartTime>0){totalPausedMs+=Date.now()-pauseStartTime;pauseStartTime=0;}
+  waterInterval=setInterval(()=>{
+    if(!gameRunning)return;
+    const rate=waterBoosted?BASE_WATER_RATE*2:BASE_WATER_RATE;
+    water=Math.min(MAX_WATER,water+rate*0.25);
+    updateWaterUI();refreshAllCards();
+  },250);
+  stormCountdown=setInterval(()=>{
+    if(!gameRunning)return;
+    if(currentStoryLevel===4){
+      stormSecondsLeft-=0.25;
+      const s=Math.max(0,Math.ceil(stormSecondsLeft));
+      document.getElementById('storm-timer').textContent='💰 Gold Rush: '+s+'s';
+      document.getElementById('storm-timer').style.color='#FFD700';
+      document.getElementById('storm-timer').style.borderColor='#aa8800';
+      if(stormSecondsLeft<=0){stormSecondsLeft=STORM_INTERVAL/1000;triggerGoldRush();}
+    }else{
+      stormSecondsLeft-=0.25;
+      const s=Math.max(0,Math.ceil(stormSecondsLeft));
+      document.getElementById('storm-timer').textContent=stormActive?'🌪 STORM!':'⏳ Storm: '+s+'s';
+      document.getElementById('storm-timer').style.color='#ffd080';
+      document.getElementById('storm-timer').style.borderColor='#555';
+      if(stormSecondsLeft<=0&&!stormActive){stormSecondsLeft=STORM_INTERVAL/1000;triggerSandstorm();}
+    }
+  },250);
+  matchTimerInterval=setInterval(()=>{
+    if(!gameRunning)return;
+    const elapsed=Date.now()-matchStartTime-totalPausedMs;
+    const sec=Math.floor(elapsed/1000);
+    const m=Math.floor(sec/60),s=sec%60;
+    document.getElementById('match-timer').textContent='⏱ '+m+':'+(s<10?'0':'')+s;
+    if(elapsed>=WATER_BOOST_TIME&&!waterBoosted){
+      waterBoosted=true;
+      document.getElementById('water-boost').style.display='block';
+      showSpecial('de waterput is bijgevuld!','#22ffcc');
+    }
+    if(powerups.razernij.active){
+      const rem=Math.max(0,Math.ceil((powerups.razernij.endTime-Date.now())/1000));
+      if(rem<=0)powerups.razernij.active=false;
+      updatePowerupIndicators();
+    }
+  },250);
+  gameLoop=setInterval(tick,50);
+}
+function togglePause(){
+  if(!gameRunning)return;
+  if(document.getElementById('shop-overlay').classList.contains('open'))return;
+  if(document.getElementById('powerup-overlay').classList.contains('open'))return;
+  if(!gamePaused){
+    gamePaused=true;
+    pauseStartTime=Date.now();
+    clearInterval(gameLoop);clearInterval(waterInterval);
+    clearInterval(stormCountdown);clearInterval(matchTimerInterval);
+    document.getElementById('pause-overlay').style.display='flex';
+    document.getElementById('pause-btn').classList.add('paused');
+    document.getElementById('pause-btn').innerHTML='▶<br>verder';
+  }else{
+    gamePaused=false;
+    if(pauseStartTime>0){totalPausedMs+=Date.now()-pauseStartTime;pauseStartTime=0;}
+    document.getElementById('pause-overlay').style.display='none';
+    document.getElementById('pause-btn').classList.remove('paused');
+    document.getElementById('pause-btn').innerHTML='⏸<br>pauze';
+    resumeAfterOverlay();
+  }
+}
+function openShop(){if(!gameRunning)return;pauseForOverlay();buildShop();document.getElementById('shop-overlay').classList.add('open');}
+function closeShop(){document.getElementById('shop-overlay').classList.remove('open');resumeAfterOverlay();}
+function openPowerup(){if(!gameRunning)return;pauseForOverlay();buildPowerupShop();document.getElementById('powerup-overlay').classList.add('open');}
+function closePowerup(){document.getElementById('powerup-overlay').classList.remove('open');resumeAfterOverlay();}
 
 function buildShop(){
   updateCoinUI();
